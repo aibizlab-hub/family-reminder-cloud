@@ -1,6 +1,5 @@
 node_modules/
 wa-session/
-data.json
 data.json.backup
 *.log
 .DS_Store

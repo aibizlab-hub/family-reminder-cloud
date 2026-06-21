@@ -1,0 +1,28 @@
+name: Daily WhatsApp Reminder
+
+on:
+  schedule:
+    # 23:00 UTC = 07:00 HKT (next day)
+    - cron: '0 23 * * *'
+  workflow_dispatch: # Manual trigger
+
+jobs:
+  send-reminder:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm install baileys qrcode node-cache pino
+
+      - name: Send daily reminder
+        env:
+          WA_CREDS_B64: ${{ secrets.WA_CREDS_B64 }}
+          WA_GROUP_ID: ${{ secrets.WA_GROUP_ID }}
+          JSONBLOB_ID: ${{ secrets.JSONBLOB_ID }}
+        run: node wa-daily-push.js

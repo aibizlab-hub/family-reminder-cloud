@@ -1,0 +1,24 @@
+name: Sync Data
+
+on:
+  schedule:
+    # Every hour
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Sync jsonblob to repo
+        env:
+          JSONBLOB_ID: ${{ secrets.JSONBLOB_ID }}
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: node sync-data.js
