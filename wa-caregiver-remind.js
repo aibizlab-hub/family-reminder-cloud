@@ -24,9 +24,6 @@ const CAREGIVER_PHONES = {
 };
 // ===== 群組 =====
 const GROUP_ID = '120363412134951607@g.us'; // 揸揸的家長們
-  'Rosanna Mok': { phone: '85293398522',  name: 'Rosanna Mok' },
-  'COFFE':       { phone: '85266713322',  name: 'COFFE' }
-};
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN || process.env.GH_PAT;
 const GITHUB_REPO = 'ken851004-afk/family-reminder-cloud';
