@@ -35,6 +35,20 @@
       "repeatDays": [
         6
       ]
+    },
+    {
+      "id": "r178203363735416b",
+      "notified": false,
+      "name": "軟網球班",
+      "date": "2026-07-22",
+      "time": "09:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "七，八月\n坪石青協",
+      "repeat": "weekly",
+      "repeatDays": [
+        3
+      ]
     }
   ],
   "birthdays": [
