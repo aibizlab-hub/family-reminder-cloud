@@ -19,6 +19,12 @@ const CAREGIVER_PHONES = {
   'EPPIE':       { phone: '85262218999',  name: 'EPPIE（太太）' },
   'Kenny Yam':   { phone: '85291339336',  name: 'Kenny Yam' },
   'Rosanna Mok': { phone: '85293398522',  name: 'Rosanna Mok' },
+  'COFFE':       { phone: '85266713322',  name: 'COFFE' },
+  '老豆':        { phone: '85262269100',  name: '老豆' }
+};
+// ===== 群組 =====
+const GROUP_ID = '120363412134951607@g.us'; // 揸揸的家長們
+  'Rosanna Mok': { phone: '85293398522',  name: 'Rosanna Mok' },
   'COFFE':       { phone: '85266713322',  name: 'COFFE' }
 };
 
