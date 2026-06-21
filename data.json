@@ -1,1 +1,48 @@
-{"reminders":[],"birthdays":[{"name":"EPPIE","date":"??-??","note":""},{"name":"KEN","date":"??-??","note":""},{"name":"COFFE","date":"??-??","note":""},{"name":"XingHuaCun","date":"??-??","note":""}],"members":["EPPIE","KEN","COFFE","XingHuaCun"],"caregivers":["EPPIE","KEN","COFFE","XingHuaCun"]}
+{
+  "reminders": [
+    {
+      "name": "���մ���",
+      "category": "special",
+      "date": "2026-06-21",
+      "time": "15:30",
+      "note": "GitHub Actions ����",
+      "caregiver": "KEN",
+      "notified": false,
+      "id": "r17820258440301tfh"
+    }
+  ],
+  "birthdays": [
+    {
+      "name": "EPPIE",
+      "date": "??-??",
+      "note": ""
+    },
+    {
+      "name": "KEN",
+      "date": "??-??",
+      "note": ""
+    },
+    {
+      "name": "COFFE",
+      "date": "??-??",
+      "note": ""
+    },
+    {
+      "name": "XingHuaCun",
+      "date": "??-??",
+      "note": ""
+    }
+  ],
+  "members": [
+    "EPPIE",
+    "KEN",
+    "COFFE",
+    "XingHuaCun"
+  ],
+  "caregivers": [
+    "EPPIE",
+    "KEN",
+    "COFFE",
+    "XingHuaCun"
+  ]
+}
