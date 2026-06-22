@@ -9,7 +9,10 @@
       "category": "school",
       "caregiver": "KEN",
       "note": "調景嶺\n面試信",
-      "repeat": "none"
+      "repeat": "none",
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "address": ""
     },
     {
       "id": "r1782033588722kko",
@@ -23,7 +26,10 @@
       "repeat": "weekly",
       "repeatDays": [
         6
-      ]
+      ],
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "address": ""
     },
     {
       "id": "r178203363735416b",
@@ -37,7 +43,10 @@
       "repeat": "weekly",
       "repeatDays": [
         3
-      ]
+      ],
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "address": ""
     },
     {
       "id": "r1782033672781kcn",
@@ -51,7 +60,10 @@
       "repeat": "weekly",
       "repeatDays": [
         4
-      ]
+      ],
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "address": ""
     },
     {
       "id": "r1782033717733yq3",
@@ -60,12 +72,15 @@
       "date": "2026-06-22",
       "time": "08:30",
       "category": "class",
-      "caregiver": "",
+      "caregiver": "EPPIE",
       "note": "最後4堂",
       "repeat": "weekly",
       "repeatDays": [
         1
-      ]
+      ],
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "address": ""
     },
     {
       "id": "r1782033786303xqe",
@@ -76,7 +91,10 @@
       "category": "special",
       "caregiver": "EPPIE",
       "note": "",
-      "repeat": "none"
+      "repeat": "none",
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "address": ""
     },
     {
       "id": "r1782033821850vvd",
@@ -87,7 +105,10 @@
       "category": "school",
       "caregiver": "EPPIE",
       "note": "時間待定",
-      "repeat": "none"
+      "repeat": "none",
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "address": ""
     },
     {
       "id": "r17820338720444q5",
@@ -98,7 +119,10 @@
       "category": "special",
       "caregiver": "EPPIE",
       "note": "樂富冒險樂園",
-      "repeat": "none"
+      "repeat": "none",
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "address": ""
     }
   ],
   "birthdays": [
