@@ -135,18 +135,6 @@
       "note": "Mfc",
       "address": "",
       "repeat": "none"
-    },
-    {
-      "id": "test-1782129022377",
-      "name": "測試-11:50:22",
-      "date": "2026-06-22",
-      "time": "19:45",
-      "category": "special",
-      "caregiver": "KEN",
-      "note": "",
-      "address": "",
-      "repeat": "none",
-      "notified": false
     }
   ],
   "birthdays": [
