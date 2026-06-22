@@ -712,6 +712,36 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+
+  // === 發送自定義消息 ===
+  if (req.method === 'POST' && pathname === '/api/send-message') {
+    let body = '';
+    req.on('data', c => body += c);
+    req.on('end', async () => {
+      if (!waConnected || !sock) {
+        res.writeHead(503, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'WhatsApp 未連接' }));
+        return;
+      }
+      try {
+        const { to, message } = JSON.parse(body);
+        if (!message) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: '消息內容不能為空' }));
+          return;
+        }
+        const target = to || GROUP_ID;
+        await sock.sendMessage(target, { text: message });
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true, target }));
+      } catch(e) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: e.message }));
+      }
+    });
+    return;
+  }
+
   // === GET /data ===
   if (req.method === 'GET' && pathname === '/data') {
     res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
