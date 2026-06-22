@@ -135,7 +135,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
       <button onclick="exportData()">&#128226; 匯出備份</button>
       <button onclick="document.getElementById('import-file').click()">&#128229; 匯入</button>
       <button onclick="sendReminderNow()">&#128276; 即時提醒</button>
-      <button onclick="openSendModal()">&#128236; 發消息</button>
       <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
     </div>
     <div id="reminder-list"><div class="loading">&#8987; 載入中...</div></div>
@@ -649,51 +648,6 @@ function init(){
   checkWAStatus();
 }
 init();
-
-// ===== Send Message =====
-function openSendModal() {
-  document.getElementById('send-msg').value = '';
-  document.getElementById('modal-send').classList.add('show');
-  setTimeout(function(){document.getElementById('send-msg').focus();},300);
-}
-function doSendMessage() {
-  var msg = document.getElementById('send-msg').value.trim();
-  if (!msg) { toast('请輸入消息内容'); return; }
-  var target = document.getElementById('send-target').value;
-  var to = target === 'group' ? null : '85262218999@s.whatsapp.net';
-  toast('發送中...');
-  fetch('/api/send-message', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ to: to, message: msg })
-  }).then(function(r){return r.json();}).then(function(r){
-    if (r.ok) { toast('消息已發送'); closeModal('modal-send'); }
-    else { toast('發送失敗: ' + (r.error || '未知錯誤')); }
-  }).catch(function(){ toast('發送失敗'); });
-}
-
 </script>
-
-<!-- Send Message Modal -->
-<div class="modal-overlay" id="modal-send">
-  <div class="modal-sheet" onclick="event.stopPropagation()">
-    <div class="modal-handle"></div>
-    <div class="modal-title">發送 WhatsApp 消息</div>
-    <div class="form-group">
-      <label class="form-label">收件人</label>
-      <select class="form-select" id="send-target">
-        <option value="group">&#128101; 群组（請回答我們這一家）</option>
-        <option value="self">&#128241; 自己</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">消息内容 *</label>
-      <textarea class="form-textarea" id="send-msg" placeholder="輸入消息内容..." style="min-height:100px;"></textarea>
-    </div>
-    <button class="btn btn-primary" onclick="doSendMessage()">&#128236; 發送</button>
-    <button class="btn btn-outline" onclick="closeModal('modal-send')">取消</button>
-  </div>
-</div>
-
 </body>
 </html>
