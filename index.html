@@ -553,7 +553,7 @@ function saveReminder(){
     var idx=DATA.reminders.findIndex(function(r){return r.id===editId;});
     if(idx>=0){
       var oldCaregiver = DATA.reminders[idx].caregiver;
-      if(oldCaregiver !== caregiver && caregiver){
+      if(oldCaregiver !== caregiver){
         DATA.reminders[idx].caregiverNotified1d = false;
         DATA.reminders[idx].caregiverNotified3h = false;
         if(!DATA.groupNotifications) DATA.groupNotifications = [];
