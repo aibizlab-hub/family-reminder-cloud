@@ -185,11 +185,5 @@
     }
   ],
   "groupNotifications": [],
-  "pendingMessages": [
-    {
-      "phone": "85262218999",
-      "text": "✅ 已加「工作」分頁\n\n功能：\n• 新增「💼 工作」分類\n• 新增「工作」分頁，顯示工作相關事項\n• 新增提醒時可選「工作」分類\n• 編輯現有事項可改為「工作」分類\n\n🌐 查看：https://49833288871e479db55ef9521bf04f60.app.codebuddy.work\n\n註：需手動將 KEN 事項改為「工作」分類才會顯示在「工作」分頁",
-      "at": "2026-06-23T18:10:26Z"
-    }
-  ]
+  "pendingMessages": []
 }
