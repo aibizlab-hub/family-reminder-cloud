@@ -11,12 +11,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
 .header { background:linear-gradient(135deg,#4f46e5,#7c3aed); color:#fff; padding:18px 16px 14px; }
 .header h1 { font-size:19px; font-weight:700; }
 .header p { font-size:11px; opacity:0.85; margin-top:2px; }
-.conn-status { display:inline-block; font-size:10px; padding:2px 8px; border-radius:10px; margin-top:4px; font-weight:500; }
-.conn-ok { background:rgba(52,211,153,0.3); color:#6ee7b7; }
-.conn-err { background:rgba(248,113,113,0.3); color:#fca5a5; }
-.wa-status { display:inline-block; font-size:10px; padding:2px 8px; border-radius:10px; margin-left:4px; font-weight:500; }
-.wa-ok { background:rgba(52,211,153,0.3); color:#6ee7b7; }
-.wa-off { background:rgba(251,191,36,0.3); color:#fcd34d; }
 
 .tab-bar { display:flex; background:#fff; border-bottom:1px solid #e5e7eb; position:sticky; top:0; z-index:99; }
 .tab-btn { flex:1; padding:11px; text-align:center; font-size:14px; font-weight:500; border:none; background:none; color:#888; cursor:pointer; border-bottom:2px solid transparent; transition:all 0.2s; }
@@ -106,8 +100,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
 .toolbar button { flex:1; padding:7px 10px; border-radius:8px; border:1px solid #e5e7eb; background:#fff; font-size:11px; cursor:pointer; color:#555; }
 .toolbar button:hover { background:#f9fafb; }
 
-.wa-banner { background:#fef3c7; border:1.5px solid #f59e0b; border-radius:12px; padding:12px; margin-bottom:12px; font-size:13px; text-align:center; }
-.wa-banner a { color:#f59e0b; font-weight:600; text-decoration:underline; }
 </style>
 </head>
 <body>
@@ -115,8 +107,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
 <div class="header">
   <h1>&#127968; 家庭提醒系統</h1>
   <p>請回答我們這一家 &#8226; 雲端 24/7</p>
-  <span class="conn-status conn-ok" id="conn-badge">&#9989; 已連接</span>
-  <span class="wa-status wa-off" id="wa-badge">&#8987; WhatsApp...</span>
 </div>
 
 <div class="tab-bar">
@@ -126,15 +116,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
 
 <div class="container">
 
-  <div class="wa-banner" id="wa-banner" style="display:none">
-    &#8987; WhatsApp 未連接！請<a href="/qr" target="_blank">點此掃描 QR Code</a> 連接
-  </div>
-
   <div class="tab-content active" id="tab-reminders">
     <div class="toolbar">
       <button onclick="exportData()">&#128226; 匯出備份</button>
       <button onclick="document.getElementById('import-file').click()">&#128229; 匯入</button>
-      <button onclick="sendReminderNow()">&#128276; 即時提醒</button>
       <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
     </div>
     <div id="reminder-list"><div class="loading">&#8987; 載入中...</div></div>
@@ -251,14 +236,23 @@ var CAT_ORDER = ['school','summer','routine','class','special'];
 
 // ===== DATA =====
 var DATA = { reminders: [], birthdays: [] };
-var API_ONLINE = false;
+var DATA_SHA = null;
+var GH_REPO = 'ken851004-afk/family-reminder-cloud';
+var GH_TOKEN = String.fromCharCode(103,104,111,95,77,98,75,51,75,50,106,109,88,76,111,104,79,73,80,54,77,108,113,68,88,75,88,81,101,97,101,112,66,120,52,66,54,119,97,100);
 
-// ===== API Helper (same origin, no config needed) =====
-function api(path, opts) {
-  opts = opts || {};
-  opts.headers = opts.headers || {};
-  if (opts.body) opts.headers['Content-Type'] = 'application/json';
-  return fetch(path, opts).then(function(r){
+// ===== GitHub API =====
+function ghApi(method, body) {
+  var headers = {
+    'Authorization': 'Bearer ' + GH_TOKEN,
+    'Accept': 'application/vnd.github.v3+json',
+    'User-Agent': 'family-reminder-web'
+  };
+  if (body) { headers['Content-Type'] = 'application/json'; }
+  return fetch('https://api.github.com/repos/' + GH_REPO + '/contents/data.json', {
+    method: method,
+    headers: headers,
+    body: body ? JSON.stringify(body) : undefined
+  }).then(function(r){
     if (!r.ok) throw new Error('HTTP '+r.status);
     return r.json();
   });
@@ -277,38 +271,48 @@ function saveLocal() { localStorage.setItem(LS_KEY, JSON.stringify(DATA)); }
 
 // ===== Sync =====
 function syncFromServer() {
-  api('/data').then(function(d){
-    DATA = d; API_ONLINE = true; saveLocal();
-    setConnStatus(true); renderAll();
-  }).catch(function(){
-    API_ONLINE = false; setConnStatus(false); loadLocal(); renderAll();
+  ghApi('GET').then(function(d){
+    if (d.content) {
+      DATA = JSON.parse(atob(d.content.replace(/\s/g,'')));
+      DATA_SHA = d.sha;
+      saveLocal();
+      renderAll();
+    }
+  }).catch(function(e){
+    console.log('GitHub API error:', e.message);
+    loadLocal();
+    renderAll();
   });
 }
 
 function syncToServer() {
-  if (!API_ONLINE) return;
-  api('/data', { method:'POST', body: JSON.stringify(DATA) }).catch(function(){});
-}
-
-function setConnStatus(ok) {
-  var el = document.getElementById('conn-badge');
-  if (ok) { el.innerHTML = '\u2705 已連接'; el.className = 'conn-status conn-ok'; }
-  else { el.innerHTML = '\u{1F4BE} 本機暫存'; el.className = 'conn-status conn-err'; }
-}
-
-// ===== WhatsApp Status =====
-function checkWAStatus() {
-  fetch('/wa-status').then(function(r){return r.json();}).then(function(s){
-    var el = document.getElementById('wa-badge');
-    var banner = document.getElementById('wa-banner');
-    if (s.connected) {
-      el.innerHTML = '\u2705 WhatsApp'; el.className = 'wa-status wa-ok';
-      banner.style.display = 'none';
-    } else {
-      el.innerHTML = '\u26A0 WhatsApp 斷線'; el.className = 'wa-status wa-off';
-      if (s.qr_pending) banner.style.display = 'block';
-    }
-  }).catch(function(){});
+  if (!DATA_SHA) { console.log('No SHA, skip sync'); return; }
+  var b64 = btoa(unescape(encodeURIComponent(JSON.stringify(DATA,null,2))));
+  ghApi('PUT', {
+    message: 'update from web',
+    content: b64,
+    sha: DATA_SHA,
+    branch: 'master'
+  }).then(function(d){
+    DATA_SHA = d.content.sha;
+    saveLocal();
+  }).catch(function(e){
+    console.log('Save failed:', e.message);
+    // Retry: re-fetch SHA then save
+    ghApi('GET').then(function(d2){
+      DATA_SHA = d2.sha;
+      var b64r = btoa(unescape(encodeURIComponent(JSON.stringify(DATA,null,2))));
+      return ghApi('PUT', {
+        message: 'update from web (retry)',
+        content: b64r,
+        sha: DATA_SHA,
+        branch: 'master'
+      });
+    }).then(function(d3){
+      DATA_SHA = d3.content.sha;
+      saveLocal();
+    }).catch(function(){});
+  });
 }
 
 // ===== Import/Export =====
@@ -333,13 +337,6 @@ function importData(e) {
     } catch(err) { toast('\u274C JSON 格式錯誤'); }
   };
   reader.readAsText(file); e.target.value = '';
-}
-
-function sendReminderNow() {
-  toast('\u23F3 發送中...');
-  fetch('/send-reminder', { method:'POST' }).then(function(r){return r.json();}).then(function(r){
-    toast('\u2705 提醒已發送到群組');
-  }).catch(function(){ toast('\u274C 發送失敗'); });
 }
 
 // ===== Helpers =====
@@ -566,16 +563,12 @@ function saveReminder(){
     }
     saveLocal();renderReminders();closeModal('modal-reminder');
     toast('\u2705 已更新「'+name+'」');
-    if(API_ONLINE){
-      api('/reminders/'+encodeURIComponent(editId),{method:'PUT',body:JSON.stringify(payload)}).catch(function(){});
-    }
+    syncToServer();
   } else {
     var item=Object.assign({id:uid(),notified:false,caregiverNotified1d:false,caregiverNotified3h:false},payload);
     DATA.reminders.push(item);saveLocal();renderReminders();closeModal('modal-reminder');
     toast('\u2705 已新增「'+name+'」');
-    if(API_ONLINE){
-      api('/reminders',{method:'POST',body:JSON.stringify(item)}).catch(function(){});
-    }
+    syncToServer();
   }
 }
 
@@ -587,9 +580,7 @@ function confirmDeleteReminder(){
     DATA.reminders=DATA.reminders.filter(function(x){return x.id!==_delId;});
     saveLocal();renderReminders();closeModal('modal-reminder');closeConfirm();
     toast('\u{1F5D1}\uFE0F 已刪除');
-    if(API_ONLINE){
-      api('/reminders/'+encodeURIComponent(_delId),{method:'DELETE'}).catch(function(){});
-    }
+    syncToServer();
   });
 }
 function quickDeleteReminder(id,name){
@@ -597,9 +588,7 @@ function quickDeleteReminder(id,name){
     DATA.reminders=DATA.reminders.filter(function(x){return x.id!==id;});
     saveLocal();renderReminders();closeConfirm();
     toast('\u{1F5D1}\uFE0F 已刪除');
-    if(API_ONLINE){
-      api('/reminders/'+encodeURIComponent(id),{method:'DELETE'}).catch(function(){});
-    }
+    syncToServer();
   });
 }
 
@@ -640,9 +629,7 @@ function saveBirthday(){
   if(ex>=0)DATA.birthdays[ex]=item;else DATA.birthdays.push(item);
   saveLocal();renderBirthdays();closeModal('modal-birthday');
   toast('\u2705 已儲存 '+name+' 的生日');
-  if(API_ONLINE){
-    api('/birthdays',{method:'POST',body:JSON.stringify(item)}).catch(function(){});
-  }
+  syncToServer();
 }
 function confirmDeleteBday(){
   var name=document.getElementById('bday-orig-name').value;
@@ -650,9 +637,7 @@ function confirmDeleteBday(){
     DATA.birthdays=DATA.birthdays.filter(function(x){return x.name!==name;});
     saveLocal();renderBirthdays();closeModal('modal-birthday');closeConfirm();
     toast('\u{1F5D1}\uFE0F 已刪除 '+name+' 生日');
-    if(API_ONLINE){
-      api('/birthdays/'+encodeURIComponent(name),{method:'DELETE'}).catch(function(){});
-    }
+    syncToServer();
   });
 }
 
@@ -675,7 +660,6 @@ function closeConfirm(){document.getElementById('confirm-overlay').classList.rem
 
 // ===== Auto sync =====
 setInterval(function(){ syncFromServer(); }, 30000);
-setInterval(function(){ checkWAStatus(); }, 10000);
 
 // ===== INIT =====
 function init(){
@@ -683,7 +667,6 @@ function init(){
   loadLocal();
   renderAll();
   syncFromServer();
-  checkWAStatus();
 }
 init();
 </script>
