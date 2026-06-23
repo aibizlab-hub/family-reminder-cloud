@@ -185,5 +185,10 @@
     }
   ],
   "groupNotifications": [],
-  "pendingMessages": []
+  "pendingMessages": [
+    {
+      "phone": "85262218999",
+      "text": "【家庭提醒系统 交叉审查完成】\n\n修复项目:\n1. 新增「全体」照顾者选项\n2. 新增地址栏位\n3. Header 更新为「摣摣的家长们」\n4. Repeat 提醒已支援 backend 自动重复\n5. 生日自动通知（当日 09:00 发 WhatsApp）\n6. 3小时提醒窗口扩宽（120-240 分钟）\n7. Workflow timeout 增至 8 分钟\n\n新网址: https://5fa4bc592cf64439a299b0fd73cced55.app.codebuddy.work"
+    }
+  ]
 }
