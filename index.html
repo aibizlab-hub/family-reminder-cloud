@@ -158,7 +158,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
     <div class="form-group"><label class="form-label">事項名稱 *</label><input class="form-input" id="form-name" placeholder="例如：鋼琴班"></div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">日期 *</label><input class="form-input" type="date" id="form-date"></div>
-      <div class="form-group"><label class="form-label">時間</label><input class="form-input" type="time" id="form-time" value="09:00"></div>
+      <div class="form-group"><label class="form-label">時間 (24h)</label><div style="display:flex;gap:4px;align-items:center;"><select id="form-time-h" style="width:65px;padding:8px 4px;border:1.5px solid #d1d5db;border-radius:8px;font-size:15px;text-align:center;"></select><span style="font-size:18px;font-weight:700;">:</span><select id="form-time-m" style="width:65px;padding:8px 4px;border:1.5px solid #d1d5db;border-radius:8px;font-size:15px;text-align:center;"></select></div></div>
     </div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">類別</label>
@@ -176,7 +176,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
           <option value="EPPIE">EPPIE</option>
           <option value="KEN">KEN</option>
           <option value="COFFE">COFFE</option>
-          <option value="杏花村">杏花村</option>
         </select>
       </div>
     </div>
@@ -390,10 +389,12 @@ function renderReminders(){
   });
   var html='';
   CAT_ORDER.forEach(function(cat){
+
     var items=sorted.filter(function(r){return r.category===cat;});
     if(!items.length)return;
     html+='<div class="section-label">'+(CAT[cat]?CAT[cat].icon:'\u{1F4CC}')+' '+(CAT[cat]?CAT[cat].name:cat)+'</div>';
     items.forEach(function(r){
+      var wd = ["日","一","二","三","四","五","六"][new Date(r.date+"T00:00:00").getDay()];
       var days=getDays(r.date);
       var urg=(days>=0&&days<=1)?((days===0)?'urgent':'soon'):'';
       var rt=getRepeatText(r);
@@ -407,7 +408,7 @@ function renderReminders(){
       if(r.caregiver)html+='<span class="badge bdg-care">\u{1F464} '+esc(r.caregiver)+'</span>';
       if(rt)html+='<span class="badge bdg-repeat">\u{1F501} '+rt+'</span>';
       html+='</div>';
-      html+='<div class="card-date">\u{1F4C5} '+r.date+(r.time&&r.time!=='00:00'?' \u23F0 '+r.time:'');
+      html+='<div class="card-date">\u{1F4C5} '+r.date+'（星期'+wd+'）'+(r.time&&r.time!=='00:00'?' \u23F0 '+r.time:'');
       if(days>=0&&days<=7){html+=' \u00B7 '+(days===0?'\u{1F534} 今日':days===1?'\u{1F7E1} 聽日':'\u{1F7E2} '+days+'日後');}
       html+='</div>';
       if(r.note)html+='<div class="card-note">\u{1F4DD} '+esc(r.note)+'</div>';
@@ -468,6 +469,27 @@ function resetRepeatFields(){
   document.getElementById('form-repeat').value='none';
   document.getElementById('repeat-weekly').style.display='none';
   setSelectedDays([]);
+  document.getElementById('form-time-h').value='09';
+  document.getElementById('form-time-m').value='00';
+}
+
+function populateTimeSelects(){
+  var hSel = document.getElementById('form-time-h');
+  var mSel = document.getElementById('form-time-m');
+  if(!hSel || !mSel) return;
+  // 只填一次
+  if(hSel.options.length > 1) return;
+  for(var h=0;h<24;h++){
+    var o=document.createElement('option');
+    o.value = String(h).padStart(2,'0');
+    o.textContent = String(h).padStart(2,'0');
+    hSel.appendChild(o);
+  }
+  ['00','15','30','45'].forEach(function(m){
+    var o=document.createElement('option');
+    o.value=m; o.textContent=m;
+    mSel.appendChild(o);
+  });
 }
 function openAddModal(){
   document.getElementById('modal-title').innerHTML='\u2795 新增提醒';
@@ -494,6 +516,9 @@ function openEditModal(id){
   document.getElementById('form-category').value=r.category;
   document.getElementById('form-caregiver').value=r.caregiver||'';
   document.getElementById('form-note').value=r.note||'';
+  var tp=(r.time||'09:00').split(':');
+  document.getElementById('form-time-h').value=tp[0];
+  document.getElementById('form-time-m').value=tp[1];
   document.getElementById('form-repeat').value=r.repeat||'none';
   onRepeatChange();
   if(r.repeat==='weekly'&&r.repeatDays)setSelectedDays(r.repeatDays);
@@ -505,7 +530,7 @@ function closeModal(id){document.getElementById(id).classList.remove('show');}
 function saveReminder(){
   var name=document.getElementById('form-name').value.trim();
   var date=document.getElementById('form-date').value;
-  var time=document.getElementById('form-time').value||'09:00';
+  var time=document.getElementById('form-time-h').value+':'+document.getElementById('form-time-m').value;
   var category=document.getElementById('form-category').value;
   var caregiver=document.getElementById('form-caregiver').value;
   var note=document.getElementById('form-note').value.trim();
@@ -526,14 +551,23 @@ function saveReminder(){
 
   if(editId){
     var idx=DATA.reminders.findIndex(function(r){return r.id===editId;});
-    if(idx>=0)Object.assign(DATA.reminders[idx],payload);
+    if(idx>=0){
+      var oldCaregiver = DATA.reminders[idx].caregiver;
+      if(oldCaregiver !== caregiver && caregiver){
+        DATA.reminders[idx].caregiverNotified1d = false;
+        DATA.reminders[idx].caregiverNotified3h = false;
+        if(!DATA.groupNotifications) DATA.groupNotifications = [];
+        DATA.groupNotifications.push({id:'gn-'+Date.now(),reminderName:name,oldCaregiver:oldCaregiver||'無',newCaregiver:caregiver,changedAt:new Date().toISOString()});
+      }
+      Object.assign(DATA.reminders[idx],payload);
+    }
     saveLocal();renderReminders();closeModal('modal-reminder');
     toast('\u2705 已更新「'+name+'」');
     if(API_ONLINE){
       api('/reminders/'+encodeURIComponent(editId),{method:'PUT',body:JSON.stringify(payload)}).catch(function(){});
     }
   } else {
-    var item=Object.assign({id:uid(),notified:false},payload);
+    var item=Object.assign({id:uid(),notified:false,caregiverNotified1d:false,caregiverNotified3h:false},payload);
     DATA.reminders.push(item);saveLocal();renderReminders();closeModal('modal-reminder');
     toast('\u2705 已新增「'+name+'」');
     if(API_ONLINE){
@@ -642,6 +676,7 @@ setInterval(function(){ checkWAStatus(); }, 10000);
 
 // ===== INIT =====
 function init(){
+  populateTimeSelects();
   loadLocal();
   renderAll();
   syncFromServer();
