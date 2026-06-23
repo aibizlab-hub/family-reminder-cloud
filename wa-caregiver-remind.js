@@ -265,6 +265,7 @@ async function main() {
             for (const [careName, careInfo] of Object.entries(CAREGIVER_PHONES)) {
               const jid = careInfo.phone + '@s.whatsapp.net';
               const msg = buildCaregiverMsg(reminder, item.type);
+              console.log(`[DEBUG] Sending to JID: ${jid}, Name: ${careInfo.name}`);
               
               try {
                 await sock.sendMessage(jid, { text: msg });
@@ -283,6 +284,7 @@ async function main() {
             
             const jid = care.phone + '@s.whatsapp.net';
             const msg = buildCaregiverMsg(reminder, item.type);
+            console.log(`[DEBUG] Sending to JID: ${jid}, Name: ${care.name}`);
             
             try {
               await sock.sendMessage(jid, { text: msg });
