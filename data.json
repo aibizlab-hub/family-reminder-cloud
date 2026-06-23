@@ -188,8 +188,8 @@
   "pendingMessages": [
     {
       "phone": "120363412134951607@g.us",
-      "text": "✅ 亂碼問題已修復\n\n修復內容：\n1. index.html 中文 base64 編碼 bug（btoa+Unicode → TextEncoder）\n2. wa-caregiver-remind.js 舊 CloudStudio URL 更新\n3. 重新部署到 CloudStudio\n\n🌐 查看：https://49833288871e479db55ef9521bf04f60.app.codebuddy.work",
-      "at": "2026-06-23T17:33:14Z"
+      "text": "✅ 亂碼問題已修復\n\n修復內容：\n1. index.html 中文 base64 編碼 bug（btoa+Unicode → TextEncoder）\n2. wa-caregiver-remind.js 舊 CloudStudio URL 更新\n3. 支援群組 JID 發送\n\n🌐 查看：https://49833288871e479db55ef9521bf04f60.app.codebuddy.work",
+      "at": "2026-06-23T17:34:05Z"
     }
   ]
 }
