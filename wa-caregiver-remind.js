@@ -138,7 +138,7 @@ function buildCaregiverMsg(r, type) {
     msg += `\n👤 照顧者：${r.caregiver}\n`;
   }
   
-  msg += `🌐 查看全部：https://b791d247cb6640908835e5bd7d0454a9.app.codebuddy.work`;
+  msg += `🌐 查看全部：https://49833288871e479db55ef9521bf04f60.app.codebuddy.work`;
   return msg;
 }
 
@@ -277,7 +277,7 @@ async function main() {
         for (const gn of groupNotifs) {
           const rem = data.reminders.find(r => r.name === gn.reminderName);
           const dt = rem ? rem.date : '(不詳)';
-          const msg = `📋 *照顧者已更改*\n\n事項：${gn.reminderName}\n日期：${dt}\n之前：${gn.oldCaregiver}\n現在：${gn.newCaregiver}\n\n🌐 查看全部：https://b791d247cb6640908835e5bd7d0454a9.app.codebuddy.work`;
+          const msg = `📋 *照顧者已更改*\n\n事項：${gn.reminderName}\n日期：${dt}\n之前：${gn.oldCaregiver}\n現在：${gn.newCaregiver}\n\n🌐 查看全部：https://49833288871e479db55ef9521bf04f60.app.codebuddy.work`;
           try {
             await sock.sendMessage(GROUP_ID, { text: msg });
             console.log(`[SENT-GRP] ${gn.reminderName}: ${gn.oldCaregiver} → ${gn.newCaregiver}`);
