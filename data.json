@@ -128,7 +128,7 @@
       "id": "r1782240404688omh",
       "notified": false,
       "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
+      "caregiverNotified3h": true,
       "name": "經理堂",
       "date": "2026-06-24",
       "time": "09:15",
