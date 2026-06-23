@@ -195,7 +195,15 @@ async function main() {
 
   for (const r of reminders) {
     // Skip if no caregiver specified
-    if (!r.caregiver) continue;
+    // For work items with no caregiver, treat as KEN's item (safety net)
+    if (!r.caregiver) {
+      if (r.category === 'work') {
+        r.caregiver = 'KEN';
+        dataChanged = true;
+      } else {
+        continue;
+      }
+    }
     
     // Skip if caregiver is specified but not in our phone list (and not 'ALL')
     if (r.caregiver !== 'ALL' && !CAREGIVER_PHONES[r.caregiver]) continue;
