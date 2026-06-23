@@ -219,12 +219,14 @@ async function main() {
 
   // Check if there's anything to do
   const groupNotifs = data.groupNotifications || [];
-  if (toNotify.length === 0 && groupNotifs.length === 0) {
+  const pendingMsgs = data.pendingMessages || [];
+  const pendingCount = pendingMsgs.length;
+  if (toNotify.length === 0 && groupNotifs.length === 0 && pendingCount === 0) {
     console.log('[CRON] Nothing to do. Exiting.');
     process.exit(0);
   }
 
-  console.log(`[CRON] ${toNotify.length} caregiver notifications + ${groupNotifs.length} group notifications to send`);
+  console.log(`[CRON] ${toNotify.length} caregiver + ${groupNotifs.length} group + ${pendingCount} pending notifications to send`);
 
   // 3. Decode WhatsApp creds
   if (!process.env.WA_CREDS_B64) {
@@ -288,6 +290,25 @@ async function main() {
           data.groupNotifications = [];
           dataChanged = true;
           console.log(`[GRP] Cleared ${groupNotifs.length} group notifications`);
+        }
+
+        // Process pending ad-hoc WhatsApp messages
+        if (pendingMsgs.length > 0) {
+          console.log(`[PENDING] Processing ${pendingMsgs.length} ad-hoc messages`);
+          for (const msg of pendingMsgs) {
+            try {
+              const jid = msg.phone + '@s.whatsapp.net';
+              await sock.sendMessage(jid, { text: msg.text });
+              console.log(`[PENDING-SENT] → ${msg.phone}: ${msg.text.substring(0, 40)}`);
+              sent++;
+              await new Promise(r => setTimeout(r, 1000));
+            } catch(e) {
+              console.error(`[PENDING-FAIL] → ${msg.phone}: ${e.message}`);
+            }
+          }
+          data.pendingMessages = [];
+          dataChanged = true;
+          console.log(`[PENDING] Cleared ${pendingMsgs.length} pending messages`);
         }
         
         for (const item of toNotify) {
