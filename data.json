@@ -123,18 +123,6 @@
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
       "address": ""
-    },
-    {
-      "id": "r1782130775334pvg",
-      "notified": false,
-      "name": "Victor堂",
-      "date": "2026-06-26",
-      "time": "19:00",
-      "category": "special",
-      "caregiver": "KEN",
-      "note": "",
-      "address": "",
-      "repeat": "none"
     }
   ],
   "birthdays": [
