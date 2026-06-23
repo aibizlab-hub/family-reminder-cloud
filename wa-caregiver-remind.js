@@ -15,7 +15,7 @@ const NodeCache = require('node-cache');
 
 // ===== 照顧者電話對照表 =====
 const CAREGIVER_PHONES = {
-  'KEN':         { phone: '852622189999', name: 'KEN' },
+  'KEN':         { phone: '85262218999', name: 'KEN' },
   'EPPIE':       { phone: '85297510047',  name: '🐑 EPPIE（太太）' },
   'Kenny Yam':   { phone: '85291339336',  name: 'Kenny Yam' },
   'Rosanna Mok': { phone: '85293398522',  name: 'Rosanna Mok' },
