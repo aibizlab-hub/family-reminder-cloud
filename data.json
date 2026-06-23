@@ -185,5 +185,11 @@
     }
   ],
   "groupNotifications": [],
-  "pendingMessages": []
+  "pendingMessages": [
+    {
+      "phone": "85262218999",
+      "text": "✅ 亂碼修復 v2\n\n修復:\n1. 直連 GitHub API (skip /data)\n2. atob 前清 base64 空格\n3. init 跳過 localStorage\n\n用無痕開:\nhttps://49833288871e479db55ef9521bf04f60.app.codebuddy.work\n\n如仍見亂碼: 清除瀏覽器緩存/數據",
+      "at": "2026-06-23T17:49:54Z"
+    }
+  ]
 }
