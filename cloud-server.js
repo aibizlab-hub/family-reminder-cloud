@@ -909,11 +909,23 @@ const server = http.createServer(async (req, res) => {
           res.end(JSON.stringify({ error: 'WhatsApp not connected' }));
           return;
         }
-        const jid = to.includes('@s.whatsapp.net') ? to : `${to}@s.whatsapp.net`;
-        await sock.sendMessage(jid, { text });
+
+        // 如果發送俾自己，自動轉發到群組
+        let jid = to.includes('@') ? to : `${to}@s.whatsapp.net`;
+        const selfJid = sock.user?.id;
+        console.log(`[SEND] to=${jid} self=${selfJid}`);
+
+        if (jid === selfJid || to === '85262218999' || to === '85262218999@s.whatsapp.net') {
+          console.log('[SEND] 自我發送，轉發到群組');
+          jid = GROUP_ID;
+        }
+
+        const result = await sock.sendMessage(jid, { text });
+        console.log(`[SEND] OK, jid=${jid}, key=${JSON.stringify(result?.key)}`);
         res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ ok: true, message: 'Sent' }));
+        res.end(JSON.stringify({ ok: true, message: 'Sent', jid }));
       } catch(e) {
+        console.error('[SEND] ERROR:', e.message, e.stack?.split('\n').slice(0,3).join(' | '));
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: e.message }));
       }
