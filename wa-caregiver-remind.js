@@ -122,7 +122,29 @@ function formatDate(dateStr) {
   return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
 }
 
-function buildCaregiverMsg(r, type) {
+function matchesRepeatDate(r, checkDateStr) {
+  if (!r.repeat || r.repeat === 'none') return false;
+  const checkDay = new Date(checkDateStr + 'T00:00:00');
+  if (r.repeat === 'daily') return true;
+  if (r.repeat === 'weekly' && r.repeatDays && r.repeatDays.length > 0) {
+    return r.repeatDays.includes(checkDay.getDay());
+  }
+  if (r.repeat === 'monthly') {
+    const dom = r.repeatDayOfMonth || new Date(r.date + 'T00:00:00').getDate();
+    return checkDay.getDate() === dom;
+  }
+  return false;
+}
+
+function buildCaregiverMsg(r, type, isBirthday) {
+  if (isBirthday) {
+    let msg = '🎉 *' + r.name + '*\n\n';
+    msg += '📅 ' + formatDate(r.date) + '（星期' + getWeekDay(r.date) + '）\n';
+    if (r.note) msg += '📝 ' + r.note + '\n';
+    msg += '\n👉 記得祝賀同準備慶祝！';
+    msg += '\n🌐 查看全部：https://49833288871e479db55ef9521bf04f60.app.codebuddy.work';
+    return msg;
+  }
   const icon = CAT_ICONS[r.category] || '📌';
   const prefix = type === '1day' ? '⏰ 提早一天提醒' : '🚨 三小時後提醒';
   let msg = `${prefix}\n\n`;
@@ -169,6 +191,7 @@ async function main() {
   // 2. Find reminders that need caregiver notification
   const toNotify = [];
   let dataChanged = false;
+  const tomorrowDate = new Date(new Date(hkDateStr + 'T00:00:00').getTime() + 86400000).toISOString().slice(0, 10);
 
   for (const r of reminders) {
     // Skip if no caregiver specified
@@ -177,43 +200,75 @@ async function main() {
     // Skip if caregiver is specified but not in our phone list (and not 'ALL')
     if (r.caregiver !== 'ALL' && !CAREGIVER_PHONES[r.caregiver]) continue;
     
-    const eventDate = r.date; // YYYY-MM-DD
     const eventTime = r.time || '09:00';
     
-    // Calculate date diff
+    // Calculate date diff for original date
     const today = new Date(hkDateStr + 'T00:00:00');
-    const eventDay = new Date(eventDate + 'T00:00:00');
+    const eventDay = new Date(r.date + 'T00:00:00');
     const daysUntil = Math.ceil((eventDay - today) / 86400000);
     
+    // Determine which date(s) apply: original date OR repeat match
+    const appliesToday = (daysUntil === 0) || (daysUntil < 0 && matchesRepeatDate(r, hkDateStr));
+    const appliesTomorrow = (daysUntil === 1) || (daysUntil <= 0 && matchesRepeatDate(r, tomorrowDate));
+    
     // Check 1-day-before: only at 09:00 HKT
-    if (daysUntil === 1 && hkHour === 9 && !r.caregiverNotified1d) {
-      toNotify.push({ reminder: r, type: '1day' });
+    if (appliesTomorrow && hkHour === 9 && !r.caregiverNotified1d) {
+      const actualDate = (daysUntil === 1) ? r.date : tomorrowDate;
+      toNotify.push({ reminder: {...r, date: actualDate}, type: '1day' });
       r.caregiverNotified1d = true;
       dataChanged = true;
       console.log(`[1DAY] ${r.name} → ${r.caregiver}`);
     }
     
     // Check 3-hours-before: event is today, check time
-    if (daysUntil === 0 && !r.caregiverNotified3h) {
+    if (appliesToday && !r.caregiverNotified3h) {
       const [eh, em] = eventTime.split(':').map(Number);
       const eventHkTime = eh * 60 + em; // minutes from midnight HKT
       const nowHkTime = hkHour * 60 + hkNow.getUTCMinutes();
       const diffMin = eventHkTime - nowHkTime;
       
-      // Send if event is 2.5-3.5 hours away (catch once within the hourly window)
-      if (diffMin >= 150 && diffMin <= 210) {
-        toNotify.push({ reminder: r, type: '3hour' });
+      // Wider window: 120-240 min (2-4 hours ahead)
+      if (diffMin >= 120 && diffMin <= 240) {
+        const actualDate = (daysUntil === 0) ? r.date : hkDateStr;
+        toNotify.push({ reminder: {...r, date: actualDate}, type: '3hour' });
         r.caregiverNotified3h = true;
         dataChanged = true;
         console.log(`[3HOUR] ${r.name} (${eventTime}) → ${r.caregiver}`);
       }
     }
     
-    // Reset flags if event has passed
-    if (daysUntil < 0 && (r.caregiverNotified1d || r.caregiverNotified3h)) {
-      r.caregiverNotified1d = false;
-      r.caregiverNotified3h = false;
-      dataChanged = true;
+    // Reset flags for non-repeating events that are long past (>7 days)
+    if (daysUntil < -7 && !matchesRepeatDate(r, hkDateStr) && !matchesRepeatDate(r, tomorrowDate)) {
+      if (r.caregiverNotified1d || r.caregiverNotified3h) {
+        if (!r.repeat || r.repeat === 'none') {
+          r.caregiverNotified1d = false;
+          r.caregiverNotified3h = false;
+          dataChanged = true;
+        }
+      }
+    }
+  }
+
+  // 2b. Check birthdays
+  const todayMMDD = hkDateStr.slice(5); // MM-DD
+  const bdaysToday = (data.birthdays || []).filter(b => b.date === todayMMDD);
+  if (bdaysToday.length > 0) {
+    console.log(`[BDAY] ${bdaysToday.length} birthday(s) today: ${bdaysToday.map(b=>b.name).join(', ')}`);
+    // Send at 09:00 HKT only
+    if (hkHour === 9) {
+      for (const b of bdaysToday) {
+        const bdayReminder = {
+          name: b.name + ' 生日',
+          date: hkDateStr,
+          time: '09:00',
+          category: 'special',
+          caregiver: 'ALL',
+          note: b.note || '',
+          address: '',
+          _isBirthday: true
+        };
+        toNotify.push({ reminder: bdayReminder, type: '1day', isBirthday: true });
+      }
     }
   }
 
@@ -320,7 +375,7 @@ async function main() {
             
             for (const [careName, careInfo] of Object.entries(CAREGIVER_PHONES)) {
               const jid = careInfo.phone + '@s.whatsapp.net';
-              const msg = buildCaregiverMsg(reminder, item.type);
+              const msg = buildCaregiverMsg(reminder, item.type, item.isBirthday);
               console.log(`[DEBUG] Sending to JID: ${jid}, Name: ${careInfo.name}`);
               
               try {
