@@ -175,6 +175,19 @@
       "caregiver": "KEN",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "id": "r1782265746097k83",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "科學館",
+      "date": "2026-06-30",
+      "time": "14:30",
+      "category": "special",
+      "caregiver": "EPPIE",
+      "note": "同學仔",
+      "repeat": "none"
     }
   ],
   "birthdays": [
