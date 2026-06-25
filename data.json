@@ -243,6 +243,19 @@
       "caregiver": "KEN",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "id": "r1782378655383mhi",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "天炙 APM",
+      "date": "2026-08-14",
+      "time": "12:00",
+      "category": "special",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
