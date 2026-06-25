@@ -166,11 +166,6 @@
   ],
   "birthdays": [
     {
-      "name": "KEN",
-      "date": "04-10",
-      "note": ""
-    },
-    {
       "name": "Eppie",
       "date": "15-07",
       "note": ""
@@ -181,5 +176,42 @@
       "note": ""
     }
   ],
-  "pendingMessages": []
+  "pendingMessages": [],
+  "members": [
+    {
+      "id": "dad",
+      "name": "爸爸",
+      "role": "adult",
+      "phone": "",
+      "color": "#4F46E5"
+    },
+    {
+      "id": "mom",
+      "name": "媽媽",
+      "role": "adult",
+      "phone": "",
+      "color": "#EC4899"
+    },
+    {
+      "id": "kid",
+      "name": "小朋友",
+      "role": "child",
+      "phone": "",
+      "color": "#10B981"
+    }
+  ],
+  "settings": {
+    "dark_mode": false,
+    "pre_day": true,
+    "pre_3h": true,
+    "on_time": true,
+    "browser_push": true,
+    "email_user": "",
+    "email_service": "",
+    "email_template": "",
+    "email_to": ""
+  },
+  "sent_notifications": {},
+  "_room": "",
+  "_version": 10
 }
