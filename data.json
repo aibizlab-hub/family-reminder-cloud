@@ -18,23 +18,6 @@
       "address": ""
     },
     {
-      "id": "r178203363735416b",
-      "notified": false,
-      "name": "軟網球班",
-      "date": "2026-07-22",
-      "time": "09:00",
-      "category": "summer",
-      "caregiver": "EPPIE",
-      "note": "七，八月\n坪石青協",
-      "repeat": "weekly",
-      "repeatDays": [
-        3
-      ],
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "address": ""
-    },
-    {
       "id": "r1782033717733yq3",
       "notified": false,
       "name": "Ms Nita",
