@@ -1,23 +1,6 @@
 {
   "reminders": [
     {
-      "id": "r1782033588722kko",
-      "notified": false,
-      "name": "Joe Sir",
-      "date": "2026-06-27",
-      "time": "15:00",
-      "category": "class",
-      "caregiver": "EPPIE",
-      "note": "",
-      "repeat": "weekly",
-      "repeatDays": [
-        6
-      ],
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "address": ""
-    },
-    {
       "id": "r1782033717733yq3",
       "notified": false,
       "name": "Ms Nita",
