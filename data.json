@@ -1,69 +1,26 @@
 {
   "reminders": [
-    {
-      "id": "r1782241289112b5h",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "經理堂",
-      "date": "2026-06-25",
-      "time": "09:15",
-      "category": "work",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none"
-    },
-    {
-      "id": "r1782241389420bdy",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "VICTOR",
-      "date": "2026-06-26",
-      "time": "19:00",
-      "category": "work",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none"
-    },
-    {
-      "id": "r1782242069578xfj",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "VICTOR",
-      "date": "2026-07-03",
-      "time": "09:00",
-      "category": "work",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none"
-    }
+    {"id":"r1782033588722kko","notified":false,"caregiverNotified1d":false,"caregiverNotified3h":false,"name":"Joe Sir","date":"2026-06-27","time":"15:00","category":"class","memberId":"eppie","note":"","repeat":"weekly","repeatDays":[6]},
+    {"id":"r178203363735416b","notified":false,"caregiverNotified1d":false,"caregiverNotified3h":false,"name":"軟網球班","date":"2026-07-22","time":"09:00","category":"summer","memberId":"eppie","note":"七，八月\n坪石青協","repeat":"weekly","repeatDays":[3]},
+    {"id":"r1782033717733yq3","notified":false,"caregiverNotified1d":false,"caregiverNotified3h":false,"name":"Ms Nita","date":"2026-06-29","time":"08:30","category":"class","memberId":"eppie","note":"最後4堂","repeat":"weekly","repeatDays":[1]},
+    {"id":"r1782033786303xqe","notified":false,"caregiverNotified1d":false,"caregiverNotified3h":false,"name":"懇親會","date":"2026-07-02","time":"11:00","category":"special","memberId":"eppie","note":"","repeat":"none"},
+    {"id":"r1782033821850vvd","notified":false,"caregiverNotified1d":false,"caregiverNotified3h":false,"name":"嶺南小學","date":"2026-08-29","time":"12:00","category":"school","memberId":"eppie","note":"時間待定","repeat":"none"},
+    {"id":"r17820338720444q5","notified":false,"caregiverNotified1d":false,"caregiverNotified3h":false,"name":"Jarvis生日會","date":"2026-08-30","time":"13:00","category":"special","memberId":"eppie","note":"樂富冒險樂園","repeat":"none"},
+    {"id":"r1782031274868tn8","notified":false,"caregiverNotified1d":false,"caregiverNotified3h":false,"name":"優才","date":"2026-06-28","time":"16:45","category":"school","memberId":"ken","note":"調景嶺\n面試信","repeat":"none"},
+    {"id":"r1782033672781kcn","notified":false,"caregiverNotified1d":false,"caregiverNotified3h":false,"name":"Oral","date":"2026-07-16","time":"12:00","category":"summer","memberId":"ken","note":"七，八月","repeat":"weekly","repeatDays":[4]},
+    {"id":"r1782241289112b5h","notified":false,"caregiverNotified1d":false,"caregiverNotified3h":false,"name":"經理堂","date":"2026-06-25","time":"09:15","category":"work","memberId":"ken","note":"","repeat":"none"},
+    {"id":"r1782241389420bdy","notified":false,"caregiverNotified1d":false,"caregiverNotified3h":false,"name":"VICTOR","date":"2026-06-26","time":"19:00","category":"work","memberId":"ken","note":"","repeat":"none"},
+    {"id":"r1782242069578xfj","notified":false,"caregiverNotified1d":false,"caregiverNotified3h":false,"name":"VICTOR","date":"2026-07-03","time":"09:00","category":"work","memberId":"ken","note":"","repeat":"none"}
   ],
   "birthdays": [],
   "pendingMessages": [],
   "members": [
-    {
-      "id": "dad",
-      "name": "爸爸",
-      "role": "adult",
-      "phone": "",
-      "color": "#4F46E5"
-    },
-    {
-      "id": "mom",
-      "name": "媽媽",
-      "role": "adult",
-      "phone": "",
-      "color": "#EC4899"
-    },
-    {
-      "id": "kid",
-      "name": "小朋友",
-      "role": "child",
-      "phone": "",
-      "color": "#10B981"
-    }
+    {"id":"ken","name":"KEN🐏","role":"adult","phone":"85262218999","color":"#4F46E5"},
+    {"id":"eppie","name":"EPPIE🐏","role":"child","phone":"85297510047","color":"#EC4899"},
+    {"id":"kenny-yam","name":"Kenny Yam","role":"adult","phone":"85291339336","color":"#10B981"},
+    {"id":"rosanna-mok","name":"Rosanna Mok","role":"adult","phone":"85293398522","color":"#F59E0B"},
+    {"id":"coffee","name":"COFFE","role":"adult","phone":"85266713322","color":"#8B5CF6"},
+    {"id":"lou-dau","name":"老豆","role":"adult","phone":"85262269100","color":"#EF4444"}
   ],
   "settings": {
     "dark_mode": false,
@@ -71,6 +28,7 @@
     "pre_3h": true,
     "on_time": true,
     "browser_push": true,
+    "wa_auto": true,
     "email_user": "",
     "email_service": "",
     "email_template": "",
@@ -78,5 +36,5 @@
   },
   "sent_notifications": {},
   "_room": "",
-  "_version": 10
+  "_version": 14
 }
