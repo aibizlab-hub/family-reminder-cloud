@@ -217,6 +217,19 @@
       "caregiver": "EPPIE",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "id": "r1782378611080bz9",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "天炙 APM",
+      "date": "2026-07-14",
+      "time": "10:30",
+      "category": "special",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
