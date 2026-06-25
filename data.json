@@ -1,23 +1,6 @@
 {
   "reminders": [
     {
-      "id": "r1782033717733yq3",
-      "notified": false,
-      "name": "Ms Nita",
-      "date": "2026-06-29",
-      "time": "08:30",
-      "category": "class",
-      "caregiver": "EPPIE",
-      "note": "最後4堂",
-      "repeat": "weekly",
-      "repeatDays": [
-        1
-      ],
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "address": ""
-    },
-    {
       "id": "r1782033786303xqe",
       "notified": false,
       "name": "懇親會",
