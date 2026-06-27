@@ -224,6 +224,19 @@
       "caregiver": "KEN",
       "note": "時間未知",
       "repeat": "none"
+    },
+    {
+      "id": "r17825833211520y3",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Leo",
+      "date": "2026-07-01",
+      "time": "09:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "帶煙蛋",
+      "repeat": "daily"
     }
   ],
   "birthdays": [
