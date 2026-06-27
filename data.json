@@ -14,7 +14,8 @@
       "repeat": "weekly",
       "repeatDays": [
         6
-      ]
+      ],
+      "caregiver": "EPPIE"
     },
     {
       "id": "r178203363735416b",
@@ -30,7 +31,8 @@
       "repeat": "weekly",
       "repeatDays": [
         3
-      ]
+      ],
+      "caregiver": "EPPIE"
     },
     {
       "id": "r1782033717733yq3",
@@ -46,7 +48,8 @@
       "repeat": "weekly",
       "repeatDays": [
         1
-      ]
+      ],
+      "caregiver": "EPPIE"
     },
     {
       "id": "r1782033786303xqe",
@@ -59,7 +62,8 @@
       "category": "special",
       "memberId": "eppie",
       "note": "",
-      "repeat": "none"
+      "repeat": "none",
+      "caregiver": "EPPIE"
     },
     {
       "id": "r1782033821850vvd",
@@ -72,7 +76,8 @@
       "category": "school",
       "memberId": "eppie",
       "note": "時間待定",
-      "repeat": "none"
+      "repeat": "none",
+      "caregiver": "EPPIE"
     },
     {
       "id": "r17820338720444q5",
@@ -85,7 +90,8 @@
       "category": "special",
       "memberId": "eppie",
       "note": "樂富冒險樂園",
-      "repeat": "none"
+      "repeat": "none",
+      "caregiver": "EPPIE"
     },
     {
       "id": "r1782031274868tn8",
@@ -98,7 +104,8 @@
       "category": "school",
       "memberId": "ken",
       "note": "調景嶺\n面試信",
-      "repeat": "none"
+      "repeat": "none",
+      "caregiver": "EPPIE"
     },
     {
       "id": "r1782033672781kcn",
@@ -114,7 +121,8 @@
       "repeat": "weekly",
       "repeatDays": [
         4
-      ]
+      ],
+      "caregiver": "EPPIE"
     },
     {
       "id": "r1782242069578xfj",
@@ -127,7 +135,8 @@
       "category": "work",
       "memberId": "ken",
       "note": "",
-      "repeat": "none"
+      "repeat": "none",
+      "caregiver": "EPPIE"
     },
     {
       "id": "r17824936250902ob",
