@@ -105,7 +105,7 @@
       "memberId": "ken",
       "note": "調景嶺\n面試信",
       "repeat": "none",
-      "caregiver": "EPPIE"
+      "caregiver": "KEN"
     },
     {
       "id": "r1782033672781kcn",
@@ -218,5 +218,15 @@
   },
   "sent_notifications": {},
   "_room": "",
-  "_version": 14
+  "_version": 14,
+  "history": [],
+  "groupNotifications": [
+    {
+      "id": "gn-1782533233279",
+      "reminderName": "優才",
+      "oldCaregiver": "EPPIE",
+      "newCaregiver": "KEN",
+      "changedAt": "2026-06-27T04:07:13.279Z"
+    }
+  ]
 }
