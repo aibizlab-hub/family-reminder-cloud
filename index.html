@@ -353,6 +353,17 @@ body::before { content:''; position:fixed; top:0; left:0; right:0; bottom:0; bac
       <div class="form-group"><label class="form-label">日期 *</label><input class="form-input" type="date" id="form-date"></div>
       <div class="form-group"><label class="form-label">時間 (24h)</label><div class="time-wrap"><select id="form-time-h" class="time-sel"></select><span class="time-colon">:</span><select id="form-time-m" class="time-sel"></select></div></div>
     </div>
+    <div class="form-group" style="margin-top:-4px;margin-bottom:2px;">
+      <label style="display:flex;align-items:center;gap:7px;font-size:13px;color:#555;cursor:pointer;">
+        <input type="checkbox" id="form-multi-date" onchange="onMultiDateChange()" style="width:16px;height:16px;accent-color:#4f46e5;"> 連續多日（選此項後再選結束日期）
+      </label>
+    </div>
+    <div class="form-row" id="multi-date-row" style="display:none;">
+      <div class="form-group"><label class="form-label">結束日期 *</label><input class="form-input" type="date" id="form-date-end"></div>
+      <div class="form-group" style="justify-content:flex-end;display:flex;flex-direction:column;">
+        <span id="multi-date-count" style="font-size:12px;color:#4f46e5;font-weight:600;padding-top:8px;"></span>
+      </div>
+    </div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">類別</label>
         <select class="form-select" id="form-category" onchange="onCategoryChange()">
@@ -1101,6 +1112,28 @@ function setSelectedDays(days) {
   });
 }
 
+function onMultiDateChange() {
+  var on = document.getElementById('form-multi-date').checked;
+  document.getElementById('multi-date-row').style.display = on ? 'flex' : 'none';
+  if (on) updateMultiDateCount();
+  else document.getElementById('multi-date-count').textContent = '';
+}
+function updateMultiDateCount() {
+  var s = document.getElementById('form-date').value;
+  var e = document.getElementById('form-date-end').value;
+  if (!s || !e) { document.getElementById('multi-date-count').textContent = ''; return; }
+  var d1 = new Date(s), d2 = new Date(e);
+  if (d2 < d1) { document.getElementById('multi-date-count').textContent = '⚠️ 結束日期須晚於開始日期'; return; }
+  var diff = Math.round((d2 - d1) / 86400000) + 1;
+  document.getElementById('multi-date-count').textContent = '共 ' + diff + ' 日';
+}
+// Listen for date changes to update count
+document.addEventListener('DOMContentLoaded', function() {
+  var d1 = document.getElementById('form-date'), d2 = document.getElementById('form-date-end');
+  if (d1) d1.addEventListener('change', updateMultiDateCount);
+  if (d2) d2.addEventListener('change', updateMultiDateCount);
+});
+
 // ===== Modal: Reminder =====
 function resetRepeatFields() {
   document.getElementById('form-repeat').value = 'none';
@@ -1108,6 +1141,15 @@ function resetRepeatFields() {
   setSelectedDays([]);
   document.getElementById('form-time-h').value = '09';
   document.getElementById('form-time-m').value = '00';
+  // Reset multi-date
+  var md = document.getElementById('form-multi-date');
+  if (md) md.checked = false;
+  var mr = document.getElementById('multi-date-row');
+  if (mr) mr.style.display = 'none';
+  var de = document.getElementById('form-date-end');
+  if (de) de.value = '';
+  var dc = document.getElementById('multi-date-count');
+  if (dc) dc.textContent = '';
 }
 
 function populateTimeSelects() {
@@ -1138,6 +1180,9 @@ function openAddModal() {
   document.getElementById('form-note').value = '';
   document.getElementById('edit-del-btn').style.display = 'none';
   resetRepeatFields();
+  // Show multi-date option in add mode (might be hidden from edit mode)
+  var mdSection = document.getElementById('form-multi-date').closest('.form-group');
+  if (mdSection) mdSection.style.display = '';
 
   // Set category/caregiver based on active tab
   var tab = CURRENT_TAB;
@@ -1176,6 +1221,10 @@ function openEditModal(id) {
   onRepeatChange();
   if (r.repeat === 'weekly' && r.repeatDays) setSelectedDays(r.repeatDays);
   document.getElementById('edit-del-btn').style.display = 'block';
+  // Hide multi-date option in edit mode
+  var mdSection = document.getElementById('form-multi-date').closest('.form-group');
+  if (mdSection) mdSection.style.display = 'none';
+  document.getElementById('multi-date-row').style.display = 'none';
   document.getElementById('modal-reminder').classList.add('show');
 }
 
@@ -1201,6 +1250,38 @@ function saveReminder() {
     rd.repeatDays = days;
   }
   if (repeat === 'monthly') rd.repeatDayOfMonth = parseInt(date.split('-')[2]);
+
+  // Multi-date: create one reminder per day
+  var isMulti = !editId && document.getElementById('form-multi-date').checked;
+  if (isMulti) {
+    var endDate = document.getElementById('form-date-end').value;
+    if (!endDate) { toast('請選擇結束日期'); return; }
+    var d1 = new Date(date), d2 = new Date(endDate);
+    if (d2 < d1) { toast('⚠️ 結束日期須晚於或等於開始日期'); return; }
+    var totalDays = Math.round((d2 - d1) / 86400000) + 1;
+    if (totalDays > 30) { toast('⚠️ 最多支援 30 日，請縮短日期範圍'); return; }
+
+    var addedNames = [];
+    for (var i = 0; i < totalDays; i++) {
+      var cur = new Date(d1);
+      cur.setDate(cur.getDate() + i);
+      var curStr = cur.toISOString().split('T')[0];
+      var daySuffix = totalDays > 1 ? ' (第' + (i+1) + '日/' + totalDays + '日)' : '';
+      var curName = name + daySuffix;
+      var curPayload = { name: curName, date: curStr, time: time, category: category, caregiver: caregiver, note: note };
+      Object.assign(curPayload, rd);
+      if (curPayload.category === 'work') curPayload.caregiver = 'KEN';
+      curPayload.id = uid();
+      curPayload.notified = false;
+      curPayload.caregiverNotified1d = false;
+      curPayload.caregiverNotified3h = false;
+      DATA.reminders.push(curPayload);
+      addedNames.push(curName);
+    }
+    saveLocal(); renderAll(); pushToGitHub(); updateHistoryBadge(); closeModal('modal-reminder');
+    toast('✅ 已新增 ' + totalDays + ' 項提醒（' + name + '）');
+    return;
+  }
 
   var payload = { name: name, date: date, time: time, category: category, caregiver: caregiver, note: note };
   Object.assign(payload, rd);
