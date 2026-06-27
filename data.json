@@ -211,6 +211,19 @@
       "caregiver": "KEN",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "id": "r178258100875725i",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "lux",
+      "date": "2026-06-30",
+      "time": "09:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "時間未知",
+      "repeat": "none"
     }
   ],
   "birthdays": [
