@@ -2,141 +2,339 @@
 <html lang="zh-HK">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<meta name="theme-color" content="#4f46e5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>家庭提醒系統</title>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background:#f0f2f5; color:#333; min-height:100vh; padding-bottom:80px; }
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", sans-serif; background:#f0f2f5; color:#333; min-height:100vh; padding-bottom:80px; -webkit-font-smoothing:antialiased;
+  /* subtle dot pattern background */
+  background-image: radial-gradient(circle, #d1d5db 0.7px, transparent 0.7px);
+  background-size: 24px 24px;
+  background-position: 0 0, 12px 12px;
+}
+body > * { position:relative; z-index:1; }
+body::before { content:''; position:fixed; top:0; left:0; right:0; bottom:0; background:radial-gradient(ellipse at 20% 0%, rgba(79,70,229,0.04) 0%, transparent 60%), radial-gradient(ellipse at 80% 100%, rgba(124,58,237,0.04) 0%, transparent 60%); pointer-events:none; z-index:0; }
 
-.header { background:linear-gradient(135deg,#4f46e5,#7c3aed); color:#fff; padding:18px 16px 14px; }
-.header h1 { font-size:19px; font-weight:700; }
-.header p { font-size:11px; opacity:0.85; margin-top:2px; }
+.header { background:linear-gradient(135deg,#4f46e5,#7c3aed); color:#fff; padding:18px 16px 22px; position:relative; overflow:hidden; }
+.header::after { content:''; position:absolute; top:-50%; right:-20%; width:200px; height:200px; background:rgba(255,255,255,0.08); border-radius:50%; pointer-events:none; }
+/* decorative floating circles */
+.header::before { content:''; position:absolute; bottom:-30%; left:-10%; width:160px; height:160px; background:rgba(255,255,255,0.05); border-radius:50%; pointer-events:none; }
+.header h1 { font-size:20px; font-weight:800; position:relative; z-index:1; letter-spacing:-0.2px; }
+.header p { font-size:11px; opacity:0.85; margin-top:3px; position:relative; z-index:1; }
+/* wave decoration at bottom of header */
+.header-wave { position:absolute; bottom:-1px; left:0; right:0; z-index:0; line-height:0; }
+.header-wave svg { display:block; width:100%; height:18px; }
+.conn-status { display:inline-flex; align-items:center; gap:3px; font-size:10px; padding:2px 8px; border-radius:10px; margin-top:4px; font-weight:500; }
+.conn-ok { background:rgba(52,211,153,0.3); color:#6ee7b7; }
+.conn-err { background:rgba(248,113,113,0.3); color:#fca5a5; }
+.wa-status { display:inline-flex; align-items:center; gap:3px; font-size:10px; padding:2px 8px; border-radius:10px; margin-left:4px; font-weight:500; }
+.wa-ok { background:rgba(52,211,153,0.3); color:#6ee7b7; }
+.wa-off { background:rgba(251,191,36,0.3); color:#fcd34d; }
 
-.tab-bar { display:flex; background:#fff; border-bottom:1px solid #e5e7eb; position:sticky; top:0; z-index:99; }
-.tab-btn { flex:1; padding:11px; text-align:center; font-size:14px; font-weight:500; border:none; background:none; color:#888; cursor:pointer; border-bottom:2px solid transparent; transition:all 0.2s; }
-.tab-btn.active { color:#4f46e5; border-bottom-color:#4f46e5; font-weight:600; }
+.tab-bar { display:flex; background:#fff; border-bottom:1px solid #e5e7eb; position:sticky; top:0; z-index:99; box-shadow:0 1px 3px rgba(0,0,0,0.04); overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+.tab-bar::-webkit-scrollbar { display:none; }
+.tab-btn { flex:0 0 auto; padding:7px 11px; text-align:center; font-size:12px; font-weight:500; border:none; background:none; color:#888; cursor:pointer; border-radius:20px; transition:all 0.25s cubic-bezier(0.4,0,0.2,1); position:relative; white-space:nowrap; min-width:44px; min-height:36px; margin:6px 2px 4px; }
+.tab-btn:active { background:#f3f4f6; }
+.tab-btn.active { color:#fff; background:linear-gradient(135deg,#4f46e5,#7c3aed); font-weight:600; box-shadow: 0 2px 8px rgba(79,70,229,0.3); }
+/* remove old underline */
+.tab-btn.active::after { display:none; }
+.tab-btn-badge { display:inline-block; background:#ef4444; color:#fff; font-size:9px; padding:0px 5px; border-radius:8px; margin-left:3px; vertical-align:top; min-width:16px; text-align:center; line-height:15px; }
 
-.container { max-width:600px; margin:0 auto; padding:10px 13px; }
-.section-label { font-size:11px; font-weight:600; color:#999; padding:5px 2px; margin-top:4px; text-transform:uppercase; letter-spacing:0.5px; }
+.container { max-width:600px; margin:0 auto; padding:10px 12px; }
 
-.card { background:#fff; border-radius:13px; padding:14px; margin-bottom:9px; box-shadow:0 1px 3px rgba(0,0,0,0.06); border-left:4px solid transparent; }
-.card-top { display:flex; align-items:flex-start; gap:9px; }
-.card-icon { font-size:24px; min-width:30px; text-align:center; padding-top:1px; }
-.card-body { flex:1; min-width:0; }
-.card-name { font-size:15px; font-weight:600; line-height:1.3; word-break:break-word; }
-.card-meta { display:flex; flex-wrap:wrap; gap:3px; margin-top:4px; }
-.badge { display:inline-block; font-size:10px; padding:2px 7px; border-radius:9px; font-weight:500; }
-.bdg-school { background:#dbeafe; color:#1d4ed8; }
-.bdg-class  { background:#fce7f3; color:#be185d; }
-.bdg-special{ background:#ffedd5; color:#c2410c; }
-.bdg-summer { background:#fef3c7; color:#b45309; }
-.bdg-routine{ background:#d1fae5; color:#065f46; }
-.bdg-repeat{ background:#ede9fe; color:#7c3aed; }
-.bdg-care   { background:#ede9fe; color:#6d28d9; }
-.card-date { font-size:12px; color:#666; margin-top:3px; }
-.card-note { font-size:12px; color:#555; background:#f9fafb; padding:4px 8px; border-radius:7px; margin-top:4px; word-break:break-word; }
-.card-actions { display:flex; gap:5px; margin-top:8px; justify-content:flex-end; }
-.btn-xs { font-size:11px; padding:4px 11px; border-radius:12px; border:none; cursor:pointer; font-weight:500; }
+.section-label { font-size:11px; font-weight:600; color:#999; padding:8px 2px 4px; text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center; gap:4px; }
+
+.card { background:#fff; border-radius:16px; padding:15px 15px 15px 17px; margin-bottom:12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.04);
+  border-left:4px solid #e5e7eb;
+  transition: transform 0.2s cubic-bezier(0.4,0,0.2,1), box-shadow 0.2s cubic-bezier(0.4,0,0.2,1);
+  position:relative; overflow:hidden;
+  animation: cardIn 0.35s cubic-bezier(0.4,0,0.2,1) both;
+}
+@keyframes cardIn {
+  from { opacity:0; transform:translateY(12px) scale(0.97); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+.card:active { transform:scale(0.985); }
+/* hover lift — desktop only */
+@media (hover:hover) {
+  .card:hover { transform:translateY(-3px); box-shadow: 0 4px 16px rgba(0,0,0,0.09), 0 8px 32px rgba(0,0,0,0.05); }
+}
+/* category left-border colors */
+.card[data-cat="school"]   { border-left-color:#3b82f6; }
+.card[data-cat="summer"]   { border-left-color:#f59e0b; }
+.card[data-cat="routine"]  { border-left-color:#10b981; }
+.card[data-cat="class"]    { border-left-color:#ec4899; }
+.card[data-cat="special"]  { border-left-color:#f97316; }
+.card[data-cat="work"]     { border-left-color:#6366f1; }
+.card[data-cat="travel"]   { border-left-color:#ec4899; }
+.card[data-cat="medical"]  { border-left-color:#ef4444; }
+.card[data-cat="finance"]  { border-left-color:#d97706; }
+.card[data-cat="dining"]   { border-left-color:#f97316; }
+.card[data-cat="activity"]  { border-left-color:#10b981; }
+.card[data-cat="other"]    { border-left-color:#9ca3af; }
+/* top accent bar */
+.card::after { content:''; position:absolute; top:0; left:0; right:0; height:2px; opacity:0.7; }
+.card[data-cat="school"]::after  { background:linear-gradient(90deg,#3b82f6,#60a5fa); }
+.card[data-cat="summer"]::after  { background:linear-gradient(90deg,#f59e0b,#fbbf24); }
+.card[data-cat="routine"]::after { background:linear-gradient(90deg,#10b981,#34d399); }
+.card[data-cat="class"]::after   { background:linear-gradient(90deg,#ec4899,#f472b6); }
+.card[data-cat="special"]::after  { background:linear-gradient(90deg,#f97316,#fb923c); }
+.card[data-cat="work"]::after    { background:linear-gradient(90deg,#6366f1,#818cf8); }
+.card[data-cat="travel"]::after   { background:linear-gradient(90deg,#ec4899,#f472b6); }
+.card[data-cat="medical"]::after  { background:linear-gradient(90deg,#ef4444,#f87171); }
+.card[data-cat="finance"]::after  { background:linear-gradient(90deg,#d97706,#fbbf24); }
+.card[data-cat="dining"]::after   { background:linear-gradient(90deg,#f97316,#fb923c); }
+.card[data-cat="activity"]::after { background:linear-gradient(90deg,#10b981,#34d399); }
+.card[data-cat="other"]::after    { background:linear-gradient(90deg,#9ca3af,#d1d5db); }
+.card-top { display:flex; align-items:flex-start; gap:10px; position:relative; z-index:1; }
+.card-icon { font-size:22px; min-width:28px; text-align:center; padding-top:1px; display:flex; align-items:flex-start; justify-content:center; }
+.card-body { flex:1; min-width:0; position:relative; z-index:1; }
+.card-name { font-size:15px; font-weight:600; line-height:1.4; word-break:break-word; }
+.card-meta { display:flex; flex-wrap:wrap; gap:4px; margin-top:5px; }
+.badge { display:inline-flex; align-items:center; gap:2px; font-size:10px; padding:2px 7px; border-radius:9px; font-weight:500; white-space:nowrap; }
+.bdg-school{background:#dbeafe;color:#1d4ed8} .bdg-class{background:#fce7f3;color:#be185d}
+.bdg-special{background:#ffedd5;color:#c2410c} .bdg-summer{background:#fef3c7;color:#b45309}
+.bdg-routine{background:#d1fae5;color:#065f46} .bdg-work{background:#e0e7ff;color:#3730a3}
+.bdg-travel{background:#fce7f3;color:#9d174d} .bdg-medical{background:#fee2e2;color:#991b1b}
+.bdg-finance{background:#fef3c7;color:#92400e} .bdg-dining{background:#ffedd5;color:#c2410c}
+.bdg-activity{background:#d1fae5;color:#065f46} .bdg-other{background:#e5e7eb;color:#374151}
+.bdg-repeat{background:#ede9fe;color:#7c3aed} .bdg-care{background:#ede9fe;color:#6d28d9}
+.bdg-member{background:#dbeafe;color:#1d4ed8}
+.card-date { font-size:12px; color:#666; margin-top:4px; display:flex; align-items:flex-start; gap:3px; flex-wrap:wrap; }
+.card-date-icon { flex-shrink:0; margin-top:1px; }
+.card-date-text { flex:1; min-width:0; line-height:1.5; }
+.card-note { font-size:12px; color:#555; background:#f9fafb; padding:5px 9px; border-radius:8px; margin-top:5px; word-break:break-word; line-height:1.4; }
+.card-actions { display:flex; gap:6px; margin-top:9px; justify-content:flex-end; }
+.btn-xs { font-size:11px; padding:5px 12px; border-radius:12px; border:none; cursor:pointer; font-weight:500; transition:all 0.15s ease; min-height:30px; display:inline-flex; align-items:center; justify-content:center; }
+.btn-xs:active { transform:scale(0.95); }
 .btn-edit { background:#eff6ff; color:#2563eb; }
 .btn-del  { background:#fef2f2; color:#dc2626; }
-.urgent { border-left-color:#ef4444; background:#fff5f5; }
-.soon   { border-left-color:#f59e0b; background:#fffbeb; }
+.btn-restore { background:#f0fdf4; color:#16a34a; }
+.urgent { border-left-color:#ef4444; background:linear-gradient(135deg,#fff5f5,#fff); }
+.soon   { border-left-color:#f59e0b; background:linear-gradient(135deg,#fffbeb,#fff); }
+.expired { opacity:0.7; border-left-color:#9ca3af; background:#f9fafb; }
+.expired .card-name { color:#9ca3af; text-decoration:line-through; }
 
-.bday-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-.bday-card { background:#fff; border-radius:13px; padding:13px; box-shadow:0 1px 3px rgba(0,0,0,0.06); text-align:center; position:relative; }
-.bday-card.today { background:#fff7ed; border:2px solid #f97316; }
-.bday-emoji { font-size:28px; }
-.bday-name  { font-size:13px; font-weight:600; margin-top:2px; }
-.bday-date  { font-size:12px; color:#888; }
-.bday-note  { font-size:11px; color:#aaa; }
-.bday-edit  { position:absolute; top:6px; right:6px; background:none; border:none; font-size:13px; cursor:pointer; opacity:0.4; padding:2px; }
+.bday-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+.bday-card { background:#fff; border-radius:14px; padding:14px; box-shadow:0 1px 4px rgba(0,0,0,0.06); text-align:center; position:relative; transition:transform 0.15s ease; }
+.bday-card:active { transform:scale(0.97); }
+.bday-card.today { background:linear-gradient(135deg,#fff7ed,#fff); border:2px solid #f97316; }
+.bday-emoji { font-size:30px; }
+.bday-name  { font-size:13px; font-weight:600; margin-top:3px; }
+.bday-date  { font-size:12px; color:#888; margin-top:2px; }
+.bday-note  { font-size:11px; color:#aaa; margin-top:2px; }
+.bday-edit  { position:absolute; top:6px; right:6px; background:none; border:none; font-size:13px; cursor:pointer; opacity:0.4; padding:4px; border-radius:6px; transition:opacity 0.15s; }
+.bday-edit:hover { opacity:1; background:#f3f4f6; }
 
-.modal-overlay { display:none; position:fixed; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.5); z-index:200; justify-content:center; align-items:flex-end; }
+.modal-overlay { display:none; position:fixed; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.5); z-index:200; justify-content:center; align-items:flex-end; backdrop-filter:blur(2px); -webkit-backdrop-filter:blur(2px); }
 .modal-overlay.show { display:flex; }
-.modal-sheet { background:#fff; border-radius:20px 20px 0 0; width:100%; max-width:600px; max-height:90vh; overflow-y:auto; padding:18px 16px 28px; animation:slideUp 0.22s ease-out; }
+.modal-sheet { background:#fff; border-radius:20px 20px 0 0; width:100%; max-width:600px; max-height:92vh; overflow-y:auto; padding:18px 16px 32px; animation:slideUp 0.28s cubic-bezier(0.4,0,0.2,1); overscroll-behavior:contain; }
 @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
-.modal-handle { width:36px; height:4px; background:#d1d5db; border-radius:2px; margin:0 auto 14px; }
-.modal-title { font-size:17px; font-weight:700; margin-bottom:14px; text-align:center; }
-.form-group { margin-bottom:13px; }
-.form-label { display:block; font-size:12px; font-weight:600; color:#666; margin-bottom:4px; }
-.form-input,.form-select,.form-textarea { width:100%; padding:10px 13px; border:1.5px solid #e5e7eb; border-radius:10px; font-size:14px; font-family:inherit; background:#f9fafb; transition:border-color 0.2s; }
-.form-input:focus,.form-select:focus,.form-textarea:focus { outline:none; border-color:#4f46e5; background:#fff; }
-.form-textarea { min-height:56px; resize:vertical; }
-.form-row { display:flex; gap:8px; }
-.form-row>* { flex:1; }
+.modal-handle { width:36px; height:4px; background:#d1d5db; border-radius:2px; margin:0 auto 16px; cursor:grab; }
+.modal-title { font-size:17px; font-weight:700; margin-bottom:16px; text-align:center; }
+
+.form-group { margin-bottom:14px; }
+.form-label { display:block; font-size:12px; font-weight:600; color:#666; margin-bottom:5px; }
+.form-input,.form-select,.form-textarea { width:100%; padding:11px 13px; border:1.5px solid #e5e7eb; border-radius:10px; font-size:15px; font-family:inherit; background:#f9fafb; transition:border-color 0.2s, background 0.2s, box-shadow 0.2s; outline:none; }
+.form-input:focus,.form-select:focus,.form-textarea:focus { border-color:#4f46e5; background:#fff; box-shadow:0 0 0 3px rgba(79,70,229,0.1); }
+
+/* Time selects — iPad safe */
+.time-sel { padding:11px 6px; border:1.5px solid #d1d5db; border-radius:8px; font-size:15px; text-align:center; background:#f9fafb; min-width:0; flex:1; -webkit-appearance:none; appearance:none; outline:none; font-family:inherit; min-height:44px; }
+.time-sel:focus { border-color:#4f46e5; background:#fff; box-shadow:0 0 0 3px rgba(79,70,229,0.1); }
+.time-colon { font-size:18px; font-weight:700; padding:0 2px; flex-shrink:0; }
+.time-wrap { display:flex; gap:2px; align-items:center; }
+.form-textarea { min-height:60px; resize:vertical; }
+.form-row { display:flex; gap:9px; }
+.form-row > * { flex:1; }
 .form-select { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%23999'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:30px; }
-.btn { padding:10px 18px; border-radius:10px; border:none; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.15s; width:100%; margin-top:8px; }
-.btn:active { transform:scale(0.97); }
-.btn-primary { background:#4f46e5; color:#fff; }
+
+.btn { padding:11px 18px; border-radius:10px; border:none; font-size:15px; font-weight:600; cursor:pointer; transition:all 0.15s ease; width:100%; margin-top:8px; position:relative; overflow:hidden; }
+.btn::after { content:''; position:absolute; top:50%; left:50%; width:0; height:0; background:rgba(255,255,255,0.2); border-radius:50%; transform:translate(-50%,-50%); transition:width 0.3s, height 0.3s; }
+.btn:active::after { width:200px; height:200px; }
+.btn:active { transform:scale(0.98); }
+.btn-primary { background:linear-gradient(135deg,#4f46e5,#7c3aed); color:#fff; }
 .btn-outline { background:#fff; color:#4f46e5; border:2px solid #4f46e5; }
 .btn-danger  { background:#fef2f2; color:#dc2626; border:1px solid #fecaca; }
 
 .repeat-section { background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:10px; padding:10px; margin-top:8px; }
-.repeat-days { display:flex; gap:4px; margin-top:6px; flex-wrap:wrap; }
-.repeat-day-btn { padding:5px 10px; border-radius:8px; border:1.5px solid #e5e7eb; background:#fff; font-size:12px; cursor:pointer; }
+.repeat-days { display:flex; gap:5px; margin-top:6px; flex-wrap:wrap; }
+.repeat-day-btn { padding:6px 11px; border-radius:8px; border:1.5px solid #e5e7eb; background:#fff; font-size:12px; cursor:pointer; transition:all 0.15s ease; min-width:36px; }
+.repeat-day-btn:active { transform:scale(0.95); }
 .repeat-day-btn.active { background:#4f46e5; color:#fff; border-color:#4f46e5; }
 
-.fab { position:fixed; bottom:20px; right:18px; width:54px; height:54px; border-radius:50%; background:linear-gradient(135deg,#4f46e5,#7c3aed); color:#fff; border:none; font-size:26px; cursor:pointer; box-shadow:0 4px 16px rgba(79,70,229,0.4); z-index:150; display:flex; align-items:center; justify-content:center; }
-.fab:active { transform:scale(0.9); }
+.fab { position:fixed; bottom:22px; right:18px; width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg,#4f46e5,#7c3aed); color:#fff; border:none; font-size:26px; cursor:pointer; box-shadow:0 4px 16px rgba(79,70,229,0.4), 0 2px 6px rgba(79,70,229,0.2); z-index:150; display:flex; align-items:center; justify-content:center; transition:transform 0.15s ease, box-shadow 0.15s ease; animation: fabPulse 3s ease-in-out infinite; }
+.fab:active { transform:scale(0.9); box-shadow:0 2px 8px rgba(79,70,229,0.3); }
+@keyframes fabPulse {
+  0%,100% { box-shadow: 0 4px 16px rgba(79,70,229,0.4), 0 2px 6px rgba(79,70,229,0.2); }
+  50%      { box-shadow: 0 4px 24px rgba(79,70,229,0.6), 0 2px 12px rgba(79,70,229,0.35); }
+}
 #fab-bday { display:none; }
 
-.toast { position:fixed; top:16px; left:50%; transform:translateX(-50%); background:#1e1e2e; color:#fff; padding:9px 18px; border-radius:18px; font-size:13px; z-index:300; opacity:0; transition:opacity 0.25s; pointer-events:none; white-space:nowrap; }
-.toast.show { opacity:1; }
+.toast { position:fixed; top:16px; left:50%; transform:translateX(-50%) translateY(-8px); background:rgba(30,30,46,0.92); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); color:#fff; padding:10px 20px; border-radius:20px; font-size:13px; z-index:300; opacity:0; transition:opacity 0.3s ease, transform 0.3s cubic-bezier(0.4,0,0.2,1); pointer-events:none; white-space:nowrap; box-shadow:0 4px 20px rgba(0,0,0,0.18); font-weight:500; letter-spacing:0.2px; }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
-.confirm-overlay { display:none; position:fixed; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.5); z-index:250; justify-content:center; align-items:center; }
+.confirm-overlay { display:none; position:fixed; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.5); z-index:250; justify-content:center; align-items:center; backdrop-filter:blur(2px); -webkit-backdrop-filter:blur(2px); }
 .confirm-overlay.show { display:flex; }
-.confirm-box { background:#fff; border-radius:16px; padding:22px 20px; width:275px; text-align:center; }
-.confirm-box p { font-size:15px; margin-bottom:14px; line-height:1.4; }
+.confirm-box { background:#fff; border-radius:16px; padding:22px 20px; width:280px; text-align:center; box-shadow:0 8px 24px rgba(0,0,0,0.12); }
+.confirm-box p { font-size:15px; margin-bottom:14px; line-height:1.5; }
 .confirm-box .row { display:flex; gap:8px; }
 .confirm-box .row button { flex:1; }
 
 .tab-content { display:none; }
-.tab-content.active { display:block; }
-.empty { text-align:center; padding:40px 16px; color:#bbb; }
-.empty-icon { font-size:40px; margin-bottom:6px; }
+.tab-content.active { display:block; animation:fadeIn 0.2s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
+.empty { text-align:center; padding:48px 16px 40px; color:#9ca3af; }
+.empty-icon { font-size:52px; margin-bottom:10px; display:block; animation: emptyBounce 2s ease-in-out infinite; }
+@keyframes emptyBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+.empty-text { font-size:14px; font-weight:500; color:#6b7280; }
+.empty-sub { font-size:11px; color:#9ca3af; margin-top:4px; }
 .loading { text-align:center; padding:30px; color:#999; font-size:14px; }
 
 .toolbar { display:flex; gap:6px; margin-bottom:10px; }
-.toolbar button { flex:1; padding:7px 10px; border-radius:8px; border:1px solid #e5e7eb; background:#fff; font-size:11px; cursor:pointer; color:#555; }
-.toolbar button:hover { background:#f9fafb; }
+.toolbar button { flex:1; padding:8px 10px; border-radius:9px; border:1px solid #e5e7eb; background:#fff; font-size:11px; cursor:pointer; color:#555; transition:all 0.15s ease; min-height:34px; }
+.toolbar button:active { background:#f3f4f6; transform:scale(0.98); }
 
+.wa-banner { background:#fffbeb; border:1.5px solid #f59e0b; border-radius:12px; padding:12px; margin-bottom:12px; font-size:13px; text-align:center; line-height:1.5; }
+.wa-banner a { color:#f59e0b; font-weight:600; text-decoration:underline; }
+
+.history-summary { background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:12px; padding:12px; margin-bottom:8px; font-size:12px; color:#666; text-align:center; }
+.history-summary strong { color:#374151; }
+
+.skeleton { background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%); background-size:200% 100%; animation:shimmer 1.5s infinite; border-radius:8px; }
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+.skeleton-card { height:80px; margin-bottom:10px; }
+
+.ptr-indicator { height:0; overflow:hidden; transition:height 0.2s ease; display:flex; align-items:center; justify-content:center; color:#999; font-size:12px; }
+.ptr-indicator.visible { height:40px; }
+
+/* iPhone Safari date input sticky positioning fix */
+@media screen and (max-width:600px) {
+  .card-date { flex-direction:row; align-items:center; }
+  .card-date-text { flex:1; }
+  .form-row { gap:6px; }
+  .time-sel { font-size:14px; padding:10px 4px; }
+}
+/* iPad */
+@media screen and (min-width:601px) and (max-width:1024px) {
+  .form-row { gap:12px; }
+  .time-sel { min-height:46px; font-size:16px; }
+}
+@media screen and (max-width:380px) {
+  .tab-btn { font-size:10px; padding:8px 6px; min-width:36px; }
+  .card-icon { font-size:20px; min-width:24px; }
+  .card-name { font-size:14px; }
+  .card { padding:12px; }
+}
+
+/* Dark mode */
+@media (prefers-color-scheme:dark) {
+  body.dark-mode { background:#111827; color:#e5e7eb; }
+  body.dark-mode .card,.body.dark-mode .tab-bar,.body.dark-mode .modal-sheet,.body.dark-mode .bday-card,.body.dark-mode .confirm-box { background:#1f2937; }
+  body.dark-mode .tab-bar { border-color:#374151; }
+  body.dark-mode .modal-sheet { color:#e5e7eb; }
+  body.dark-mode .form-input,.body.dark-mode .form-select,.body.dark-mode .form-textarea { background:#374151; border-color:#4b5563; color:#e5e7eb; }
+  body.dark-mode .card-note { background:#374151; color:#d1d5db; }
+  body.dark-mode .tab-btn { color:#9ca3af; }
+  body.dark-mode .tab-btn.active { color:#818cf8; }
+  body.dark-mode .expired { background:#1a1f2e; }
+  body.dark-mode .history-summary { background:#1f2937; border-color:#374151; color:#9ca3af; }
+}
 </style>
 </head>
 <body>
 
 <div class="header">
   <h1>&#127968; 家庭提醒系統</h1>
-  <p>揸揸的家長們 &#8226; 雲端 24/7</p>
+  <p>請回答我們這一家 &#8226; 雲端 24/7</p>
+  <span class="conn-status conn-ok" id="conn-badge">&#9989; 已連接</span>
+  <span class="wa-status wa-off" id="wa-badge">&#8987; WhatsApp...</span>
+  <button onclick="toggleDarkMode()" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer;margin-left:8px;opacity:0.8;" title="切換深色模式">&#127769;</button>
+  <div class="header-wave">
+    <svg viewBox="0 0 1200 40" preserveAspectRatio="none" fill="#f0f2f5">
+      <path d="M0,32 C200,8 400,38 600,22 C800,6 1000,35 1200,18 L1200,40 L0,40 Z"/>
+    </svg>
+  </div>
 </div>
 
-<div class="tab-bar">
-  <button class="tab-btn active" onclick="switchTab('reminders')">&#128203; 提醒</button>
-  <button class="tab-btn" onclick="switchTab('ken')">&#128188; KEN 工作</button>
-  <button class="tab-btn" onclick="switchTab('birthdays')">&#127874; 生日</button>
+<div class="tab-bar" id="tab-bar">
+  <button class="tab-btn active" data-tab="reminders">&#128203; 全部</button>
+  <button class="tab-btn" data-tab="ken">&#128100; KEN</button>
+  <button class="tab-btn" data-tab="eppie">&#128017; EPPIE</button>
+  <button class="tab-btn" data-tab="coffe">&#9749; COFFE</button>
+  <button class="tab-btn" data-tab="kenny">&#128104; Kenny</button>
+  <button class="tab-btn" data-tab="rosanna">&#128105; Rosanna</button>
+  <button class="tab-btn" data-tab="dad">&#128116; 老豆</button>
+  <button class="tab-btn" data-tab="birthdays">&#127874; 生日</button>
+  <button class="tab-btn" data-tab="history">&#128451; 歷史<span class="tab-btn-badge" id="hist-badge" style="display:none">0</span></button>
+  <button class="tab-btn" data-tab="whatsapp">&#128172; WhatsApp</button>
 </div>
 
-<div class="container">
+<div class="ptr-indicator" id="ptr-indicator"> pulling...</div>
 
-  <div class="tab-content" id="tab-reminders">
+<div class="container" id="main-container">
+
+  <div class="wa-banner" id="wa-banner" style="display:none">
+    &#8987; WhatsApp 未連接！請<a href="/qr" target="_blank">點此掃描 QR Code</a> 連接
+  </div>
+
+  <!-- 全部 tab -->
+  <div class="tab-content active" id="tab-reminders">
     <div class="toolbar">
-      <button onclick="exportData()">&#128226; 匯出備份</button>
+      <button onclick="exportData()">&#128226; 匯出</button>
       <button onclick="document.getElementById('import-file').click()">&#128229; 匯入</button>
+      <button onclick="sendReminderNow()">&#128276; 即時提醒</button>
       <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
     </div>
-    <div id="reminder-list"><div class="loading">&#8987; 載入中...</div></div>
+    <div id="reminder-list"></div>
   </div>
 
-  <div class="tab-content" id="tab-ken">
-    <div class="toolbar">
-      <button onclick="exportData()">&#128226; 匯出備份</button>
-      <button onclick="document.getElementById('import-file').click()">&#128229; 匯入</button>
-      <input type="file" id="import-file2" accept=".json" style="display:none" onchange="importData(event)">
-    </div>
-    <div id="ken-list"><div class="loading">&#8987; 載入中...</div></div>
-  </div>
+  <!-- 成員 tabs -->
+  <div class="tab-content" id="tab-ken"><div id="ken-reminder-list"><div class="loading">&#8987; 載入中...</div></div></div>
+  <div class="tab-content" id="tab-eppie"><div id="eppie-reminder-list"><div class="loading">&#8987; 載入中...</div></div></div>
+  <div class="tab-content" id="tab-coffe"><div id="coffe-reminder-list"><div class="loading">&#8987; 載入中...</div></div></div>
+  <div class="tab-content" id="tab-kenny"><div id="kenny-reminder-list"><div class="loading">&#8987; 載入中...</div></div></div>
+  <div class="tab-content" id="tab-rosanna"><div id="rosanna-reminder-list"><div class="loading">&#8987; 載入中...</div></div></div>
+  <div class="tab-content" id="tab-dad"><div id="dad-reminder-list"><div class="loading">&#8987; 載入中...</div></div></div>
 
+  <!-- 生日 tab -->
   <div class="tab-content" id="tab-birthdays">
     <div class="bday-grid" id="birthday-grid"><div class="loading" style="grid-column:1/-1">&#8987; 載入中...</div></div>
+  </div>
+
+  <!-- 歷史 tab -->
+  <div class="tab-content" id="tab-history">
+    <div class="history-summary" id="history-summary"></div>
+    <div id="history-list"></div>
+    <button class="btn btn-outline" style="margin-top:12px" onclick="clearAllHistory()">&#128465; 清除所有歷史記錄</button>
+  </div>
+
+  <!-- WhatsApp tab -->
+  <div class="tab-content" id="tab-whatsapp">
+    <div style="background:#fff;border-radius:13px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:12px;">&#128172; 發送 WhatsApp</h3>
+      <p style="font-size:11px;color:#999;margin-bottom:12px;">訊息會經雲端 GitHub Actions 發送，電腦唔使開機 &#9729;&#65039;</p>
+      <div class="form-group">
+        <label class="form-label">收件人</label>
+        <select id="wa-recipient" class="form-input" style="width:100%">
+          <option value="85262218999">KEN</option>
+          <option value="85297510047">&#128017; EPPIE</option>
+          <option value="85291339336">Kenny Yam</option>
+          <option value="85293398522">Rosanna Mok</option>
+          <option value="85266713322">COFFE</option>
+          <option value="85262269100">老豆</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">訊息內容</label>
+        <textarea id="wa-message" class="form-textarea" placeholder="輸入訊息..." style="min-height:80px;"></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="sendWhatsApp()" style="width:100%;margin-top:4px;">&#128640; 發送</button>
+      <p id="wa-status-msg" style="font-size:11px;color:#999;margin-top:8px;text-align:center;display:none;"></p>
+    </div>
   </div>
 
 </div>
@@ -153,27 +351,34 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
     <div class="form-group"><label class="form-label">事項名稱 *</label><input class="form-input" id="form-name" placeholder="例如：鋼琴班"></div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">日期 *</label><input class="form-input" type="date" id="form-date"></div>
-      <div class="form-group"><label class="form-label">時間 (24h)</label><div style="display:flex;gap:4px;align-items:center;"><select id="form-time-h" style="width:65px;padding:8px 4px;border:1.5px solid #d1d5db;border-radius:8px;font-size:15px;text-align:center;"></select><span style="font-size:18px;font-weight:700;">:</span><select id="form-time-m" style="width:65px;padding:8px 4px;border:1.5px solid #d1d5db;border-radius:8px;font-size:15px;text-align:center;"></select></div></div>
+      <div class="form-group"><label class="form-label">時間 (24h)</label><div class="time-wrap"><select id="form-time-h" class="time-sel"></select><span class="time-colon">:</span><select id="form-time-m" class="time-sel"></select></div></div>
     </div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">類別</label>
-        <select class="form-select" id="form-category">
+        <select class="form-select" id="form-category" onchange="onCategoryChange()">
           <option value="school">&#127979; 學校面試</option>
           <option value="summer">&#9728;&#65039; 暑期安排</option>
           <option value="routine">&#128197; 恆常日程</option>
           <option value="class">&#127912; 興趣班</option>
           <option value="special">&#11088; 特別日子</option>
+          <option value="work">&#128188; 工作</option>
+          <option value="travel">&#9992;&#65039; 旅遊</option>
+          <option value="medical">&#127973; 醫療</option>
+          <option value="finance">&#128176; 財務</option>
+          <option value="dining">&#127869;&#65039; 聚餐</option>
+          <option value="activity">&#127917; 活動</option>
+          <option value="other">&#128230; 其他</option>
         </select>
       </div>
-      <div class="form-group"><label class="form-label">照顧者</label>
-        <select class="form-select" id="form-caregiver">
-          <option value="">無指定</option>
-          <option value="ALL">全部人</option>
-          <option value="EPPIE">EPPIE</option>
+      <div class="form-group"><label class="form-label">照顧者 <span style="color:#ef4444">*</span><small style="color:#ef4444;font-weight:400;font-size:10px;margin-left:4px;">（必填，否則不會發通知）</small></label>
+        <select class="form-select" id="form-caregiver" onchange="onCaregiverChange()">
+          <option value="">--- 請選擇照顧者 ---</option>
           <option value="KEN">KEN</option>
+          <option value="EPPIE">EPPIE</option>
+          <option value="COFFE">COFFE</option>
           <option value="Kenny Yam">Kenny Yam</option>
           <option value="Rosanna Mok">Rosanna Mok</option>
-          <option value="COFFE">COFFE</option>
+          <option value="ALL">&#128101; 全部照顧者</option>
           <option value="老豆">老豆</option>
         </select>
       </div>
@@ -199,8 +404,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
         </div>
       </div>
     </div>
-    <div class="form-group"><label class="form-label">地址</label><input class="form-input" id="form-address" placeholder="例如：調景嶺"></div>
-    <div class="form-group"><label class="form-label">備註</label><textarea class="form-textarea" id="form-note" placeholder="例如：帶面試信"></textarea></div>
+    <div class="form-group"><label class="form-label">備註</label><textarea class="form-textarea" id="form-note" placeholder="例如：帶面試信、地點"></textarea></div>
     <button class="btn btn-primary" onclick="saveReminder()">&#128190; 儲存</button>
     <button class="btn btn-danger" id="edit-del-btn" style="display:none" onclick="confirmDeleteReminder()">&#128565; 刪除此提醒</button>
     <button class="btn btn-outline" onclick="closeModal('modal-reminder')">取消</button>
@@ -228,7 +432,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
     <p id="confirm-msg"></p>
     <div class="row">
       <button class="btn btn-outline" style="margin:0" onclick="closeConfirm()">取消</button>
-      <button class="btn btn-danger" style="margin:0" id="confirm-yes">確定刪除</button>
+      <button class="btn btn-danger" style="margin:0" id="confirm-yes">確定</button>
     </div>
   </div>
 </div>
@@ -238,134 +442,156 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
 <script>
 // ===== CONFIG =====
 var CAT = {
-  school:{icon:'🏫',name:'學校面試',bdg:'bdg-school'},
-  class:{icon:'🎨',name:'興趣班',bdg:'bdg-class'},
-  special:{icon:'⭐',name:'特別日子',bdg:'bdg-special'},
-  summer:{icon:'☀️',name:'暑期安排',bdg:'bdg-summer'},
-  routine:{icon:'📅',name:'恆常日程',bdg:'bdg-routine'}
+  school:{icon:'\u{1F3EB}',name:'學校面試',bdg:'bdg-school',order:1},
+  summer:{icon:'\u{2600}\uFE0F',name:'暑期安排',bdg:'bdg-summer',order:2},
+  routine:{icon:'\u{1F4C5}',name:'恆常日程',bdg:'bdg-routine',order:3},
+  class:{icon:'\u{1F3A8}',name:'興趣班',bdg:'bdg-class',order:4},
+  special:{icon:'\u{2B50}',name:'特別日子',bdg:'bdg-special',order:5},
+  work:{icon:'\u{1F4BC}',name:'工作',bdg:'bdg-work',order:99},
+  travel:{icon:'\u{2708}\uFE0F',name:'旅遊',bdg:'bdg-travel',order:6},
+  medical:{icon:'\u{1F3E5}',name:'醫療',bdg:'bdg-medical',order:7},
+  finance:{icon:'\u{1F4B0}',name:'財務',bdg:'bdg-finance',order:8},
+  dining:{icon:'\u{1F37D}\uFE0F',name:'聚餐',bdg:'bdg-dining',order:9},
+  activity:{icon:'\u{1F3AF}',name:'活動',bdg:'bdg-activity',order:10},
+  other:{icon:'\u{1F4E6}',name:'其他',bdg:'bdg-other',order:11}
 };
-var CAT_ORDER = ['school','summer','routine','class','special'];
+// 主頁分類排序（work 唔在內）
+var CAT_ORDER = ['school','summer','routine','class','special','travel','medical','finance','dining','activity','other'];
+
+var CAREGIVERS = ['KEN','EPPIE','COFFE','Kenny Yam','Rosanna Mok','老豆'];
+var CAREGIVER_EMOJI = { 'KEN':'&#128100;', 'EPPIE':'&#128017;', 'COFFE':'&#9749;', 'Kenny Yam':'&#128104;', 'Rosanna Mok':'&#128105;', '老豆':'&#128116;' };
+var CAREGIVER_TAB = { 'KEN':'ken', 'EPPIE':'eppie', 'COFFE':'coffe', 'Kenny Yam':'kenny', 'Rosanna Mok':'rosanna', '老豆':'dad' };
 
 // ===== DATA =====
-var DATA = { reminders: [], birthdays: [] };
-var DATA_SHA = null;
-var GH_REPO = 'ken851004-afk/family-reminder-cloud';
-var GH_TOKEN = String.fromCharCode(103,104,111,95,77,98,75,51,75,50,106,109,88,76,111,104,79,73,80,54,77,108,113,68,88,75,88,81,101,97,101,112,66,120,52,66,54,119,97,100);
+var DATA = { reminders: [], birthdays: [], history: [] };
+var DATA_SHA = '';
+var API_ONLINE = false;
+var CURRENT_TAB = 'reminders';
 
-// ===== GitHub API =====
-function ghApi(method, body) {
-  var headers = {
-    'Authorization': 'Bearer ' + GH_TOKEN,
-    'Accept': 'application/vnd.github.v3+json',
-    'User-Agent': 'family-reminder-web'
-  };
-  if (body) { headers['Content-Type'] = 'application/json'; }
-  return fetch('https://api.github.com/repos/' + GH_REPO + '/contents/data.json', {
-    method: method,
-    headers: headers,
-    body: body ? JSON.stringify(body) : undefined
-  }).then(function(r){
-    if (!r.ok) throw new Error('HTTP '+r.status);
-    return r.json();
-  });
+// ===== API Mode (JWT Auth) =====
+var API_BASE_URL = (function() {
+  // Auto-detect: if on CloudStudio (no backend), use GitHub mode
+  // If backend API available, use API mode
+  var host = window.location.hostname;
+  if (host.indexOf('codebuddy.work') >= 0 || host.indexOf('localhost') >= 0) {
+    return 'http://localhost:3000'; // local dev
+  }
+  return ''; // production: same origin
+})();
+var API_MODE = false; // set to true after login
+var JWT_TOKEN = '';
+var JWT_REFRESH = '';
+var API_USER = null;
+
+function getAuthHeader() {
+  return JWT_TOKEN ? { 'Authorization': 'Bearer ' + JWT_TOKEN } : {};
 }
 
-// ===== localStorage backup =====
-var LS_KEY = 'family-reminder-data';
-function loadLocal() {
-  try {
-    var raw = localStorage.getItem(LS_KEY);
-    if (raw) { DATA = JSON.parse(raw); return true; }
-  } catch(e) {}
-  return false;
-}
-function saveLocal() { localStorage.setItem(LS_KEY, JSON.stringify(DATA)); }
+function isAuthenticated() { return false; }
 
-// ===== Sync =====
-function syncFromServer() {
-  ghApi('GET').then(function(d){
-    if (d.content) {
-      DATA = JSON.parse(atob(d.content.replace(/\s/g,'')));
-      DATA_SHA = d.sha;
-      saveLocal();
-      renderAll();
-    }
-  }).catch(function(e){
-    console.log('GitHub API error:', e.message);
-    loadLocal();
-    renderAll();
-  });
-}
+// API fetch wrapper with auto token refresh
+async function apiFetch(path, options) {
+  if (!options) options = {};
+  if (!options.headers) options.headers = {};
+  options.headers['Content-Type'] = options.headers['Content-Type'] || 'application/json';
+  options.headers['Authorization'] = 'Bearer ' + JWT_TOKEN;
 
-function syncToServer() {
-  if (!DATA_SHA) { console.log('No SHA, skip sync'); return; }
-  var b64 = btoa(unescape(encodeURIComponent(JSON.stringify(DATA,null,2))));
-  ghApi('PUT', {
-    message: 'update from web',
-    content: b64,
-    sha: DATA_SHA,
-    branch: 'master'
-  }).then(function(d){
-    DATA_SHA = d.content.sha;
-    saveLocal();
-  }).catch(function(e){
-    console.log('Save failed:', e.message);
-    // Retry: re-fetch SHA then save
-    ghApi('GET').then(function(d2){
-      DATA_SHA = d2.sha;
-      var b64r = btoa(unescape(encodeURIComponent(JSON.stringify(DATA,null,2))));
-      return ghApi('PUT', {
-        message: 'update from web (retry)',
-        content: b64r,
-        sha: DATA_SHA,
-        branch: 'master'
-      });
-    }).then(function(d3){
-      DATA_SHA = d3.content.sha;
-      saveLocal();
-    }).catch(function(){});
-  });
-}
+  var res = await fetch(API_BASE_URL + path, options);
 
-// ===== Import/Export =====
-function exportData() {
-  var blob = new Blob([JSON.stringify(DATA,null,2)],{type:'application/json'});
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'family-reminders-' + new Date().toISOString().slice(0,10) + '.json';
-  a.click();
-  toast('📤 已匯出備份檔案');
-}
-
-function importData(e) {
-  var file = e.target.files[0]; if (!file) return;
-  var reader = new FileReader();
-  reader.onload = function(ev){
+  // Auto-refresh on 401
+  if (res.status === 401 && JWT_REFRESH) {
     try {
-      var d = JSON.parse(ev.target.result);
-      if (!d.reminders) { toast('❌ 格式不正確'); return; }
-      DATA = d; saveLocal(); syncToServer(); renderAll();
-      toast('✅ 已匯入 ' + (d.reminders||[]).length + ' 項提醒');
-    } catch(err) { toast('❌ JSON 格式錯誤'); }
-  };
-  reader.readAsText(file); e.target.value = '';
+      var refreshRes = await fetch(API_BASE_URL + '/api/auth/refresh', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refreshToken: JWT_REFRESH })
+      });
+      if (refreshRes.ok) {
+        var rd = await refreshRes.json();
+        JWT_TOKEN = rd.data.accessToken;
+        localStorage.setItem('jwt_token', JWT_TOKEN);
+        options.headers['Authorization'] = 'Bearer ' + JWT_TOKEN;
+        return fetch(API_BASE_URL + path, options);
+      }
+    } catch(e) {}
+    // Refresh failed — logout
+    JWT_TOKEN = ''; JWT_REFRESH = ''; API_MODE = false;
+  }
+  return res;
+}
+
+// WebSocket
+var WS_SOCKET = null;
+function connectWebSocket() {
+  if (!isAuthenticated()) return;
+  if (WS_SOCKET && WS_SOCKET.readyState < 2) return;
+  
+  var wsUrl = API_BASE_URL.replace(/^http/, 'ws') + '/socket.io/?transport=websocket';
+  // Simple WebSocket — in production use Socket.io client
+  try {
+    WS_SOCKET = new WebSocket(wsUrl);
+    WS_SOCKET.onopen = function() { console.log('WS connected'); };
+    WS_SOCKET.onmessage = function(e) {
+      try {
+        var msg = JSON.parse(e.data);
+        if (msg.type === 'reminder_created' || msg.type === 'reminder_updated' ||
+            msg.type === 'reminder_deleted' || msg.type === 'reminder_restored') {
+          syncFromServer(); // re-sync on any change
+        }
+      } catch(ex) {}
+    };
+    WS_SOCKET.onclose = function() { WS_SOCKET = null; };
+  } catch(e) {}
+}
+
+// Restore session from localStorage
+(function restoreSession() {
+  var t = localStorage.getItem('jwt_token');
+  var r = localStorage.getItem('jwt_refresh');
+  if (t && r) {
+    JWT_TOKEN = t; JWT_REFRESH = r;
+    API_MODE = true;
+    // Verify token
+    fetch(API_BASE_URL + '/api/auth/me', { headers: { 'Authorization': 'Bearer ' + JWT_TOKEN } })
+      .then(function(res) {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error('invalid');
+      })
+      .then(function(d) {
+        API_USER = d.data;
+        connectWebSocket();
+      })
+      .catch(function() {
+        JWT_TOKEN = ''; JWT_REFRESH = ''; API_MODE = false;
+        localStorage.removeItem('jwt_token');
+        localStorage.removeItem('jwt_refresh');
+      });
+  }
+})();
+
+// ===== Date helpers (FIX: local timezone parse, no ISO string ambiguity) =====
+function localDate(dateStr) {
+  // YYYY-MM-DD -> local midnight (not UTC)
+  var parts = dateStr.split('-');
+  return new Date(+parts[0], +parts[1]-1, +parts[2]);
+}
+function getDays(dateStr) {
+  var t = new Date(); t.setHours(0,0,0,0);
+  var d = localDate(dateStr);
+  return Math.round((d - t) / 86400000);
+}
+function formatWeekday(dateStr) {
+  return ['日','一','二','三','四','五','六'][localDate(dateStr).getDay()];
 }
 
 // ===== Helpers =====
 function uid() { return 'r' + Date.now() + Math.random().toString(36).slice(2,5); }
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function getDays(dateStr) {
-  var t = new Date(); t.setHours(0,0,0,0);
-  var d = new Date(dateStr+'T00:00:00');
-  return Math.ceil((d-t)/86400000);
-}
 function getRepeatText(r) {
   if (!r||r.repeat==='none'||!r.repeat) return '';
   if (r.repeat==='daily') return '每日';
-  if (r.repeat==='weekly') {
-    var dn=['日','一','二','三','四','五','六'];
-    return '每週'+(r.repeatDays||[]).map(function(d){return dn[d];}).join('、');
-  }
+  if (r.repeat==='weekly') return '每週'+(r.repeatDays||[]).map(function(d){return ['日','一','二','三','四','五','六'][d];}).join('、');
   if (r.repeat==='monthly') return '每月'+(r.repeatDayOfMonth||'??')+'日';
   return '';
 }
@@ -375,331 +601,856 @@ function toast(msg){
   clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},2200);
 }
 
-// ===== Tab =====
-var currentTab = 'reminders';
-function switchTab(tab){
-  currentTab = tab;
-  var btns = document.querySelectorAll('.tab-btn');
-  btns[0].classList.toggle('active', tab==='reminders');
-  btns[1].classList.toggle('active', tab==='ken');
-  btns[2].classList.toggle('active', tab==='birthdays');
-  document.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});
-  document.getElementById('tab-'+tab).classList.add('active');
-  document.getElementById('fab-add').style.display=(tab==='reminders'||tab==='ken')?'flex':'none';
-  document.getElementById('fab-bday').style.display=tab==='birthdays'?'flex':'none';
-  if(tab==='reminders') renderReminders();
-  if(tab==='ken') renderKenReminders();
-  if(tab==='birthdays') renderBirthdays();
+// ===== localStorage =====
+var LS_KEY = 'family-reminder-data';
+function loadLocal() {
+  try { var raw=localStorage.getItem(LS_KEY); if(raw){DATA=JSON.parse(raw);return true;} } catch(e){}
+  return false;
+}
+function saveLocal() {
+  localStorage.setItem(LS_KEY, JSON.stringify(DATA));
+}
+
+// ===== Sync =====
+function syncFromServer() {
+  if (isAuthenticated()) {
+    syncFromAPI();
+  } else {
+    syncFromGitHub();
+  }
+}
+
+function syncFromAPI() {
+  apiFetch('/api/reminders').then(function(res) {
+    if (!res.ok) throw new Error('API ' + res.status);
+    return res.json();
+  }).then(function(j) {
+    // Convert API format to DATA format
+    var apiItems = j.data || [];
+    DATA.reminders = apiItems.map(function(r) {
+      return {
+        id: r.id,
+        name: r.name,
+        category: r.category,
+        date: r.date ? r.date.substring(0,10) : '',
+        time: r.time || '00:00',
+        note: r.note || '',
+        address: r.address || '',
+        caregiver: r.caregiverName || r.caregiver || '',
+        repeat: r.repeatType || 'none',
+        repeatDays: r.repeatDays || [],
+        repeatDayOfMonth: r.repeatDayOfMonth,
+        caregiverNotified1d: r.notified1d || false,
+        caregiverNotified3h: r.notified3h || false,
+        isArchived: r.isArchived || false,
+        archivedAt: r.archivedAt
+      };
+    });
+    // Fetch birthdays
+    return apiFetch('/api/birthdays');
+  }).then(function(res) {
+    if (!res.ok) return { data: [] };
+    return res.json();
+  }).then(function(j) {
+    DATA.birthdays = (j.data || []).map(function(b) {
+      return { name: b.name, date: b.date, note: b.note || '', emoji: b.emoji || '\u{1F382}' };
+    });
+    // Fetch history
+    return apiFetch('/api/history');
+  }).then(function(res) {
+    if (!res.ok) return { data: { items: [] } };
+    return res.json();
+  }).then(function(j) {
+    var histItems = (j.data.items || []).map(function(h) {
+      var d = typeof h.data === 'string' ? JSON.parse(h.data) : h.data;
+      if (d.id) {
+        d.archivedAt = h.archivedAt;
+      }
+      return d;
+    });
+    DATA.history = histItems;
+    if (!DATA.pendingMessages) DATA.pendingMessages = [];
+    API_ONLINE = true; setConnStatus(true); saveLocal();
+    autoArchiveExpired();
+    renderAll(); updateHistoryBadge();
+  }).catch(function(e) {
+    console.log('API sync failed, fallback to GitHub:', e);
+    syncFromGitHub();
+  });
+}
+function syncFromGitHub() {
+  fetch('https://api.github.com/repos/ken851004-afk/family-reminder-cloud/contents/data.json', {
+    headers: { 'Authorization': 'Bearer ' + getGHToken(), 'Accept': 'application/vnd.github.v3+json' }
+  }).then(function(r){ return r.json(); })
+  .then(function(j){
+    var raw = atob(j.content.replace(/\s/g, ''));
+    var bytes = new Uint8Array(raw.length);
+    for (var i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+    DATA = JSON.parse(new TextDecoder('utf-8').decode(bytes));
+    if (!DATA.history) DATA.history = [];
+    if (!DATA.pendingMessages) DATA.pendingMessages = [];
+    DATA_SHA = j.sha;
+    API_ONLINE = true; saveLocal();
+    setConnStatus(true);
+    autoArchiveExpired();
+    renderAll();
+    updateHistoryBadge();
+  }).catch(function(e){
+    console.log('GitHub sync failed:', e);
+    API_ONLINE = false; setConnStatus(false);
+    if (!DATA.reminders || !DATA.reminders.length) loadLocal();
+    if (!DATA.history) DATA.history = [];
+    autoArchiveExpired();
+    renderAll();
+    updateHistoryBadge();
+  });
+}
+
+function syncToServer() {
+  if (isAuthenticated()) {
+    // API mode — changes are pushed per-operation, no bulk sync needed
+    // But push for import/backup
+    pushToAPI();
+  } else {
+    pushToGitHub();
+  }
+}
+
+function pushToAPI() {
+  // Bulk sync to API (used for import)
+  if (!isAuthenticated()) return;
+  DATA.reminders.forEach(function(r) {
+    apiFetch('/api/reminders', {
+      method: 'POST',
+      body: JSON.stringify({
+        name: r.name, category: r.category, date: r.date, time: r.time,
+        note: r.note, caregiver: r.caregiver, repeat: r.repeat,
+        repeatDays: r.repeatDays, repeatDayOfMonth: r.repeatDayOfMonth
+      })
+    }).catch(function(e) { console.log('API push error:', e); });
+  });
+}
+
+function pushToGitHub() {
+  var token = getGHToken();
+  if (!token || !DATA_SHA) { console.log('No token or SHA, skip push'); return; }
+  var jsonStr = JSON.stringify(DATA, null, 2);
+  var bytes = new TextEncoder().encode(jsonStr);
+  var binary = '';
+  bytes.forEach(function(b) { binary += String.fromCharCode(b); });
+  var b64 = btoa(binary);
+  fetch('https://api.github.com/repos/ken851004-afk/family-reminder-cloud/contents/data.json', {
+    method: 'PUT',
+    headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: 'Update data.json via web UI', content: b64, sha: DATA_SHA, branch: 'master' })
+  }).then(function(r) {
+    if (r.ok) return r.json();
+    throw new Error('HTTP ' + r.status);
+  }).then(function(j) {
+    DATA_SHA = j.content.sha;
+    console.log('GitHub push OK, new SHA:', DATA_SHA);
+  }).catch(function(e) { console.log('GitHub push failed:', e); });
+}
+
+function setConnStatus(ok) {
+  var el = document.getElementById('conn-badge');
+  if (ok) { el.innerHTML = '\u2705 已連接'; el.className = 'conn-status conn-ok'; }
+  else { el.innerHTML = '\u{1F4BE} 本機暫存'; el.className = 'conn-status conn-err'; }
+}
+
+// ===== WhatsApp Status =====
+function checkWAStatus() {
+  fetch('/wa-status').then(function(r){return r.json();}).then(function(s){
+    var el = document.getElementById('wa-badge');
+    var banner = document.getElementById('wa-banner');
+    if (s.connected) {
+      el.innerHTML = '\u2705 WhatsApp'; el.className = 'wa-status wa-ok';
+      banner.style.display = 'none';
+    } else {
+      el.innerHTML = '\u26A0 WhatsApp 斷線'; el.className = 'wa-status wa-off';
+      if (s.qr_pending) banner.style.display = 'block';
+    }
+  }).catch(function(){});
+}
+
+// ===== Auto-archive expired events =====
+function autoArchiveExpired() {
+  if (!DATA.reminders) return;
+  var today = new Date(); today.setHours(0,0,0,0);
+  var expired = [];
+  var active = [];
+  DATA.reminders.forEach(function(r) {
+    // Skip recurring events (they never expire)
+    if (r.repeat && r.repeat !== 'none') { active.push(r); return; }
+    var days = getDays(r.date);
+    // Expired: more than 7 days past (grace period)
+    if (days < -7) { expired.push(r); }
+    else { active.push(r); }
+  });
+  if (expired.length > 0) {
+    if (!DATA.history) DATA.history = [];
+    expired.forEach(function(r) {
+      r.archivedAt = new Date().toISOString();
+      DATA.history.push(r);
+    });
+    DATA.reminders = active;
+    console.log('Auto-archived ' + expired.length + ' expired items');
+  }
+}
+
+function updateHistoryBadge() {
+  var badge = document.getElementById('hist-badge');
+  var count = (DATA.history || []).length;
+  if (count > 0) {
+    badge.textContent = count;
+    badge.style.display = 'inline-block';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+// ===== Import/Export =====
+function exportData() {
+  var blob = new Blob([JSON.stringify(DATA,null,2)],{type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'family-reminders-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  toast('\u{1F4E4} 已匯出備份檔案');
+}
+
+function importData(e) {
+  var file = e.target.files[0]; if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(ev){
+    try {
+      var d = JSON.parse(ev.target.result);
+      if (!d.reminders) { toast('\u274C 格式不正確'); return; }
+      if (!d.history) d.history = [];
+      DATA = d; saveLocal(); syncToServer();
+      autoArchiveExpired();
+      renderAll(); updateHistoryBadge();
+      toast('\u2705 已匯入 ' + (d.reminders||[]).length + ' 項提醒');
+    } catch(err) { toast('\u274C JSON 格式錯誤'); }
+  };
+  reader.readAsText(file); e.target.value = '';
+}
+
+function sendReminderNow() {
+  toast('\u23F3 發送中...');
+  fetch('/send-reminder', { method:'POST' }).then(function(r){return r.json();}).then(function(r){
+    toast('\u2705 提醒已發送到群組');
+  }).catch(function(){ toast('\u274C 發送失敗'); });
+}
+
+// ===== Tabs =====
+var ALL_TABS = ['reminders','ken','eppie','coffe','kenny','rosanna','dad','birthdays','history','whatsapp'];
+
+function switchTab(tab) {
+  CURRENT_TAB = tab;
+  // Update tab buttons
+  document.querySelectorAll('.tab-btn').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.tab === tab);
+  });
+  // Update content visibility
+  document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+  var tc = document.getElementById('tab-' + tab);
+  if (tc) tc.classList.add('active');
+  // Show/hide FABs
+  var addableTabs = ['reminders','ken','eppie','coffe','kenny','rosanna','dad'];
+  document.getElementById('fab-add').style.display = (addableTabs.indexOf(tab) >= 0) ? 'flex' : 'none';
+  document.getElementById('fab-bday').style.display = (tab === 'birthdays') ? 'flex' : 'none';
+  // Scroll active tab into view
+  var activeBtn = document.querySelector('.tab-btn.active');
+  if (activeBtn) activeBtn.scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' });
+}
+
+// Tab button click delegation
+document.getElementById('tab-bar').addEventListener('click', function(e) {
+  var btn = e.target.closest('.tab-btn');
+  if (btn) switchTab(btn.dataset.tab);
+});
+
+// ===== Card stagger animation =====
+function staggerCards(container) {
+  if (!container) return;
+  var cards = container.querySelectorAll('.card');
+  cards.forEach(function(card, i) {
+    card.style.animationDelay = (i * 0.06) + 's';
+    card.style.animationFillMode = 'both';
+  });
 }
 
 // ===== Render =====
-function renderAll(){ renderReminders(); renderKenReminders(); renderBirthdays(); }
+function renderAll() {
+  renderReminders();
+  CAREGIVERS.forEach(function(cg) { renderCaregiverTab(cg); });
+  renderBirthdays();
+  renderHistory();
+}
 
-function renderReminderList(items, containerId){
-  var c=document.getElementById(containerId);
-  if(!items||!items.length){
-    c.innerHTML='<div class="empty"><div class="empty-icon">📭</div><p>暫無提醒事項<br><small>按右下角 + 新增</small></p></div>';return;
+// Main "全部" tab - non-work items
+function renderReminders() {
+  var c = document.getElementById('reminder-list');
+  if (!DATA.reminders || !DATA.reminders.length) {
+    c.innerHTML = '<div class="empty"><div class="empty-icon">\u{1F4ED}</div><div class="empty-text">暫無提醒事項</div><div class="empty-sub">按右下角 + 新增</div></div>'; return;
   }
-  var sorted=items.slice().sort(function(a,b){
-    var da=getDays(a.date);var db=getDays(b.date);
-    if(da>=0&&db<0)return -1;if(da<0&&db>=0)return 1;
+  var filtered = DATA.reminders.filter(function(r) { return r.category !== 'work'; }).sort(function(a,b) {
+    var da = getDays(a.date); var db = getDays(b.date);
+    if (da >= 0 && db < 0) return -1;
+    if (da < 0 && db >= 0) return 1;
     return a.date.localeCompare(b.date);
   });
-  var html='';
-  CAT_ORDER.forEach(function(cat){
-    var catItems=sorted.filter(function(r){return r.category===cat;});
-    if(!catItems.length)return;
-    html+='<div class="section-label">'+(CAT[cat]?CAT[cat].icon:'📌')+' '+(CAT[cat]?CAT[cat].name:cat)+'</div>';
-    catItems.forEach(function(r){
-      var wd = ["日","一","二","三","四","五","六"][new Date(r.date+"T00:00:00").getDay()];
-      var days=getDays(r.date);
-      var urg=(days>=0&&days<=1)?((days===0)?'urgent':'soon'):'';
-      var rt=getRepeatText(r);
-      html+='<div class="card '+urg+'">';
-      html+='<div class="card-top">';
-      html+='<div class="card-icon">'+(CAT[r.category]?CAT[r.category].icon:'📌')+'</div>';
-      html+='<div class="card-body">';
-      html+='<div class="card-name">'+esc(r.name)+'</div>';
-      html+='<div class="card-meta">';
-      if(CAT[r.category])html+='<span class="badge '+CAT[r.category].bdg+'">'+CAT[r.category].name+'</span>';
-      if(r.caregiver)html+='<span class="badge bdg-care">👤 '+esc(r.caregiver)+'</span>';
-      if(rt)html+='<span class="badge bdg-repeat">🔁 '+rt+'</span>';
-      html+='</div>';
-      html+='<div class="card-date">📅 '+r.date+'（星期'+wd+'）'+(r.time&&r.time!=='00:00'?' ⏰ '+r.time:'');
-      if(days>=0&&days<=7){html+=' · '+(days===0?'🔴 今日':days===1?'🟡 聽日':'🟢 '+days+'日後');}
-      html+='</div>';
-      if(r.address)html+='<div class="card-note" style="margin-top:2px">📍 '+esc(r.address)+'</div>';
-      if(r.note)html+='<div class="card-note">📝 '+esc(r.note)+'</div>';
-      html+='<div class="card-actions">';
-      html+='<button class="btn-xs btn-edit" onclick="openEditModal(\''+esc(r.id)+'\')">✏️ 編輯</button>';
-      html+='<button class="btn-xs btn-del" onclick="quickDeleteReminder(\''+esc(r.id)+'\',\''+esc(r.name)+'\')">🗑</button>';
-      html+='</div></div></div></div>';
+  var html = '';
+  CAT_ORDER.forEach(function(cat) {
+    var items = filtered.filter(function(r) { return r.category === cat; });
+    if (!items.length) return;
+    html += '<div class="section-label">' + (CAT[cat] ? CAT[cat].icon : '\u{1F4CC}') + ' ' + (CAT[cat] ? CAT[cat].name : cat) + '</div>';
+    items.forEach(function(r) { html += cardHTML(r); });
+  });
+  // Uncategorized
+  var uncat = filtered.filter(function(r) { return !CAT[r.category] && r.category !== 'work'; });
+  if (uncat.length) {
+    html += '<div class="section-label">\u{1F4CC} 其他</div>';
+    uncat.forEach(function(r) { html += cardHTML(r); });
+  }
+  c.innerHTML = html || '<div class="empty"><div class="empty-icon">\u{1F4ED}</div><div class="empty-text">暫無提醒事項</div><div class="empty-sub">按右下角 + 新增</div></div>';
+  staggerCards(c);
+}
+
+// Caregiver tab render
+function renderCaregiverTab(caregiver) {
+  var tab = CAREGIVER_TAB[caregiver];
+  var c = document.getElementById(tab + '-reminder-list');
+  if (!c) return;
+  var items = (DATA.reminders || []).filter(function(r) {
+    if (r.caregiver === caregiver) return true;
+    // KEN special: also show work items
+    if (caregiver === 'KEN' && r.category === 'work') return true;
+    return false;
+  }).sort(function(a,b) { return a.date.localeCompare(b.date); });
+
+  if (!items.length) {
+    c.innerHTML = '<div class="empty"><div class="empty-icon">' + CAREGIVER_EMOJI[caregiver] + '</div><div class="empty-text">暫無 ' + caregiver + ' 的事項</div><div class="empty-sub">新增提醒時選取 ' + caregiver + ' 為照顧者</div></div>';
+    return;
+  }
+  var html = '<div class="section-label">' + CAREGIVER_EMOJI[caregiver] + ' ' + caregiver + ' 的事項（' + items.length + ' 項）</div>';
+  items.forEach(function(r) { html += cardHTML(r); });
+  c.innerHTML = html;
+  staggerCards(c);
+}
+
+// Card HTML builder
+function cardHTML(r, showRestore) {
+  var wd = formatWeekday(r.date);
+  var days = getDays(r.date);
+  var isExpired = (days < 0);
+  var urg = '';
+  if (!isExpired) {
+    urg = (days >= 0 && days <= 1) ? ((days === 0) ? 'urgent' : 'soon') : '';
+  } else {
+    urg = 'expired';
+  }
+  var rt = getRepeatText(r);
+  var catInfo = CAT[r.category] || { icon: '\u{1F4CC}', name: r.category || '未分類', bdg: 'bdg-other' };
+
+  var h = '';
+  h += '<div class="card ' + urg + '" data-cat="' + (r.category||'other') + '" data-id="' + esc(r.id) + '">';
+  h += '<div class="card-top">';
+  h += '<div class="card-icon">' + catInfo.icon + '</div>';
+  h += '<div class="card-body">';
+  h += '<div class="card-name">' + esc(r.name) + '</div>';
+  h += '<div class="card-meta">';
+  h += '<span class="badge ' + catInfo.bdg + '">' + catInfo.name + '</span>';
+  if (r.caregiver) h += '<span class="badge bdg-care">\u{1F464} ' + esc(r.caregiver) + '</span>';
+  if (rt) h += '<span class="badge bdg-repeat">\u{1F501} ' + rt + '</span>';
+  h += '</div>';
+  // Date line - fixed layout for mobile
+  h += '<div class="card-date">';
+  h += '<span class="card-date-icon">\u{1F4C5}</span>';
+  h += '<span class="card-date-text">' + r.date + '（星期' + wd + '）';
+  if (r.time && r.time !== '00:00') h += ' \u23F0 ' + r.time;
+  if (days >= 0 && days <= 7) {
+    h += ' \u00B7 ' + (days === 0 ? '\u{1F534} 今日' : days === 1 ? '\u{1F7E1} 聽日' : '\u{1F7E2} ' + days + '日後');
+  } else if (days < 0) {
+    h += ' \u00B7 \u{1F5D3} 已過期';
+  }
+  h += '</span></div>';
+  if (r.note) h += '<div class="card-note">\u{1F4DD} ' + esc(r.note) + '</div>';
+  h += '<div class="card-actions">';
+  if (showRestore) {
+    h += '<button class="btn-xs btn-restore" onclick="restoreFromHistory(\'' + esc(r.id) + '\')">\u{1F519} 還原</button>';
+  } else {
+    h += '<button class="btn-xs btn-edit" onclick="openEditModal(\'' + esc(r.id) + '\')">\u270F\uFE0F 編輯</button>';
+  }
+  h += '<button class="btn-xs btn-del" onclick="deleteReminderSafe(\'' + esc(r.id) + '\',\'' + esc(r.name) + '\', ' + (showRestore ? 'true' : 'false') + ')">\u{1F5D1}</button>';
+  h += '</div></div></div></div>';
+  return h;
+}
+
+// Birthday render
+function renderBirthdays() {
+  var g = document.getElementById('birthday-grid');
+  if (!DATA.birthdays || !DATA.birthdays.length) {
+    g.innerHTML = '<div class="empty" style="grid-column:1/-1"><p>未有設定生日</p></div>'; return;
+  }
+  var now = new Date();
+  var today = (now.getMonth()+1).toString().padStart(2,'0') + '-' + now.getDate().toString().padStart(2,'0');
+  var sorted = DATA.birthdays.slice().sort(function(a,b) {
+    if (a.date === '??-??') return 1; if (b.date === '??-??') return -1;
+    return a.date.localeCompare(b.date);
+  });
+  var html = '';
+  sorted.forEach(function(b) {
+    var isToday = b.date === today;
+    html += '<div class="bday-card' + (isToday ? ' today' : '') + '">';
+    html += '<button class="bday-edit" onclick="openBdayEdit(\'' + esc(b.name) + '\')">\u270F\uFE0F</button>';
+    html += '<div class="bday-emoji">' + (isToday ? '\u{1F389}' : '\u{1F382}') + '</div>';
+    html += '<div class="bday-name">' + esc(b.name) + '</div>';
+    html += '<div class="bday-date">' + b.date + '</div>';
+    if (b.note) html += '<div class="bday-note">' + esc(b.note) + '</div>';
+    html += '</div>';
+  });
+  g.innerHTML = html;
+}
+
+// History tab render
+function renderHistory() {
+  var c = document.getElementById('history-list');
+  var summary = document.getElementById('history-summary');
+  var items = DATA.history || [];
+  if (!items.length) {
+    summary.innerHTML = '暫無過往記錄';
+    c.innerHTML = '<div class="empty"><div class="empty-icon">\u{1F4E6}</div><p>暫無歷史記錄<br><small>事件到期 7 天後會自動移到此處</small></p></div>';
+    return;
+  }
+  summary.innerHTML = '共 <strong>' + items.length + '</strong> 項過往記錄（事件到期後自動歸檔）';
+  var sorted = items.slice().sort(function(a,b) { return (b.archivedAt || '').localeCompare(a.archivedAt || ''); });
+  var html = '';
+  sorted.forEach(function(r) { html += cardHTML(r, true); });
+  c.innerHTML = html;
+}
+
+function restoreFromHistory(id) {
+  var idx = (DATA.history || []).findIndex(function(r) { return r.id === id; });
+  if (idx < 0) return;
+  var item = DATA.history[idx];
+  delete item.archivedAt;
+  DATA.history.splice(idx, 1);
+  DATA.reminders.push(item);
+  saveLocal(); renderAll(); pushToGitHub(); updateHistoryBadge();
+  toast('\u{1F519} 已還原「' + item.name + '」');
+}
+
+function clearAllHistory() {
+  showConfirm('確定要清除所有歷史記錄嗎？（此操作無法還原）', function() {
+    DATA.history = [];
+    saveLocal(); renderAll(); pushToGitHub(); updateHistoryBadge();
+    toast('\u{1F5D1}\uFE0F 已清除所有歷史記錄');
+    closeConfirm();
+  });
+}
+
+// ===== Safe delete (move to history) =====
+function deleteReminderSafe(id, name, fromHistory) {
+  if (fromHistory) {
+    // Permanent delete from history
+    showConfirm('永久刪除「' + name + '」？', function() {
+      DATA.history = (DATA.history || []).filter(function(x) { return x.id !== id; });
+      saveLocal(); renderAll(); pushToGitHub(); updateHistoryBadge(); closeConfirm();
+      toast('\u{1F5D1}\uFE0F 已永久刪除');
     });
-  });
-  c.innerHTML=html;
-}
-
-function renderReminders(){
-  // Main tab: exclude KEN-only items
-  var items = (DATA.reminders||[]).filter(function(r){ return r.caregiver !== 'KEN'; });
-  renderReminderList(items, 'reminder-list');
-}
-
-function renderKenReminders(){
-  // KEN tab: only KEN items
-  var items = (DATA.reminders||[]).filter(function(r){ return r.caregiver === 'KEN'; });
-  renderReminderList(items, 'ken-list');
-}
-
-function renderBirthdays(){
-  var g=document.getElementById('birthday-grid');
-  if(!DATA.birthdays||!DATA.birthdays.length){
-    g.innerHTML='<div class="empty" style="grid-column:1/-1"><p>未有設定生日</p></div>';return;
+  } else {
+    // Move to history
+    showConfirm('將「' + name + '」移至歷史記錄？', function() {
+      var idx = DATA.reminders.findIndex(function(x) { return x.id === id; });
+      if (idx < 0) { closeConfirm(); return; }
+      var item = DATA.reminders[idx];
+      item.archivedAt = new Date().toISOString();
+      if (!DATA.history) DATA.history = [];
+      DATA.history.push(item);
+      DATA.reminders.splice(idx, 1);
+      saveLocal(); renderAll(); pushToGitHub(); updateHistoryBadge(); closeConfirm();
+      toast('\u{1F4E6} 已移至歷史記錄');
+    });
   }
-  var now=new Date();
-  var today=(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0');
-  var sorted=DATA.birthdays.slice().sort(function(a,b){
-    if(a.date==='??-??')return 1;if(b.date==='??-??')return -1;
-    return a.date.localeCompare(b.date);
-  });
-  var html='';
-  sorted.forEach(function(b){
-    var isToday=b.date===today;
-    html+='<div class="bday-card'+(isToday?' today':'')+'">';
-    html+='<button class="bday-edit" onclick="openBdayEdit(\''+esc(b.name)+'\')">✏️</button>';
-    html+='<div class="bday-emoji">'+(isToday?'🎉':'🎂')+'</div>';
-    html+='<div class="bday-name">'+esc(b.name)+'</div>';
-    html+='<div class="bday-date">'+b.date+'</div>';
-    if(b.note)html+='<div class="bday-note">'+esc(b.note)+'</div>';
-    html+='</div>';
-  });
-  g.innerHTML=html;
 }
 
-// ===== Repeat =====
-function onRepeatChange(){
-  document.getElementById('repeat-weekly').style.display=document.getElementById('form-repeat').value==='weekly'?'block':'none';
+// ===== Repeat helpers =====
+function onRepeatChange() {
+  document.getElementById('repeat-weekly').style.display = document.getElementById('form-repeat').value === 'weekly' ? 'block' : 'none';
 }
-function toggleDay(btn){btn.classList.toggle('active');}
-function getSelectedDays(){
-  var days=[];
-  document.querySelectorAll('#repeat-days .repeat-day-btn').forEach(function(b){
-    if(b.classList.contains('active'))days.push(parseInt(b.dataset.day));
+function onCategoryChange() {
+  var cat = document.getElementById('form-category').value;
+  if (cat === 'work') document.getElementById('form-caregiver').value = 'KEN';
+}
+function onCaregiverChange() {
+  // Can add auto-category logic here if needed
+}
+function toggleDay(btn) { btn.classList.toggle('active'); }
+function getSelectedDays() {
+  var days = [];
+  document.querySelectorAll('#repeat-days .repeat-day-btn').forEach(function(b) {
+    if (b.classList.contains('active')) days.push(parseInt(b.dataset.day));
   });
   return days;
 }
-function setSelectedDays(days){
-  document.querySelectorAll('#repeat-days .repeat-day-btn').forEach(function(b){
-    b.classList.toggle('active',days.indexOf(parseInt(b.dataset.day))>=0);
+function setSelectedDays(days) {
+  document.querySelectorAll('#repeat-days .repeat-day-btn').forEach(function(b) {
+    b.classList.toggle('active', days.indexOf(parseInt(b.dataset.day)) >= 0);
   });
 }
 
 // ===== Modal: Reminder =====
-function resetRepeatFields(){
-  document.getElementById('form-repeat').value='none';
-  document.getElementById('repeat-weekly').style.display='none';
+function resetRepeatFields() {
+  document.getElementById('form-repeat').value = 'none';
+  document.getElementById('repeat-weekly').style.display = 'none';
   setSelectedDays([]);
-  document.getElementById('form-time-h').value='09';
-  document.getElementById('form-time-m').value='00';
+  document.getElementById('form-time-h').value = '09';
+  document.getElementById('form-time-m').value = '00';
 }
 
-function populateTimeSelects(){
+function populateTimeSelects() {
   var hSel = document.getElementById('form-time-h');
   var mSel = document.getElementById('form-time-m');
-  if(!hSel || !mSel) return;
-  // 只填一次
-  if(hSel.options.length > 1) return;
-  for(var h=0;h<24;h++){
-    var o=document.createElement('option');
+  if (!hSel || !mSel) return;
+  if (hSel.options.length > 1) return;
+  for (var h = 0; h < 24; h++) {
+    var o = document.createElement('option');
     o.value = String(h).padStart(2,'0');
     o.textContent = String(h).padStart(2,'0');
     hSel.appendChild(o);
   }
-  ['00','15','30','45'].forEach(function(m){
-    var o=document.createElement('option');
-    o.value=m; o.textContent=m;
+  ['00','15','30','45'].forEach(function(m) {
+    var o = document.createElement('option');
+    o.value = m; o.textContent = m;
     mSel.appendChild(o);
   });
 }
-function openAddModal(){
-  document.getElementById('modal-title').innerHTML='➕ 新增提醒';
-  document.getElementById('edit-id').value='';
-  document.getElementById('form-name').value='';
-  document.getElementById('form-date').value='';
-  document.getElementById('form-time-h').value='09';
-  document.getElementById('form-time-m').value='00';
-  document.getElementById('form-category').value='school';
-  document.getElementById('form-caregiver').value=currentTab==='ken'?'KEN':'';
-  document.getElementById('form-note').value='';
-  document.getElementById('form-address').value='';
+
+function openAddModal() {
+  document.getElementById('modal-title').innerHTML = '\u2795 新增提醒';
+  document.getElementById('edit-id').value = '';
+  document.getElementById('form-name').value = '';
+  document.getElementById('form-date').value = '';
+  document.getElementById('form-time-h').value = '09';
+  document.getElementById('form-time-m').value = '00';
+  document.getElementById('form-note').value = '';
+  document.getElementById('edit-del-btn').style.display = 'none';
   resetRepeatFields();
-  document.getElementById('edit-del-btn').style.display='none';
-  document.getElementById('modal-reminder').classList.add('show');
-  setTimeout(function(){document.getElementById('form-name').focus();},300);
-}
-function openEditModal(id){
-  var r=DATA.reminders.find(function(x){return x.id===id;});
-  if(!r)return;
-  document.getElementById('modal-title').innerHTML='✏️ 編輯提醒';
-  document.getElementById('edit-id').value=r.id;
-  document.getElementById('form-name').value=r.name;
-  document.getElementById('form-date').value=r.date;
-  document.getElementById('form-category').value=r.category;
-  document.getElementById('form-caregiver').value=r.caregiver||'';
-  document.getElementById('form-note').value=r.note||'';
-  document.getElementById('form-address').value=r.address||'';
-  var tp=(r.time||'09:00').split(':');
-  document.getElementById('form-time-h').value=tp[0];
-  document.getElementById('form-time-m').value=tp[1];
-  document.getElementById('form-repeat').value=r.repeat||'none';
-  onRepeatChange();
-  if(r.repeat==='weekly'&&r.repeatDays)setSelectedDays(r.repeatDays);
-  document.getElementById('edit-del-btn').style.display='block';
-  document.getElementById('modal-reminder').classList.add('show');
-}
-function closeModal(id){document.getElementById(id).classList.remove('show');}
 
-function saveReminder(){
-  var name=document.getElementById('form-name').value.trim();
-  var date=document.getElementById('form-date').value;
-  var time=document.getElementById('form-time-h').value+':'+document.getElementById('form-time-m').value;
-  var category=document.getElementById('form-category').value;
-  var caregiver=document.getElementById('form-caregiver').value;
-  var address=document.getElementById('form-address').value.trim();
-  var note=document.getElementById('form-note').value.trim();
-  var repeat=document.getElementById('form-repeat').value;
-  var editId=document.getElementById('edit-id').value;
-  if(!name){toast('請輸入事項名稱');return;}
-  if(!date){toast('請選擇日期');return;}
-
-  var rd={repeat:repeat};
-  if(repeat==='weekly'){
-    var days=getSelectedDays();
-    if(!days.length){toast('請選擇至少一個星期');return;}
-    rd.repeatDays=days;
+  // Set category/caregiver based on active tab
+  var tab = CURRENT_TAB;
+  var cat = 'school';
+  var cg = '';
+  if (tab === 'ken') { cat = 'work'; cg = 'KEN'; }
+  else {
+    var foundCg = CAREGIVERS.find(function(n) { return CAREGIVER_TAB[n] === tab; });
+    if (foundCg) { cg = foundCg; cat = 'routine'; }
   }
-  if(repeat==='monthly')rd.repeatDayOfMonth=new Date(date).getDate();
+  document.getElementById('form-category').value = cat;
+  document.getElementById('form-caregiver').value = cg;
 
-  var payload=Object.assign({name,date,time,category,caregiver,note,address},rd);
+  document.getElementById('modal-reminder').classList.add('show');
+  setTimeout(function() { document.getElementById('form-name').focus(); }, 300);
+}
 
-  if(editId){
-    var idx=DATA.reminders.findIndex(function(r){return r.id===editId;});
-    if(idx>=0){
+function openEditModal(id) {
+  var r = DATA.reminders.find(function(x) { return x.id === id; });
+  if (!r) {
+    // Check history
+    r = (DATA.history || []).find(function(x) { return x.id === id; });
+    if (!r) return;
+  }
+  document.getElementById('modal-title').innerHTML = '\u270F\uFE0F 編輯提醒';
+  document.getElementById('edit-id').value = r.id;
+  document.getElementById('form-name').value = r.name;
+  document.getElementById('form-date').value = r.date;
+  document.getElementById('form-category').value = r.category;
+  document.getElementById('form-caregiver').value = r.caregiver || '';
+  document.getElementById('form-note').value = r.note || '';
+  var tp = (r.time || '09:00').split(':');
+  document.getElementById('form-time-h').value = tp[0];
+  document.getElementById('form-time-m').value = tp[1];
+  document.getElementById('form-repeat').value = r.repeat || 'none';
+  onRepeatChange();
+  if (r.repeat === 'weekly' && r.repeatDays) setSelectedDays(r.repeatDays);
+  document.getElementById('edit-del-btn').style.display = 'block';
+  document.getElementById('modal-reminder').classList.add('show');
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+function saveReminder() {
+  var name = document.getElementById('form-name').value.trim();
+  var date = document.getElementById('form-date').value;
+  var time = document.getElementById('form-time-h').value + ':' + document.getElementById('form-time-m').value;
+  var category = document.getElementById('form-category').value;
+  var caregiver = document.getElementById('form-caregiver').value;
+  var note = document.getElementById('form-note').value.trim();
+  var repeat = document.getElementById('form-repeat').value;
+  var editId = document.getElementById('edit-id').value;
+  if (!name) { toast('請輸入事項名稱'); return; }
+  if (!date) { toast('請選擇日期'); return; }
+  if (!caregiver) { toast('⚠️ 請選擇照顧者，否則不會發 WhatsApp 通知！'); document.getElementById('form-caregiver').style.borderColor='#ef4444'; document.getElementById('form-caregiver').focus(); return; }
+
+  var rd = { repeat: repeat };
+  if (repeat === 'weekly') {
+    var days = getSelectedDays();
+    if (!days.length) { toast('請選擇至少一個星期'); return; }
+    rd.repeatDays = days;
+  }
+  if (repeat === 'monthly') rd.repeatDayOfMonth = parseInt(date.split('-')[2]);
+
+  var payload = { name: name, date: date, time: time, category: category, caregiver: caregiver, note: note };
+  Object.assign(payload, rd);
+
+  // Safety: work items always KEN
+  if (payload.category === 'work') payload.caregiver = 'KEN';
+
+  // API mode: push to backend
+  if (isAuthenticated()) {
+    var apiPayload = {
+      name: payload.name, category: payload.category, date: payload.date, time: payload.time,
+      note: payload.note, caregiver: payload.caregiver, repeat: payload.repeat,
+      repeatDays: rd.repeatDays, repeatDayOfMonth: rd.repeatDayOfMonth
+    };
+    if (editId) {
+      apiFetch('/api/reminders/' + editId, { method: 'PUT', body: JSON.stringify(apiPayload) })
+        .then(function() { closeModal('modal-reminder'); toast('\u2705 已更新「' + name + '」'); })
+        .catch(function() { toast('\u274C API 更新失敗，嘗試 GitHub 同步'); pushToGitHub(); });
+    } else {
+      apiFetch('/api/reminders', { method: 'POST', body: JSON.stringify(apiPayload) })
+        .then(function() { closeModal('modal-reminder'); toast('\u2705 已新增「' + name + '」'); })
+        .catch(function() { toast('\u274C API 新增失敗，嘗試 GitHub 同步'); pushToGitHub(); });
+    }
+    return;
+  }
+
+  if (editId) {
+    var idx = DATA.reminders.findIndex(function(r) { return r.id === editId; });
+    if (idx >= 0) {
       var oldCaregiver = DATA.reminders[idx].caregiver;
-      if(oldCaregiver !== caregiver){
+      if (oldCaregiver !== caregiver) {
         DATA.reminders[idx].caregiverNotified1d = false;
         DATA.reminders[idx].caregiverNotified3h = false;
-        if(!DATA.groupNotifications) DATA.groupNotifications = [];
-        DATA.groupNotifications.push({id:'gn-'+Date.now(),reminderName:name,oldCaregiver:oldCaregiver||'無',newCaregiver:caregiver,changedAt:new Date().toISOString()});
+        if (!DATA.groupNotifications) DATA.groupNotifications = [];
+        DATA.groupNotifications.push({ id: 'gn-' + Date.now(), reminderName: name, oldCaregiver: oldCaregiver || '無', newCaregiver: caregiver, changedAt: new Date().toISOString() });
       }
-      Object.assign(DATA.reminders[idx],payload);
+      Object.assign(DATA.reminders[idx], payload);
     }
-    saveLocal();renderReminders();renderKenReminders();closeModal('modal-reminder');
-    toast('✅ 已更新「'+name+'」');
-    syncToServer();
+    saveLocal(); renderAll(); pushToGitHub(); updateHistoryBadge(); closeModal('modal-reminder');
+    toast('\u2705 已更新「' + name + '」');
   } else {
-    var item=Object.assign({id:uid(),notified:false,caregiverNotified1d:false,caregiverNotified3h:false},payload);
-    DATA.reminders.push(item);saveLocal();renderReminders();renderKenReminders();closeModal('modal-reminder');
-    toast('✅ 已新增「'+name+'」');
-    syncToServer();
+    var item = Object.assign({ id: uid(), notified: false, caregiverNotified1d: false, caregiverNotified3h: false }, payload);
+    DATA.reminders.push(item);
+    saveLocal(); renderAll(); pushToGitHub(); updateHistoryBadge(); closeModal('modal-reminder');
+    toast('\u2705 已新增「' + name + '」');
   }
 }
 
-var _delId=null;
-function confirmDeleteReminder(){
-  _delId=document.getElementById('edit-id').value;
-  var r=DATA.reminders.find(function(x){return x.id===_delId;});
-  showConfirm('確定要刪除「'+(r?r.name:'')+'」嗎？',function(){
-    DATA.reminders=DATA.reminders.filter(function(x){return x.id!==_delId;});
-    saveLocal();renderReminders();renderKenReminders();closeModal('modal-reminder');closeConfirm();
-    toast('🗑️ 已刪除');
-    syncToServer();
-  });
-}
-function quickDeleteReminder(id,name){
-  showConfirm('確定要刪除「'+name+'」嗎？',function(){
-    DATA.reminders=DATA.reminders.filter(function(x){return x.id!==id;});
-    saveLocal();renderReminders();renderKenReminders();closeConfirm();
-    toast('🗑️ 已刪除');
-    syncToServer();
+// ===== Delete =====
+function confirmDeleteReminder() {
+  var id = document.getElementById('edit-id').value;
+  var r = DATA.reminders.find(function(x) { return x.id === id; });
+  if (!r) return;
+  showConfirm('將「' + r.name + '」移至歷史記錄？', function() {
+    var idx = DATA.reminders.findIndex(function(x) { return x.id === id; });
+    if (idx < 0) { closeConfirm(); return; }
+    var item = DATA.reminders[idx];
+    item.archivedAt = new Date().toISOString();
+    if (!DATA.history) DATA.history = [];
+    DATA.history.push(item);
+    DATA.reminders.splice(idx, 1);
+    saveLocal(); renderAll(); pushToGitHub(); updateHistoryBadge(); closeModal('modal-reminder'); closeConfirm();
+    toast('\u{1F4E6} 已移至歷史記錄');
   });
 }
 
 // ===== Modal: Birthday =====
-function openBdayAdd(){
-  document.getElementById('bday-orig-name').value='';
-  document.getElementById('bday-name').value='';
-  document.getElementById('bday-date').value='';
-  document.getElementById('bday-note').value='';
-  document.getElementById('bday-del-btn').style.display='none';
+function openBdayAdd() {
+  document.getElementById('bday-orig-name').value = '';
+  document.getElementById('bday-name').value = '';
+  document.getElementById('bday-date').value = '';
+  document.getElementById('bday-note').value = '';
+  document.getElementById('bday-del-btn').style.display = 'none';
   document.getElementById('modal-birthday').classList.add('show');
-  setTimeout(function(){document.getElementById('bday-name').focus();},300);
+  setTimeout(function() { document.getElementById('bday-name').focus(); }, 300);
 }
-function openBdayEdit(name){
-  var b=DATA.birthdays.find(function(x){return x.name===name;});
-  if(!b)return;
-  document.getElementById('bday-orig-name').value=b.name;
-  document.getElementById('bday-name').value=b.name;
-  document.getElementById('bday-date').value=b.date==='??-??'?'':b.date;
-  document.getElementById('bday-note').value=b.note||'';
-  document.getElementById('bday-del-btn').style.display='block';
+function openBdayEdit(name) {
+  var b = DATA.birthdays.find(function(x) { return x.name === name; });
+  if (!b) return;
+  document.getElementById('bday-orig-name').value = b.name;
+  document.getElementById('bday-name').value = b.name;
+  document.getElementById('bday-date').value = b.date === '??-??' ? '' : b.date;
+  document.getElementById('bday-note').value = b.note || '';
+  document.getElementById('bday-del-btn').style.display = 'block';
   document.getElementById('modal-birthday').classList.add('show');
 }
-function saveBirthday(){
-  var name=document.getElementById('bday-name').value.trim();
-  var dateR=document.getElementById('bday-date').value.trim();
-  var note=document.getElementById('bday-note').value.trim();
-  var orig=document.getElementById('bday-orig-name').value;
-  if(!name){toast('請輸入姓名');return;}
-  if(!dateR){toast('請輸入生日');return;}
-  var m=dateR.match(/^(\d{1,2})-(\d{1,2})$/);
-  if(!m){toast('格式應為 MM-DD（例如 08-15）');return;}
-  var date=m[1].padStart(2,'0')+'-'+m[2].padStart(2,'0');
-  var item={name:name,date:date,note:note};
+function saveBirthday() {
+  var name = document.getElementById('bday-name').value.trim();
+  var dateR = document.getElementById('bday-date').value.trim();
+  var note = document.getElementById('bday-note').value.trim();
+  var orig = document.getElementById('bday-orig-name').value;
+  if (!name) { toast('請輸入姓名'); return; }
+  if (!dateR) { toast('請輸入生日'); return; }
+  var m = dateR.match(/^(\d{1,2})-(\d{1,2})$/);
+  if (!m) { toast('格式應為 MM-DD（例如 08-15）'); return; }
+  var date = m[1].padStart(2,'0') + '-' + m[2].padStart(2,'0');
+  var item = { name: name, date: date, note: note };
 
-  if(orig&&orig!==name)DATA.birthdays=DATA.birthdays.filter(function(x){return x.name!==orig;});
-  var ex=DATA.birthdays.findIndex(function(x){return x.name===name;});
-  if(ex>=0)DATA.birthdays[ex]=item;else DATA.birthdays.push(item);
-  saveLocal();renderBirthdays();closeModal('modal-birthday');
-  toast('✅ 已儲存 '+name+' 的生日');
-  syncToServer();
+  if (orig && orig !== name) DATA.birthdays = DATA.birthdays.filter(function(x) { return x.name !== orig; });
+  var ex = DATA.birthdays.findIndex(function(x) { return x.name === name; });
+  if (ex >= 0) DATA.birthdays[ex] = item; else DATA.birthdays.push(item);
+  saveLocal(); renderAll(); pushToGitHub(); closeModal('modal-birthday');
+  toast('\u2705 已儲存 ' + name + ' 的生日');
 }
-function confirmDeleteBday(){
-  var name=document.getElementById('bday-orig-name').value;
-  showConfirm('確定要刪除 '+name+' 的生日嗎？',function(){
-    DATA.birthdays=DATA.birthdays.filter(function(x){return x.name!==name;});
-    saveLocal();renderBirthdays();closeModal('modal-birthday');closeConfirm();
-    toast('🗑️ 已刪除 '+name+' 生日');
-    syncToServer();
+function confirmDeleteBday() {
+  var name = document.getElementById('bday-orig-name').value;
+  showConfirm('確定要刪除 ' + name + ' 的生日嗎？', function() {
+    DATA.birthdays = DATA.birthdays.filter(function(x) { return x.name !== name; });
+    saveLocal(); renderAll(); pushToGitHub(); closeModal('modal-birthday'); closeConfirm();
+    toast('\u{1F5D1}\uFE0F 已刪除 ' + name + ' 生日');
   });
 }
 
 // ===== Confirm =====
-function showConfirm(msg,cb){
-  document.getElementById('confirm-msg').textContent=msg;
-  document.getElementById('confirm-yes').onclick=cb;
+function showConfirm(msg, cb) {
+  document.getElementById('confirm-msg').textContent = msg;
+  document.getElementById('confirm-yes').onclick = cb;
   document.getElementById('confirm-overlay').classList.add('show');
 }
-function closeConfirm(){document.getElementById('confirm-overlay').classList.remove('show');}
+function closeConfirm() { document.getElementById('confirm-overlay').classList.remove('show'); }
 
-// ===== Close on overlay =====
-['modal-reminder','modal-birthday','confirm-overlay'].forEach(function(id){
-  document.getElementById(id).addEventListener('click',function(e){
-    if(e.target===this){
-      if(id==='confirm-overlay')closeConfirm();else closeModal(id);
+// Overlay click to close
+['modal-reminder','modal-birthday','confirm-overlay'].forEach(function(id) {
+  document.getElementById(id).addEventListener('click', function(e) {
+    if (e.target === this) {
+      if (id === 'confirm-overlay') closeConfirm(); else closeModal(id);
     }
   });
 });
 
+// ===== WhatsApp =====
+function utf8ToBase64(str) {
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(m, p1) { return String.fromCharCode('0x' + p1); }));
+}
+function getGHToken() {
+  var t = localStorage.getItem('gh_token');
+  if (!t) {
+    t = prompt('\u8ACB\u8F38\u5165 GitHub Personal Access Token\uFF08\u9700\u8981 repo \u6B0A\u9650\uFF09\uFF1A');
+    if (t) localStorage.setItem('gh_token', t);
+  }
+  return t || '';
+}
+
+async function sendWhatsApp() {
+  var phone = document.getElementById('wa-recipient').value;
+  var text = document.getElementById('wa-message').value.trim();
+  var st = document.getElementById('wa-status-msg');
+  if (!text) { st.textContent = '請輸入訊息'; st.style.color = '#ef4444'; st.style.display = 'block'; return; }
+
+  st.textContent = '發送中...';
+  st.style.color = '#f59e0b';
+  st.style.display = 'block';
+
+  if (!DATA.pendingMessages) DATA.pendingMessages = [];
+  DATA.pendingMessages.push({ phone: phone, text: text, at: new Date().toISOString() });
+  saveLocal();
+
+  try {
+    var token = getGHToken();
+    var getResp = await fetch('https://api.github.com/repos/ken851004-afk/family-reminder-cloud/contents/data.json', {
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (!getResp.ok) throw new Error('GitHub GET ' + getResp.status);
+    var getData = await getResp.json();
+    var sha = getData.sha;
+
+    var raw = atob(getData.content.replace(/\s/g, ''));
+    var bytes = new Uint8Array(raw.length);
+    for (var i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+    var serverData = JSON.parse(new TextDecoder('utf-8').decode(bytes));
+    serverData.pendingMessages = DATA.pendingMessages;
+
+    var putResp = await fetch('https://api.github.com/repos/ken851004-afk/family-reminder-cloud/contents/data.json', {
+      method: 'PUT',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
+      body: JSON.stringify({ message: 'WhatsApp: ' + text.substring(0, 50), content: utf8ToBase64(JSON.stringify(serverData, null, 2)), sha: sha })
+    });
+    if (!putResp.ok) throw new Error('GitHub PUT ' + putResp.status);
+
+    await fetch('https://api.github.com/repos/ken851004-afk/family-reminder-cloud/actions/workflows/caregiver-remind.yml/dispatches', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ref: 'master' })
+    });
+
+    DATA.pendingMessages = [];
+    saveLocal();
+    document.getElementById('wa-message').value = '';
+    st.textContent = '已發送！約 1-2 分鐘送達';
+    st.style.color = '#10b981';
+  } catch(e) {
+    st.textContent = '失敗: ' + e.message;
+    st.style.color = '#ef4444';
+    console.error('sendWhatsApp error:', e);
+  }
+}
+
+// ===== Pull to Refresh =====
+var _ptrStart = 0, _ptrPulling = false, _ptrEl = null;
+function initPTR() {
+  _ptrEl = document.getElementById('ptr-indicator');
+  var container = document.getElementById('main-container');
+  if (!container) return;
+  container.addEventListener('touchstart', function(e) {
+    if (window.scrollY === 0) _ptrStart = e.touches[0].clientY;
+  }, { passive: true });
+  container.addEventListener('touchmove', function(e) {
+    if (_ptrStart === 0 || window.scrollY > 0) return;
+    var diff = e.touches[0].clientY - _ptrStart;
+    if (diff > 0) {
+      _ptrPulling = true;
+      _ptrEl.style.height = Math.min(diff * 0.4, 60) + 'px';
+      _ptrEl.textContent = diff > 60 ? '釋放以重新整理...' : '向下拉動以重新整理...';
+      _ptrEl.classList.add('visible');
+    }
+  }, { passive: true });
+  container.addEventListener('touchend', function() {
+    if (!_ptrPulling) return;
+    _ptrPulling = false;
+    if (parseInt(_ptrEl.style.height) > 30) {
+      _ptrEl.textContent = '載入中...';
+      syncFromServer();
+    }
+    _ptrEl.style.height = '0';
+    setTimeout(function() { _ptrEl.classList.remove('visible'); }, 300);
+    _ptrStart = 0;
+  }, { passive: true });
+}
+
+// ===== Dark Mode =====
+function initDarkMode() {
+  var dark = localStorage.getItem('dark-mode') === 'true';
+  if (dark) document.body.classList.add('dark-mode');
+}
+function toggleDarkMode() {
+  var isDark = document.body.classList.toggle('dark-mode');
+  localStorage.setItem('dark-mode', isDark);
+}
+
 // ===== Auto sync =====
-setInterval(function(){ syncFromServer(); }, 30000);
+setInterval(function() { syncFromServer(); }, 60000);
+setInterval(function() { checkWAStatus(); }, 10000);
 
 // ===== INIT =====
-function init(){
+function init() {
   populateTimeSelects();
-  loadLocal();
-  renderAll();
+  initDarkMode();
+  initPTR();
   syncFromServer();
+  checkWAStatus();
 }
 init();
 </script>
