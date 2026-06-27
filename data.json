@@ -198,6 +198,19 @@
       "repeatDays": [
         3
       ]
+    },
+    {
+      "id": "r1782580962185vbc",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "LUX",
+      "date": "2026-06-28",
+      "time": "06:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
