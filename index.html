@@ -1103,6 +1103,28 @@ function onCategoryChange() {
   var cat = document.getElementById('form-category').value;
   if (cat === 'work') document.getElementById('form-caregiver').value = 'KEN';
 }
+function onMultiDateChange() {
+  var checked = document.getElementById('form-multi-date').checked;
+  var row = document.getElementById('multi-date-row');
+  row.style.display = checked ? 'flex' : 'none';
+  if (checked) {
+    var start = document.getElementById('form-date').value;
+    if (start) document.getElementById('form-date-end').min = start;
+    updateMultiDateCount();
+  }
+}
+function updateMultiDateCount() {
+  var start = document.getElementById('form-date').value;
+  var end = document.getElementById('form-date-end').value;
+  var el = document.getElementById('multi-date-count');
+  if (start && end && end >= start) {
+    var d1 = new Date(start), d2 = new Date(end);
+    var diff = Math.round((d2 - d1) / 86400000) + 1;
+    el.textContent = '共 ' + diff + ' 日';
+  } else {
+    el.textContent = '';
+  }
+}
 function onCaregiverChange() {
   // Can add auto-category logic here if needed
 }
