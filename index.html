@@ -547,6 +547,7 @@ var CAREGIVER_TAB = { 'KEN':'ken', 'EPPIE':'eppie', 'COFFE':'coffe', 'Kenny Yam'
 // ===== DATA =====
 var DATA = { reminders: [], birthdays: [], history: [] };
 var DATA_SHA = '';
+var DATA_LOADED = false;  // guard: prevent empty push before first load
 var API_ONLINE = false;
 var CURRENT_TAB = 'reminders';
 
@@ -772,6 +773,7 @@ function syncFromGitHub() {
     if (!DATA.history) DATA.history = [];
     if (!DATA.pendingMessages) DATA.pendingMessages = [];
     DATA_SHA = j.sha;
+    DATA_LOADED = true;
     API_ONLINE = true; saveLocal();
     setConnStatus(true);
     autoArchiveExpired();
@@ -781,6 +783,7 @@ function syncFromGitHub() {
     console.log('GitHub sync failed:', e);
     API_ONLINE = false; setConnStatus(false);
     if (!DATA.reminders || !DATA.reminders.length) loadLocal();
+    DATA_LOADED = true;  // local fallback also counts as loaded
     if (!DATA.history) DATA.history = [];
     autoArchiveExpired();
     renderAll();
@@ -815,6 +818,7 @@ function pushToAPI() {
 
 function pushToGitHub() {
   var token = getGHToken();
+  if (!DATA_LOADED) { console.log('Data not loaded yet, skip push'); return; }
   if (!token || !DATA_SHA) { console.log('No token or SHA, skip push'); return; }
   var jsonStr = JSON.stringify(DATA, null, 2);
   var bytes = new TextEncoder().encode(jsonStr);
