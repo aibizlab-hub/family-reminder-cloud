@@ -10,9 +10,7 @@
       "caregiver": "EPPIE",
       "note": "",
       "repeat": "weekly",
-      "repeatDays": [
-        6
-      ],
+      "repeatDays": [6],
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
       "address": ""
@@ -27,9 +25,7 @@
       "caregiver": "EPPIE",
       "note": "七，八月\n坪石青協",
       "repeat": "weekly",
-      "repeatDays": [
-        3
-      ],
+      "repeatDays": [3],
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
       "address": ""
@@ -44,9 +40,7 @@
       "caregiver": "KEN",
       "note": "七，八月",
       "repeat": "weekly",
-      "repeatDays": [
-        4
-      ],
+      "repeatDays": [4],
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
       "address": ""
@@ -61,9 +55,7 @@
       "caregiver": "EPPIE",
       "note": "最後4堂",
       "repeat": "weekly",
-      "repeatDays": [
-        1
-      ],
+      "repeatDays": [1],
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
       "address": ""
@@ -148,6 +140,101 @@
       "caregiver": "KEN",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "id": "r1782031274868tn8",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "優才",
+      "date": "2026-06-28",
+      "time": "16:45",
+      "category": "school",
+      "memberId": "ken",
+      "note": "調景嶺\n面試信",
+      "repeat": "none",
+      "caregiver": "Rosanna Mok"
+    },
+    {
+      "id": "r1782533365556by6",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Obi老師 跳舞",
+      "date": "2026-06-27",
+      "time": "13:30",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "weekly",
+      "repeatDays": [6]
+    },
+    {
+      "id": "r17825362469190h9",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 數學",
+      "date": "2026-06-27",
+      "time": "10:00",
+      "category": "class",
+      "caregiver": "ALL",
+      "note": "",
+      "repeat": "weekly",
+      "repeatDays": [6]
+    },
+    {
+      "id": "r1782536287397slr",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad數學",
+      "date": "2026-07-01",
+      "time": "18:30",
+      "category": "school",
+      "caregiver": "ALL",
+      "note": "",
+      "repeat": "weekly",
+      "repeatDays": [3]
+    },
+    {
+      "id": "r1782580962185vbc",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "LUX",
+      "date": "2026-06-28",
+      "time": "06:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r178258100875725i",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "lux",
+      "date": "2026-06-30",
+      "time": "09:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "時間未知",
+      "repeat": "none"
+    },
+    {
+      "id": "r17825833211520y3",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Leo",
+      "date": "2026-07-01",
+      "time": "09:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "帶煙蛋",
+      "repeat": "daily"
     }
   ],
   "birthdays": [
@@ -165,7 +252,88 @@
       "name": "JARVIS",
       "date": "08-09",
       "note": ""
+    },
+    {
+      "name": "Coffee",
+      "date": "02-21",
+      "note": ""
+    },
+    {
+      "name": "老豆",
+      "date": "06-16",
+      "note": ""
+    },
+    {
+      "name": "Kenny",
+      "date": "01-25",
+      "note": ""
+    },
+    {
+      "name": "Rosanna",
+      "date": "08-03",
+      "note": ""
     }
   ],
-  "pendingMessages": []
+  "pendingMessages": [],
+  "members": [
+    {
+      "id": "ken",
+      "name": "KEN🐏",
+      "role": "adult",
+      "phone": "85262218999",
+      "color": "#4F46E5"
+    },
+    {
+      "id": "eppie",
+      "name": "EPPIE🐏",
+      "role": "child",
+      "phone": "85297510047",
+      "color": "#EC4899"
+    },
+    {
+      "id": "kenny-yam",
+      "name": "Kenny Yam",
+      "role": "adult",
+      "phone": "85291339336",
+      "color": "#10B981"
+    },
+    {
+      "id": "rosanna-mok",
+      "name": "Rosanna Mok",
+      "role": "adult",
+      "phone": "85293398522",
+      "color": "#F59E0B"
+    },
+    {
+      "id": "coffee",
+      "name": "COFFE",
+      "role": "adult",
+      "phone": "85266713322",
+      "color": "#8B5CF6"
+    },
+    {
+      "id": "lou-dau",
+      "name": "老豆",
+      "role": "adult",
+      "phone": "85262269100",
+      "color": "#EF4444"
+    }
+  ],
+  "settings": {
+    "dark_mode": false,
+    "pre_day": true,
+    "pre_3h": true,
+    "on_time": true,
+    "browser_push": true,
+    "wa_auto": true,
+    "email_user": "",
+    "email_service": "",
+    "email_template": "",
+    "email_to": ""
+  },
+  "sent_notifications": {},
+  "_room": "",
+  "_version": 15,
+  "history": [],
+  "groupNotifications": []
 }
