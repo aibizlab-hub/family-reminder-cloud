@@ -114,7 +114,7 @@
       "id": "r1782242069578xfj",
       "notified": false,
       "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
+      "caregiverNotified3h": true,
       "name": "VICTOR",
       "date": "2026-07-03",
       "time": "09:00",
