@@ -7,7 +7,7 @@
       "date": "2026-06-27",
       "time": "15:00",
       "category": "class",
-      "caregiver": "EPPIE",
+      "caregiver": "KEN",
       "note": "",
       "repeat": "weekly",
       "repeatDays": [
@@ -373,7 +373,15 @@
       "archivedAt": "2026-07-04T11:14:02.370Z"
     }
   ],
-  "groupNotifications": [],
+  "groupNotifications": [
+    {
+      "id": "gn-1783164104800",
+      "reminderName": "Joe Sir",
+      "oldCaregiver": "EPPIE",
+      "newCaregiver": "KEN",
+      "changedAt": "2026-07-04T11:21:44.800Z"
+    }
+  ],
   "_lastArchived": [
     "r1782242069578xfj"
   ]
