@@ -2,6 +2,9 @@
 <html lang="zh-HK">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
 <meta name="theme-color" content="#4f46e5">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1096,7 +1099,7 @@ function syncFromAPI() {
   });
 }
 function syncFromGitHub() {
-  fetch('https://api.github.com/repos/ken851004-afk/family-reminder-cloud/contents/data.json', {
+  return fetch('https://api.github.com/repos/ken851004-afk/family-reminder-cloud/contents/data.json', {
     headers: { 'Authorization': 'Bearer ' + getGHToken(), 'Accept': 'application/vnd.github.v3+json' }
   }).then(function(r){ return r.json(); })
   .then(function(j){
@@ -1122,6 +1125,7 @@ function syncFromGitHub() {
     autoArchiveExpired();
     renderAll();
     updateHistoryBadge();
+    throw e;  // re-throw so callers' .catch() can handle it
   });
 }
 
@@ -1150,7 +1154,8 @@ function pushToAPI() {
   });
 }
 
-function pushToGitHub() {
+function pushToGitHub(retryCount) {
+  retryCount = retryCount || 0;
   var token = getGHToken();
   if (!DATA_LOADED) { console.log('Data not loaded yet, skip push'); return Promise.resolve(false); }
   if (!token || !DATA_SHA) { console.log('No token or SHA, skip push'); return Promise.resolve(false); }
@@ -1168,11 +1173,11 @@ function pushToGitHub() {
     body: JSON.stringify({ message: 'Update data.json via web UI', content: b64, sha: DATA_SHA, branch: 'master' })
   }).then(function(r) {
     if (r.ok) return r.json();
-    if (r.status === 409) {
-      // SHA conflict — re-sync and retry once
-      console.log('[GH] SHA conflict, re-syncing...');
+    if (r.status === 409 && retryCount < 2) {
+      // SHA conflict — re-sync and retry
+      console.log('[GH] SHA conflict, re-syncing (retry ' + (retryCount+1) + ')...');
       return syncFromGitHub().then(function() {
-        return pushToGitHub();
+        return pushToGitHub(retryCount + 1);
       });
     }
     if (r.status === 403) {
