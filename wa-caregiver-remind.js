@@ -311,7 +311,12 @@ async function main() {
     const sock = makeWASocket({
       version,
       auth: state,
-      printQRInTerminal: false,
+      printQRInTerminal: true,  // Enable for debugging
+      qr: (qr) => {
+        console.error('[WA] ⚠️ QR CODE NEEDED! Scan this with WhatsApp:');
+        console.error(qr);
+        console.error('[WA] (This means WA_CREDS_B64 is expired or invalid)');
+      },
       markOnlineOnConnect: false,
       logger: require('pino')({ level: 'silent' }),
       msgRetryCounterCache: msgRetryCounter,
@@ -432,12 +437,14 @@ async function main() {
       }
 
       if (connection === 'close') {
-        const code = lastDisconnect?.error?.output?.statusCode;
-        console.log(`[WA] Closed (code: ${code})`);
+        const statusCode = lastDisconnect?.error?.output?.statusCode;
+        const errorMsg = lastDisconnect?.error?.message || 'unknown';
+        console.error(`[WA] Connection closed! Code: ${statusCode}, Error: ${errorMsg}`);
+        console.error('[WA] lastDisconnect:', JSON.stringify(lastDisconnect, null, 2));
         // Only error if we had notifications but failed to send any
         if (sent === 0 && toNotify.length > 0) {
           clearTimeout(timeout);
-          reject(new Error(`Connection closed before sending: ${code}`));
+          reject(new Error(`Connection closed before sending: ${statusCode} - ${errorMsg}`));
         } else {
           clearTimeout(timeout);
           resolve();
