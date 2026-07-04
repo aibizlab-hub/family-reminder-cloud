@@ -402,22 +402,7 @@
       "archivedAt": "2026-07-04T11:14:02.370Z"
     }
   ],
-  "groupNotifications": [
-    {
-      "id": "gn-1783164104800",
-      "reminderName": "Joe Sir",
-      "oldCaregiver": "EPPIE",
-      "newCaregiver": "KEN",
-      "changedAt": "2026-07-04T11:21:44.800Z"
-    },
-    {
-      "id": "gn-1783164110376",
-      "reminderName": "Obi老師 跳舞",
-      "oldCaregiver": "EPPIE",
-      "newCaregiver": "COFFE",
-      "changedAt": "2026-07-04T11:21:50.376Z"
-    }
-  ],
+  "groupNotifications": [],
   "_lastArchived": [
     "r1782242069578xfj"
   ]
