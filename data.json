@@ -105,7 +105,7 @@
       "date": "2026-06-27",
       "time": "13:30",
       "category": "class",
-      "caregiver": "EPPIE",
+      "caregiver": "COFFE",
       "note": "",
       "repeat": "weekly",
       "repeatDays": [
@@ -380,6 +380,13 @@
       "oldCaregiver": "EPPIE",
       "newCaregiver": "KEN",
       "changedAt": "2026-07-04T11:21:44.800Z"
+    },
+    {
+      "id": "gn-1783164110376",
+      "reminderName": "Obi老師 跳舞",
+      "oldCaregiver": "EPPIE",
+      "newCaregiver": "COFFE",
+      "changedAt": "2026-07-04T11:21:50.376Z"
     }
   ],
   "_lastArchived": [
