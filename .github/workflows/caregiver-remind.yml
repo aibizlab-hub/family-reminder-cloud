@@ -10,6 +10,8 @@ jobs:
   send-reminder:
     runs-on: ubuntu-latest
     timeout-minutes: 8
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -20,5 +22,5 @@ jobs:
       - name: Send caregiver reminders
         env:
           WA_CREDS_B64: ${{ secrets.WA_CREDS_B64 }}
-          GH_PAT: ${{ secrets.GH_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node wa-caregiver-remind.js
