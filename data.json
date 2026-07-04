@@ -156,6 +156,22 @@
       "caregiver": "KEN",
       "note": "帶煙蛋",
       "repeat": "daily"
+    },
+    {
+      "id": "r1783163681885r6d",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "VICTOR",
+      "date": "2026-07-10",
+      "time": "17:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "weekly",
+      "repeatDays": [
+        5
+      ]
     }
   ],
   "birthdays": [
