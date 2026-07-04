@@ -49,7 +49,10 @@
       ],
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
-      "address": ""
+      "address": "",
+      "details": [
+        "16/7 Boey接"
+      ]
     },
     {
       "id": "r1782033717733yq3",
