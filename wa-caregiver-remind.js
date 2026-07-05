@@ -1,19 +1,27 @@
 /**
  * GitHub Actions: 照顧者個人 WhatsApp 提醒
- * - 提早 1 天提醒（每日 09:00 HKT 發送）
- * - 提早 3 小時提醒（每小時檢查）
- * 
- * 資料來源：GitHub API data.json
- * 發送方式：wacli CLI（唔使 baileys，唔使 WA_CREDS_B64）
+ * 認證方式：baileys + WA_CREDS_B64（tar.gz base64）
+ *
+ * 永久方案原理：
+ * 1. WA_CREDS_B64 = base64( tar.gz of baileys auth_dir )
+ * 2. 啟動時解壓還原 auth state
+ * 3. 成功連接後自動將更新了的 auth state 打包寫回 /tmp/wa-auth-new.b64
+ * 4. workflow 下一步將該檔內容更新至 GitHub Secret
+ * 5. baileys 會自動續期憑證，實際可維持數週唔使理
  */
 
-const fs = require('fs');
+const fs   = require('fs');
+const path = require('path');
 const https = require('https');
 const { execSync } = require('child_process');
 
-const WACLI = process.env.WACLI_PATH || 'wacli';
+const GH_TOKEN  = process.env.GITHUB_TOKEN;
+const GH_REPO  = 'ken851004-afk/family-reminder-cloud';
+const AUTH_DIR = '/tmp/baileys-auth';
+const TAR_GZ   = '/tmp/wa-auth.tar.gz';
+const NEW_B64  = '/tmp/wa-auth-new.b64';   // 更新後嘅 base64 輸出
 
-// ===== 照顧者電話對照表 =====
+// ── 照顧者電話對照表 ──────────────────────────────
 const CAREGIVER_PHONES = {
   'KEN':         { phone: '85262218999', name: 'KEN' },
   'EPPIE':       { phone: '85297510047',  name: '🐑 EPPIE（太太）' },
@@ -23,215 +31,260 @@ const CAREGIVER_PHONES = {
   '老豆':        { phone: '85262269100',  name: '老豆' }
 };
 
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN || process.env.GH_PAT;
-const GITHUB_REPO = 'ken851004-afk/family-reminder-cloud';
-
 const CAT_ICONS = { school: '🏫', class: '🎨', special: '⭐', summer: '☀️', routine: '📅' };
-const DAY_NAMES = ['日','一','二','三','四','五','六'];
 
-// ===== GitHub API helpers =====
-function githubApiGet(apiPath) {
-  return new Promise((resolve, reject) => {
-    const opts = {
+// ── GitHub API helpers ─────────────────────────────────
+function ghApi(method, endpoint, body) {
+  return new Promise((ok, fail) => {
+    const b = body ? JSON.stringify(body) : '';
+    const opt = {
       hostname: 'api.github.com',
-      path: '/repos/' + GITHUB_REPO + '/contents/' + apiPath,
-      method: 'GET',
+      path: endpoint,
+      method,
       headers: {
-        'Authorization': 'Bearer ' + GITHUB_TOKEN,
-        'Accept': 'application/vnd.github.v3+json',
-        'User-Agent': 'wa-caregiver-remind'
+        'Authorization':       `Bearer ${GH_TOKEN}`,
+        'Accept':             'application/vnd.github.v3+json',
+        'User-Agent':         'wa-reminder',
+        'Content-Type':       'application/json',
+        'Content-Length':     Buffer.byteLength(b)
       }
     };
-    const req = https.request(opts, res => {
-      let b = ''; res.on('data', c => b += c);
+    const req = https.request(opt, res => {
+      let d = '';
+      res.on('data', c => d += c);
       res.on('end', () => {
-        try { resolve(JSON.parse(b)); } catch(e) { reject(e); }
+        if (res.statusCode >= 400) return fail(new Error(`GitHub API ${res.statusCode}: ${d}`));
+        try { ok(d ? JSON.parse(d) : {}); } catch { ok(d); }
       });
     });
-    req.on('error', reject);
+    req.on('error', fail);
+    if (b) req.write(b);
     req.end();
   });
 }
 
-function githubApiPut(apiPath, content, sha, message) {
-  return new Promise((resolve, reject) => {
-    const body = JSON.stringify({
-      message: message,
-      content: content,
-      sha: sha,
-      branch: 'master'
-    });
-    const opts = {
-      hostname: 'api.github.com',
-      path: '/repos/' + GITHUB_REPO + '/contents/' + apiPath,
-      method: 'PUT',
-      headers: {
-        'Authorization': 'Bearer ' + GITHUB_TOKEN,
-        'Accept': 'application/vnd.github.v3+json',
-        'Content-Type': 'application/json',
-        'User-Agent': 'wa-caregiver-remind'
-      }
-    };
-    const req = https.request(opts, res => {
-      let b = ''; res.on('data', c => b += c);
-      res.on('end', () => {
-        try { resolve(JSON.parse(b)); } catch(e) { reject(e); }
-      });
-    });
-    req.on('error', reject);
-    req.write(body);
-    req.end();
-  });
+async function fetchReminders() {
+  const res = await ghApi('GET', `/repos/${GH_REPO}/contents/data.json`);
+  if (!res.content) throw new Error('讀取 data.json 失敗');
+  const raw = Buffer.from(res.content, 'base64').toString('utf8');
+  return JSON.parse(raw).reminders || [];
 }
 
-// ===== wacli send helper =====
-function sendWhatsAppMessage(phone, message) {
-  try {
-    const result = execSync(
-      `"${WACLI}" send text --to "${phone}" --message "${message.replace(/"/g, '\\"')}" --json`,
-      { encoding: 'utf8', timeout: 30000 }
-    );
-    const json = JSON.parse(result);
-    if (json.success) {
-      console.log(`[WA] Sent to ${phone}: ${json.data.id}`);
-      return true;
-    } else {
-      console.error(`[WA] Failed to send to ${phone}:`, json.error);
-      return false;
+// ── 還原 auth state ───────────────────────────────────
+function restoreAuth() {
+  const b64 = process.env.WA_CREDS_B64;
+  if (!b64) throw new Error('WA_CREDS_B64 未設定');
+
+  fs.mkdirSync(AUTH_DIR, { recursive: true });
+
+  const buf = Buffer.from(b64, 'base64');
+
+  // 檢測格式：tar.gz 開頭 0x1f 0x8b
+  if (buf[0] === 0x1f && buf[1] === 0x8b) {
+    fs.writeFileSync(TAR_GZ, buf);
+    execSync(`tar -xzf "${TAR_GZ}" -C "${AUTH_DIR}"`, { stdio: 'inherit' });
+    console.log('✅  auth state 已還原（tar.gz）');
+  } else {
+    // 舊格式：直接係 creds.json base64
+    const creds = JSON.parse(buf.toString('utf8'));
+    const mf = path.join(AUTH_DIR, 'md-files');
+    fs.mkdirSync(mf, { recursive: true });
+    fs.writeFileSync(path.join(mf, 'creds.json'), JSON.stringify(creds, null, 2));
+    console.log('✅  auth state 已還原（舊格式 creds.json）');
+    console.warn('⚠️  建議重新生成 WA_CREDS_B64（舊格式唔包含 pre-key，連接可能失敗）');
+  }
+}
+
+// ── 打包 auth state → base64 字串 ───────────────────
+function packAuth() {
+  // 打包前先刪走 temporary files，減少體積
+  const tmpJson = path.join(AUTH_DIR, 'md-files', 'temp-creds.json');
+  if (fs.existsSync(tmpJson)) fs.unlinkSync(tmpJson);
+
+  execSync(`tar -czf "${TAR_GZ}" -C "${AUTH_DIR}" .`, { stdio: 'inherit' });
+  return fs.readFileSync(TAR_GZ).toString('base64');
+}
+
+// ── 提醒邏輯 ────────────────────────────────────────
+function sameDay(a, b) {
+  return a.getFullYear() === b.getFullYear()
+      && a.getMonth()    === b.getMonth()
+      && a.getDate()     === b.getDate();
+}
+
+function computeNextOccurrence(r, now) {
+  if (!r.repeat || r.repeat.type === 'none') {
+    const [yy, mm, dd] = r.date.split('-').map(Number);
+    return new Date(yy, mm - 1, dd);
+  }
+  const [yy, mm, dd] = r.date.split('-').map(Number);
+  const base = new Date(yy, mm - 1, dd);
+  if (base >= now) return base;
+
+  switch (r.repeat.type) {
+    case 'daily': {
+      const d = new Date(now); d.setDate(d.getDate() + 1); return d;
     }
-  } catch (e) {
-    console.error(`[WA] Error sending to ${phone}:`, e.message);
-    return false;
+    case 'weekly': {
+      const days = r.repeat.days || [];
+      for (let i = 1; i <= 7; i++) {
+        const d = new Date(now); d.setDate(d.getDate() + i);
+        if (days.includes(d.getDay())) return d;
+      }
+      return null;
+    }
+    case 'monthly': {
+      let m = now.getMonth(), y = now.getFullYear();
+      for (let i = 0; i < 24; i++) {
+        const d = new Date(y, m + i, dd);
+        if (d > now) return d;
+      }
+      return null;
+    }
+    case 'yearly': {
+      const next = new Date(now.getFullYear() + 1, mm - 1, dd);
+      return next > now ? next : new Date(now.getFullYear() + 2, mm - 1, dd);
+    }
+    default: return base;
   }
 }
 
-// ===== 時間工具 =====
-function getHKTNow() {
-  const now = new Date();
-  const hktMs = now.getTime() + (8 * 3600 * 1000);
-  return new Date(hktMs);
+function checkReminder(r, now) {
+  if (!r.isActive) return { match: false };
+  const target = computeNextOccurrence(r, now);
+  if (!target) return { match: false };
+
+  // 提早 1 日
+  const d1 = new Date(target); d1.setDate(d1.getDate() - 1);
+  if (sameDay(d1, now)) return { match: true, type: '1d' };
+
+  // 提早 3 小時（即日）
+  if (sameDay(target, now)) {
+    const h = parseInt((r.remindTime || '09:00').split(':')[0]);
+    if (now.getHours() >= h - 3 && now.getHours() <= h) {
+      return { match: true, type: '3h' };
+    }
+  }
+  return { match: false };
 }
 
-function parseDateStr(ds) {
-  if (!ds) return null;
-  if (ds.includes('/')) {
-    const [y, m, d] = ds.split('/');
-    return new Date(+y, +m - 1, +d);
+function buildMsg(r, type) {
+  const icon  = CAT_ICONS[r.category] || '📌';
+  const label = type === '1d' ? '📅 明日提醒' : '⏰ 即將到期（3小時內）';
+  let msg = `${label}\n\n${icon} ${r.title}\n📅 ${r.date}`;
+  if (r.note) msg += `\n📝 ${r.note}`;
+  if (r.details && r.details.length) {
+    msg += '\n\n列明事項：';
+    r.details.forEach((d, i) => { msg += `\n  ${i + 1}. ${d}`; });
   }
-  return new Date(ds);
+  msg += '\n— 家庭提醒系統 —';
+  return msg;
 }
 
-function getNextOccurrence(r) {
-  if (!r.repeat || r.repeat === 'none') return parseDateStr(r.date);
-  const today = getHKTNow();
-  today.setHours(0, 0, 0, 0);
-  if (r.repeat === 'daily') {
-    const next = new Date(today);
-    next.setDate(next.getDate() + 1);
-    return next;
+function getTargets(r) {
+  if (r.caregivers && r.caregivers.length) {
+    return r.caregivers
+      .map(name => CAREGIVER_PHONES[name])
+      .filter(Boolean)
+      .map(c => c.phone);
   }
-  if (r.repeat === 'weekly') {
-    const days = (r.repeatDays || []).map(Number);
-    if (!days.length) return null;
-    const nowDay = today.getDay();
-    days.sort((a, b) => a - b);
-    let nextDay = days.find(d => d > nowDay);
-    if (!nextDay) nextDay = days[0] + 7;
-    else nextDay = nextDay - nowDay;
-    const next = new Date(today);
-    next.setDate(next.getDate() + nextDay);
-    return next;
-  }
-  if (r.repeat === 'monthly') {
-    const targetDay = r.repeatDayOfMonth || parseInt(r.date.split('-')[2]);
-    const next = new Date(today.getFullYear(), today.getMonth(), targetDay);
-    if (next <= today) next.setMonth(next.getMonth() + 1);
-    return next;
-  }
-  return null;
+  return Object.values(CAREGIVER_PHONES).map(c => c.phone);
 }
 
-// ===== Main =====
+// ── 主程式 ───────────────────────────────────────────
 async function main() {
-  console.log('[START] Caregiver WhatsApp Reminder');
-  console.log('[TIME] HKT:', getHKTNow().toLocaleString('zh-HK', { timeZone: 'Asia/Hong_Kong' }));
-  
-  // 1. Get data.json from GitHub
-  console.log('[DATA] Fetching data.json...');
-  const fileData = await githubApiGet('data.json');
-  const sha = fileData.sha;
-  const raw = Buffer.from(fileData.content, 'base64').toString('utf8');
-  const data = JSON.parse(raw);
-  
-  const now = getHKTNow();
-  const hkHour = now.getHours();
-  const hkMin = now.getMinutes();
-  const todayStr = now.toISOString().split('T')[0];
-  
-  let dataChanged = false;
-  const toNotify = [];
-  
-  // 2. Find reminders that need notification
-  (data.reminders || []).forEach(r => {
-    if (r.done || r.deleted) return;
-    
-    const occ = getNextOccurrence(r);
-    if (!occ) return;
-    
-    const occStr = occ.toISOString().split('T')[0];
-    const daysUntil = Math.floor((occ - now) / 86400000);
-    const hoursUntil = Math.floor((occ - now) / 3600000);
-    
-    // Check 1-day reminder
-    if (daysUntil === 1 && !r.notified1d) {
-      toNotify.push({ r, type: '1d', occ, occStr });
+  console.log('=== Caregiver Reminder ===');
+  console.log('UTC:', new Date().toISOString());
+  const hktNow = new Date(Date.now() + 8 * 3600 * 1000);
+  console.log('HKT:', hktNow.toISOString());
+
+  if (!GH_TOKEN) throw new Error('GITHUB_TOKEN 未設定');
+
+  // 1. 還原 auth
+  restoreAuth();
+
+  // 2. 載入 baileys 並連接
+  const { makeWASocket, useMultiFileAuthState, DisconnectReason } = require('baileys');
+  const { state, saveCreds } = await useMultiFileAuthState(AUTH_DIR);
+
+  let sock;
+  try {
+    sock = makeWASocket({
+      auth: state,
+      printQRInTerminal: false,
+      browser: ['FamilyReminder', 'Chrome', '1.0'],
+    });
+
+    sock.ev.on('creds.update', saveCreds);
+
+    // 等連接（40 秒 timeout，GitHub Actions 有時慢）
+    await new Promise((ok, fail) => {
+      const t = setTimeout(() => fail(new Error('WhatsApp 連接逾時（40s）')), 40000);
+      sock.ev.on('connection.update', (u) => {
+        if (u.connection === 'open') {
+          clearTimeout(t);
+          console.log('✅ WhatsApp 已連接');
+          ok();
+        }
+        if (u.connection === 'close') {
+          clearTimeout(t);
+          const reason = u.lastDisconnect?.error?.output?.statusCode;
+          if (reason === DisconnectReason.loggedOut) {
+            fail(new Error('WhatsApp 已登出，需要重新掃 QR 碼生成 WA_CREDS_B64'));
+          } else {
+            fail(new Error('WhatsApp 連接失敗：' + (u.lastDisconnect?.error?.message || 'unknown')));
+          }
+        }
+      });
+    });
+
+    // 3. 讀取提醒並檢查
+    const reminders = await fetchReminders();
+    console.log(`📋 載入 ${reminders.length} 個提醒`);
+
+    const sendList = [];
+    for (const r of reminders) {
+      const chk = checkReminder(r, hktNow);
+      if (chk.match) sendList.push({ r, type: chk.type });
     }
-    
-    // Check 3-hour reminder
-    if (hoursUntil <= 3 && hoursUntil > 0 && !r.notified3h) {
-      toNotify.push({ r, type: '3h', occ, occStr });
-    }
-  });
-  
-  console.log(`[NOTIFY] Found ${toNotify.length} reminders to send`);
-  
-  // 3. Send via wacli
-  let sent = 0;
-  for (const { r, type, occ, occStr } of toNotify) {
-    const caregivers = r.caregivers || (r.caregiver ? [r.caregiver] : []);
-    if (!caregivers.length) continue;
-    
-    for (const cg of caregivers) {
-      const phoneInfo = CAREGIVER_PHONES[cg];
-      if (!phoneInfo) continue;
-      
-      const occDayName = DAY_NAMES[occ.getDay()];
-      const msg = `🔔 提醒：${r.name}\n📅 ${occStr}（星期${occDayName}）\n${type === '1d' ? '⏰ 明日' : '⏰ ' + (occ.getHours() || '全日') + '時'}\n\n${r.note || ''}`;
-      
-      const ok = sendWhatsAppMessage(phoneInfo.phone, msg);
-      if (ok) {
-        sent++;
-        if (type === '1d') r.notified1d = true;
-        if (type === '3h') r.notified3h = true;
-        dataChanged = true;
+    console.log(`📤 需要發送 ${sendList.length} 條提醒`);
+
+    // 4. 發送
+    for (const { r, type } of sendList) {
+      const msg     = buildMsg(r, type);
+      const targets = getTargets(r);
+      for (const phone of targets) {
+        try {
+          await sock.sendMessage(phone + '@s.whatsapp.net', { text: msg });
+          console.log(`  ✓ ${phone} ← ${r.title}`);
+        } catch (e) {
+          console.error(`  ✗ ${phone}:`, e.message);
+        }
       }
     }
+
+    // 5. 保存更新後嘅 auth state，輸出 base64 畀 workflow 更新 secret
+    await saveCreds();
+    const newB64 = packAuth();
+    fs.writeFileSync(NEW_B64, newB64);
+    console.log(`✅  更新後嘅 auth state 已儲存至 ${NEW_B64}（${Math.round(newB64.length / 1024)} KB）`);
+
+    console.log('=== 完成 ===');
+    await sock.logout();
+    process.exit(0);
+
+  } catch (e) {
+    console.error('❌ 嚴重錯誤：', e.message);
+
+    if (/登出|logged out|re-auth|掃 QR/i.test(e.message)) {
+      console.error('\n=== 需要重新設定憑證 ===');
+      console.error('請在本機執行：node setup-wa-auth.js');
+      console.error('然後將輸出的 base64 更新至 GitHub Secret: WA_CREDS_B64\n');
+    }
+
+    if (sock) try { await sock.logout(); } catch {}
+    process.exit(1);
   }
-  
-  console.log(`[SENT] ${sent} messages sent`);
-  
-  // 4. Save data.json
-  if (dataChanged) {
-    console.log('[DATA] Saving data.json...');
-    const newContent = Buffer.from(JSON.stringify(data, null, 2)).toString('base64');
-    await githubApiPut('data.json', newContent, sha, 'Update notification flags (via wacli)');
-    console.log('[DATA] Saved');
-  }
-  
-  console.log('[DONE]');
 }
 
-main().catch(e => {
-  console.error('[ERROR]', e);
-  process.exit(1);
-});
+main();
