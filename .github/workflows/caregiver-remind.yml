@@ -2,7 +2,7 @@ name: Caregiver WhatsApp Reminder
 
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '0 * * * *'    # 每小時正點觸發
   workflow_dispatch:
 
 jobs:
@@ -11,33 +11,57 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
 
-      - name: Install wacli
-        run: |
-          mkdir -p $HOME/.wacli
-          curl -L -o $HOME/.wacli/wacli https://github.com/whiskeysockets/wacli/releases/latest/download/wacli-linux
-          chmod +x $HOME/.wacli/wacli
-          echo "$HOME/.wacli" >> $GITHUB_PATH
-          wacli --version
+      # 安裝 baileys（輕量，~2MB）
+      - name: Install baileys
+        run: npm install baileys
 
-      - name: Restore wacli session
+      # 還原 WhatsApp auth state（由 WA_CREDS_B64 secret）
+      - name: Restore WhatsApp auth state
         env:
-          WACLI_SESSION_B64: ${{ secrets.WACLI_SESSION_B64 }}
+          WA_CREDS_B64: ${{ secrets.WA_CREDS_B64 }}
         run: |
-          if [ -z "$WACLI_SESSION_B64" ]; then
-            echo "ERROR: WACLI_SESSION_B64 not set"
+          if [ -z "$WA_CREDS_B64" ]; then
+            echo "ERROR: WA_CREDS_B64 not set"
             exit 1
           fi
-          mkdir -p $HOME/.wacli
-          echo "$WACLI_SESSION_B64" | base64 -d > $HOME/.wacli/session.db
-          echo "wacli session restored"
+          mkdir -p /tmp/baileys-auth
+          # WA_CREDS_B64 = base64( tar.gz of auth_dir )
+          echo "$WA_CREDS_B64" | base64 -d > /tmp/wa-auth.tar.gz
+          tar -xzf /tmp/wa-auth.tar.gz -C /tmp/baileys-auth
+          echo "✅  WhatsApp auth state restored"
 
+      # 執行提醒發送
       - name: Send caregiver reminders
         env:
           WA_CREDS_B64: ${{ secrets.WA_CREDS_B64 }}
-          WACLI_SESSION_B64: ${{ secrets.WACLI_SESSION_B64 }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node wa-caregiver-remind.js
+
+      # 自動更新 WA_CREDS_B64（auth state 可能已續期）
+      # 需要 WA_PAT secret：Personal Access Token（repo scope）
+      - name: Update WA_CREDS_B64 secret
+        if: success()
+        env:
+          WA_PAT: ${{ secrets.WA_PAT }}
+        run: |
+          if [ ! -f /tmp/wa-auth-new.b64 ]; then
+            echo "No updated auth state - skipping secret update"
+            exit 0
+          fi
+          if [ -z "$WA_PAT" ]; then
+            echo "⚠️  WA_PAT not set - cannot auto-update WA_CREDS_B64"
+            echo "Please add WA_PAT secret (Personal Access Token with 'repo' scope)"
+            exit 0
+          fi
+          echo "Updating WA_CREDS_B64 secret..."
+          # 使用 WA_PAT 更新 secret
+          NEW_VAL=$(cat /tmp/wa-auth-new.b64)
+          echo -n "$NEW_VAL" | GH_TOKEN="$WA_PAT" gh secret set WA_CREDS_B64 \
+            --repo ken851004-afk/family-reminder-cloud \
+            --body -
+          echo "✅  WA_CREDS_B64 auto-updated"
