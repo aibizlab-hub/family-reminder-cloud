@@ -58,12 +58,12 @@
       "id": "r1782033717733yq3",
       "notified": false,
       "name": "Ms Nita",
-      "date": "2026-06-29",
+      "date": "2026-07-06",
       "time": "08:30",
       "category": "class",
       "caregiver": "EPPIE",
       "note": "最後4堂",
-      "repeat": "weekly",
+      "repeat": "none",
       "repeatDays": [
         1
       ],
