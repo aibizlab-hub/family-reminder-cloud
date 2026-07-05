@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const https = require('https');
 const { spawn } = require('child_process');
 
 // 配置
@@ -8,7 +9,7 @@ const WACLI_PATH = 'C:\\Users\\KEN85\\.workbuddy\\binaries\\wacli\\wacli.exe';
 const STATE_FILE = path.join(__dirname, 'reminder-state.json');
 const LOG_FILE = path.join(__dirname, 'reminder-log.txt');
 
-// 讀取狀態（記錄已發送嘅提醒）
+// 讀取狀態
 function loadState() {
   try {
     return JSON.parse(fs.readFileSync(STATE_FILE, 'utf-8'));
@@ -28,16 +29,15 @@ function log(msg) {
 }
 
 // 下載 data.json
-async function fetchData() {
+function fetchData() {
   return new Promise((resolve, reject) => {
-    const req = require('https').get(DATA_URL, (res) => {
+    https.get(DATA_URL, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
         try { resolve(JSON.parse(data)); } catch (e) { reject(e); }
       });
-    });
-    req.on('error', reject);
+    }).on('error', reject);
   });
 }
 
@@ -78,7 +78,7 @@ function shouldRunToday(rem, today) {
   }
   if (rem.repeat === 'daily') return true;
   if (rem.repeat === 'weekly') {
-    const todayDow = new Date(today).getDay(); // 0=Sun
+    const todayDow = new Date(today).getDay();
     const remDow = new Date(rem.date).getDay();
     return todayDow === remDow;
   }
@@ -110,7 +110,7 @@ function sendReminder(rem, caregivers, state, dayKey) {
 
   log(`Sending to ${caregiver.name} (${phone})...`);
 
-  const proc = spawn(WACLI_PATH, ['send', 'text', phone, message], {
+  const proc = spawn(WACLI_PATH, ['send', 'text', '--to', phone, '--message', message], {
     stdio: 'inherit'
   });
 
@@ -136,7 +136,7 @@ function formatMessage(rem, caregiver) {
   return msg;
 }
 
-// 清理舊狀態（保留 7 日）
+// 清理舊狀態
 function cleanupState(state) {
   const weekAgo = Date.now() - 7 * 24 * 3600 * 1000;
   for (const key of Object.keys(state.sent)) {
@@ -158,7 +158,7 @@ async function main() {
     } catch (e) {
       log(`ERROR: ${e.message}`);
     }
-  }, 60000); // 60秒
+  }, 60000);
 
   // 啟動時立即檢查一次
   try {
