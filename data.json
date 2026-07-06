@@ -35,26 +35,6 @@
       "address": ""
     },
     {
-      "id": "r1782033672781kcn",
-      "notified": false,
-      "name": "Oral",
-      "date": "2026-07-16",
-      "time": "12:00",
-      "category": "summer",
-      "caregiver": "KEN",
-      "note": "七，八月\n16/7 Boey接佢去玩",
-      "repeat": "weekly",
-      "repeatDays": [
-        4
-      ],
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "address": "",
-      "details": [
-        "16/7 Boey接"
-      ]
-    },
-    {
       "id": "r1782033717733yq3",
       "notified": false,
       "name": "Ms Nita",
@@ -403,6 +383,27 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-07-04T13:18:38.980Z"
+    },
+    {
+      "id": "r1782033672781kcn",
+      "notified": false,
+      "name": "Oral",
+      "date": "2026-07-16",
+      "time": "12:00",
+      "category": "summer",
+      "caregiver": "KEN",
+      "note": "七，八月\n16/7 Boey接佢去玩",
+      "repeat": "weekly",
+      "repeatDays": [
+        4
+      ],
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "address": "",
+      "details": [
+        "16/7 Boey接"
+      ],
+      "archivedAt": "2026-07-06T10:56:42.884Z"
     }
   ],
   "groupNotifications": [],
