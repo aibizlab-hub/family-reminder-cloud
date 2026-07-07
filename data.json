@@ -167,19 +167,6 @@
       "caregiver": "KEN",
       "note": "",
       "repeat": "none"
-    },
-    {
-      "id": "r17825833211520y3",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": true,
-      "name": "Leo",
-      "date": "2026-07-01",
-      "time": "09:00",
-      "category": "work",
-      "caregiver": "KEN",
-      "note": "帶煙蛋",
-      "repeat": "daily"
     }
   ],
   "birthdays": [
@@ -418,6 +405,20 @@
       "caregiverNotified3h": false,
       "address": "",
       "archivedAt": "2026-07-07T02:30:37.243Z"
+    },
+    {
+      "id": "r17825833211520y3",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": true,
+      "name": "Leo",
+      "date": "2026-07-01",
+      "time": "09:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "帶煙蛋",
+      "repeat": "daily",
+      "archivedAt": "2026-07-07T11:56:51.067Z"
     }
   ],
   "groupNotifications": [],
