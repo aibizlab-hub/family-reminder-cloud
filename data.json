@@ -35,23 +35,6 @@
       "address": ""
     },
     {
-      "id": "r1782033717733yq3",
-      "notified": false,
-      "name": "Ms Nita",
-      "date": "2026-07-06",
-      "time": "08:30",
-      "category": "class",
-      "caregiver": "EPPIE",
-      "note": "最後4堂",
-      "repeat": "none",
-      "repeatDays": [
-        1
-      ],
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "address": ""
-    },
-    {
       "id": "r1782033821850vvd",
       "notified": false,
       "name": "嶺南小學",
@@ -404,10 +387,28 @@
         "16/7 Boey接"
       ],
       "archivedAt": "2026-07-06T10:56:42.884Z"
+    },
+    {
+      "id": "r1782033717733yq3",
+      "notified": false,
+      "name": "Ms Nita",
+      "date": "2026-07-06",
+      "time": "08:30",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "最後4堂",
+      "repeat": "none",
+      "repeatDays": [
+        1
+      ],
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "address": "",
+      "archivedAt": "2026-07-07T02:30:37.243Z"
     }
   ],
   "groupNotifications": [],
   "_lastArchived": [
-    "r1782242069578xfj"
+    "r1782033717733yq3"
   ]
 }
