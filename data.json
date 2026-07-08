@@ -154,19 +154,6 @@
       "caregiver": "KEN",
       "note": "",
       "repeat": "none"
-    },
-    {
-      "id": "r1783425391822ao0",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "接返你哋",
-      "date": "2026-07-07",
-      "time": "20:00",
-      "category": "other",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -419,10 +406,24 @@
       "note": "帶煙蛋",
       "repeat": "daily",
       "archivedAt": "2026-07-07T11:56:51.067Z"
+    },
+    {
+      "id": "r1783425391822ao0",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "接返你哋",
+      "date": "2026-07-07",
+      "time": "20:00",
+      "category": "other",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-07-08T19:54:50.362Z"
     }
   ],
   "groupNotifications": [],
   "_lastArchived": [
-    "r1782033717733yq3"
+    "r1783425391822ao0"
   ]
 }
