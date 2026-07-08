@@ -2,7 +2,7 @@ name: Web Push Reminder
 
 on:
   schedule:
-    - cron: '*/5 * * * *'   # every 5 minutes, 24/7, no computer needed
+    - cron: '*/5 * * * *'   # every 5 minutes, 24/7, no computer needed (re-registered 2026-07-08)
   workflow_dispatch:
 
 permissions:
