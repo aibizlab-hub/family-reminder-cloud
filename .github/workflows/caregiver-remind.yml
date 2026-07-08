@@ -2,8 +2,10 @@ name: Caregiver WhatsApp Reminder (Cloud)
 
 on:
   schedule:
-    - cron: '0 * * * *'   # every hour, 24/7, no computer needed
+    - cron: '0 * * * *'   # every hour, 24/7 — timer may be disabled by GitHub; see repository_dispatch fallback
   workflow_dispatch:
+  repository_dispatch:
+    types: [caregiver-tick]
 
 permissions:
   contents: read

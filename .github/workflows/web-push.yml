@@ -2,8 +2,10 @@ name: Web Push Reminder
 
 on:
   schedule:
-    - cron: '*/5 * * * *'   # every 5 min, 24/7; cron-expr change forces timer re-register
+    - cron: '*/5 * * * *'   # every 5 min, 24/7; timer may be disabled by GitHub — see repository_dispatch fallback
   workflow_dispatch:
+  repository_dispatch:
+    types: [web-push-tick]
 
 permissions:
   contents: write
