@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  actions: write   # required so this run can re-arm the next run via gh workflow run
 
 concurrency:
   group: web-push
@@ -32,3 +33,19 @@ jobs:
           VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
           VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
         run: node web-push-send.js
+      - name: Re-arm timer (self-perpetuate next run)
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ken851004-afk/family-reminder-cloud
+        run: |
+          for i in 1 2 3; do
+            if gh workflow run web-push.yml --ref "${{ github.ref_name }}"; then
+              echo "✅ Re-armed web-push timer (attempt $i)"
+              exit 0
+            fi
+            echo "⚠️ Re-arm attempt $i failed, retrying in 15s..."
+            sleep 15
+          done
+          echo "::error::Failed to re-arm web-push timer after 3 retries"
+          exit 1

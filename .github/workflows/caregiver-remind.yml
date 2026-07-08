@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: read
+  actions: write   # required so this run can re-arm the next run via gh workflow run
 
 jobs:
   send-reminder:
@@ -26,3 +27,19 @@ jobs:
           WA_CREDS_B64: ${{ secrets.WA_CREDS_B64 }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node wa-caregiver-remind.js
+      - name: Re-arm timer (self-perpetuate next run)
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ken851004-afk/family-reminder-cloud
+        run: |
+          for i in 1 2 3; do
+            if gh workflow run caregiver-remind.yml --ref "${{ github.ref_name }}"; then
+              echo "✅ Re-armed caregiver timer (attempt $i)"
+              exit 0
+            fi
+            echo "⚠️ Re-arm attempt $i failed, retrying in 15s..."
+            sleep 15
+          done
+          echo "::error::Failed to re-arm caregiver timer after 3 retries"
+          exit 1
