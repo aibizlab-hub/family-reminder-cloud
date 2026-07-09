@@ -154,6 +154,22 @@
       "caregiver": "KEN",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "id": "r1783577708123bid",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "郭老師",
+      "date": "2026-07-17",
+      "time": "10:30",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "鑽石山",
+      "repeat": "weekly",
+      "repeatDays": [
+        5
+      ]
     }
   ],
   "birthdays": [
