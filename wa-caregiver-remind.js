@@ -15,8 +15,8 @@ const NodeCache = require('node-cache');
 
 // ===== 照顧者電話對照表 =====
 const CAREGIVER_PHONES = {
-  'KEN':         { phone: '852622189999', name: 'KEN' },
-  'EPPIE':       { phone: '85262218999',  name: 'EPPIE（太太）' },
+  'KEN':         { phone: '85262218999',  name: 'KEN' },
+  'EPPIE':       { phone: '85297510047',  name: 'EPPIE（太太）' },
   'Kenny Yam':   { phone: '85291339336',  name: 'Kenny Yam' },
   'Rosanna Mok': { phone: '85293398522',  name: 'Rosanna Mok' },
   'COFFE':       { phone: '85266713322',  name: 'COFFE' },
@@ -26,7 +26,7 @@ const CAREGIVER_PHONES = {
 const GROUP_ID = '120363412134951607@g.us'; // 揸揸的家長們
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN || process.env.GH_PAT;
-const GITHUB_REPO = 'ken851004-afk/family-reminder-new';
+const GITHUB_REPO = process.env.GH_REPO || 'ken851004-afk/family-reminder-cloud';
 
 const CAT_ICONS = { school: '🏫', class: '🎨', special: '⭐', summer: '☀️', routine: '📅' };
 const DAY_NAMES = ['日','一','二','三','四','五','六'];
@@ -115,7 +115,7 @@ function buildCaregiverMsg(r, type) {
     msg += `\n👤 照顧者：${r.caregiver}\n`;
   }
   
-  msg += `🌐 查看全部：https://b791d247cb6640908835e5bd7d0454a9.app.codebuddy.work`;
+  msg += `🌐 查看全部：https://ken851004-afk.github.io/family-reminder-cloud/`;
   return msg;
 }
 
