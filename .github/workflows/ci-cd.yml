@@ -48,7 +48,7 @@ jobs:
 
       - name: index.html 驗證
         run: |
-          node -e "const fs=require('fs');const h=fs.readFileSync('index.html','utf8');if(h.length<1000){console.error('✗ index.html 太細');process.exit(1)} if(!h.includes('家庭提醒系統')){console.error('✗ 搵唔到標題標記');process.exit(1)} console.log('✓ index.html OK', h.length, 'bytes')"
+          node -e "const fs=require('fs');const h=fs.readFileSync('index.html','utf8');if(h.length<1000){console.error('✗ index.html 太細');process.exit(1)} if(!h.includes('HomeMemo')){console.error('✗ 搵唔到標題標記');process.exit(1)} console.log('✓ index.html OK', h.length, 'bytes')"
 
   # ───────────────────────── ② 部署 ─────────────────────────
   deploy:
@@ -92,7 +92,7 @@ jobs:
           for i in 1 2 3; do
             sleep 20
             BODY=$(curl -sS "$URL" 2>/dev/null || true)
-            if echo "$BODY" | grep -q "家庭提醒系統"; then
+            if echo "$BODY" | grep -q "HomeMemo"; then
               echo "✅ 上線驗證通過"
               echo "status=ok" >> "$GITHUB_OUTPUT"
               exit 0

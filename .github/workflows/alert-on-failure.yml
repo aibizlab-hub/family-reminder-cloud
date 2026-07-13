@@ -45,4 +45,4 @@ jobs:
       - name: 嘗試 WhatsApp 報警（best-effort）
         continue-on-error: true
         run: |
-          node monitor/notify-failure.js --message "🚨 家庭提醒 CI/CD 部署失敗，請檢查 GitHub Actions。" || echo "⚠️ WhatsApp 報警失敗（雲端 runner 無 wacli）"
+          node monitor/notify-failure.js --message "🚨 HomeMemo CI/CD 部署失敗，請檢查 GitHub Actions。" || echo "⚠️ WhatsApp 報警失敗（雲端 runner 無 wacli）"

@@ -3,7 +3,7 @@ name: Health Monitor
 # ════════════════════════════════════════════════════════════════
 # 健康監控 + 自動報警（雲端探測，每 15 分鐘）
 # 探測：
-#   (a) 線上網站 HTTP 200 且 HTML 含「家庭提醒系統」
+#   (a) 線上網站 HTTP 200 且 HTML 含「HomeMemo」
 #   (b) data.json raw URL HTTP 200
 #   (c) wacli 認證（best-effort，雲端 runner 無 wacli 會跳過）
 # 任何失敗 → 開 / 追加 GitHub Issue（可靠）+ 嘗試 WhatsApp 報警（best-effort）。
@@ -34,7 +34,7 @@ jobs:
           URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
           CODE=$(curl -s -o /tmp/site.html -w "%{http_code}" --max-time 20 "$URL" || echo "000")
           echo "code=$CODE" >> "$GITHUB_OUTPUT"
-          if [ "$CODE" = "200" ] && grep -q "家庭提醒系統" /tmp/site.html; then
+          if [ "$CODE" = "200" ] && grep -q "HomeMemo" /tmp/site.html; then
             echo "ok=1" >> "$GITHUB_OUTPUT"
           else
             echo "ok=0" >> "$GITHUB_OUTPUT"
@@ -104,4 +104,4 @@ jobs:
         if: steps.verdict.outputs.fail == '1'
         continue-on-error: true
         run: |
-          node monitor/notify-failure.js --message "🚨 家庭提醒雲端監控異常：網站/數據/WhatsApp 其一失效，請睇 GitHub Issue。" || echo "⚠️ WhatsApp 報警失敗（雲端 runner 無 wacli / 未能連線 localhost）"
+          node monitor/notify-failure.js --message "🚨 HomeMemo 雲端監控異常：網站/數據/WhatsApp 其一失效，請睇 GitHub Issue。" || echo "⚠️ WhatsApp 報警失敗（雲端 runner 無 wacli / 未能連線 localhost）"
