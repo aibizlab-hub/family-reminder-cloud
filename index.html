@@ -57,6 +57,13 @@
     <div class="toolbar">
       <button onclick="exportData()">&#128226; 匯出</button>
       <button onclick="document.getElementById('import-file').click()">&#128229; 匯入</button>
+      <select id="sort-select" class="sort-select" onchange="setSortMode(this.value)">
+        <option value="date">日期（近→遠）</option>
+        <option value="category">分類</option>
+        <option value="caregiver">照顧者</option>
+        <option value="manual">手動排序</option>
+      </select>
+      <button id="organize-btn" class="organize-btn" onclick="toggleOrganize()">&#128203; 整理</button>
       <button onclick="sendReminderNow()">&#128276; 即時提醒</button>
       <button onclick="manualArchive()" title="手動將已過期事項歸檔">&#128451; 歸檔過期</button>
       <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
@@ -1178,6 +1185,102 @@ function renderAll() {
   updateSettingsStats();
 }
 
+// ===== 排序 / 整理（重新整理功能）=====
+var SORT_MODE = (function(){ try { return localStorage.getItem('hm_sort') || 'date'; } catch(e){ return 'date'; } })();
+if (['date','category','caregiver','manual'].indexOf(SORT_MODE) < 0) SORT_MODE = 'date';
+var ORGANIZE = false;
+var DRAG_ID = null;
+
+function ensureOrder() {
+  if (!DATA.settings) DATA.settings = {};
+  if (!Array.isArray(DATA.settings.order)) {
+    DATA.settings.order = (DATA.reminders || []).map(function(r) { return r.id; });
+  }
+}
+function getOrderIndex(id) {
+  var o = (DATA.settings && DATA.settings.order) || [];
+  var i = o.indexOf(id);
+  return i < 0 ? 999999 : i;
+}
+// 統一排序入口：日期 / 分類 / 照顧者 / 手動
+function applySort(arr) {
+  if (SORT_MODE === 'manual') {
+    ensureOrder();
+    arr.sort(function(a, b) {
+      var ia = getOrderIndex(a.id), ib = getOrderIndex(b.id);
+      if (ia !== ib) return ia - ib;
+      return getEffectiveDays(a) - getEffectiveDays(b);
+    });
+    return;
+  }
+  if (SORT_MODE === 'category') {
+    arr.sort(function(a, b) {
+      var ia = CAT_ORDER.indexOf(a.category), ib = CAT_ORDER.indexOf(b.category);
+      if (ia < 0) ia = 999; if (ib < 0) ib = 999;
+      if (ia !== ib) return ia - ib;
+      return getEffectiveDays(a) - getEffectiveDays(b);
+    });
+    return;
+  }
+  if (SORT_MODE === 'caregiver') {
+    arr.sort(function(a, b) {
+      var ca = a.caregiver || 'zzz', cb = b.caregiver || 'zzz';
+      if (ca !== cb) return ca.localeCompare(cb);
+      return getEffectiveDays(a) - getEffectiveDays(b);
+    });
+    return;
+  }
+  // date（預設）
+  arr.sort(function(a, b) {
+    var da = getEffectiveDays(a), db = getEffectiveDays(b);
+    var pa = (da >= 0) ? da : 99999 + Math.abs(da);
+    var pb = (db >= 0) ? db : 99999 + Math.abs(db);
+    return pa - pb;
+  });
+}
+function setSortMode(m) {
+  SORT_MODE = m;
+  try { localStorage.setItem('hm_sort', m); } catch(e) {}
+  renderAll();
+}
+function toggleOrganize() {
+  ORGANIZE = !ORGANIZE;
+  document.body.classList.toggle('organize-mode', ORGANIZE);
+  var btn = document.getElementById('organize-btn');
+  if (btn) btn.classList.toggle('active', ORGANIZE);
+  if (ORGANIZE && SORT_MODE !== 'manual') setSortMode('manual');
+  else renderAll();
+}
+// 上下移動（手機友善）
+function moveReminder(id, dir) {
+  if (SORT_MODE !== 'manual') setSortMode('manual');
+  ensureOrder();
+  var o = DATA.settings.order.slice();
+  var idx = o.indexOf(id);
+  if (idx < 0) { o.push(id); idx = o.length - 1; }
+  var ni = idx + dir;
+  if (ni < 0 || ni >= o.length) return;
+  o.splice(ni, 0, o.splice(idx, 1)[0]);
+  DATA.settings.order = o;
+  pushToGitHub().then(function() { renderAll(); });
+}
+// 桌面拖放
+function dragStart(e) { DRAG_ID = e.currentTarget.getAttribute('data-id'); e.dataTransfer.effectAllowed = 'move'; }
+function dragOver(e) { if (ORGANIZE) e.preventDefault(); }
+function dragDrop(e) {
+  e.preventDefault();
+  var tid = e.currentTarget.getAttribute('data-id');
+  if (!DRAG_ID || DRAG_ID === tid) return;
+  ensureOrder();
+  var o = DATA.settings.order.slice();
+  var from = o.indexOf(DRAG_ID), to = o.indexOf(tid);
+  if (from < 0 || to < 0) return;
+  o.splice(to, 0, o.splice(from, 1)[0]);
+  DATA.settings.order = o;
+  pushToGitHub().then(function() { renderAll(); });
+}
+(function() { var sel = document.getElementById('sort-select'); if (sel) sel.value = SORT_MODE; })();
+
 // Main "全部" tab - non-work items, sorted by proximity to today (closest first)
 // Expired single events are auto-archived to history
 function renderReminders() {
@@ -1190,41 +1293,40 @@ function renderReminders() {
     c.innerHTML = '<div class="empty"><div class="empty-icon">\u{1F4ED}</div><div class="empty-text">暫無提醒事項</div><div class="empty-sub">按右下角 + 新增</div></div>'; return;
   }
   var filtered = DATA.reminders.filter(function(r) { return r.category !== 'work'; });
-  // Sort by effective date (next occurrence for recurring, stored date for single)
-  filtered.sort(function(a,b) {
-    var da = getEffectiveDays(a); var db = getEffectiveDays(b);
-    var pa = (da >= 0) ? da : 99999 + Math.abs(da);
-    var pb = (db >= 0) ? db : 99999 + Math.abs(db);
-    return pa - pb;
-  });
+  // 排序（日期 / 分類 / 照顧者 / 手動）
+  applySort(filtered);
 
   var html = '';
-  var i = 0;
-  while (i < filtered.length) {
-    var r = filtered[i];
-    // Detect multi-date group: name matches "xxx (第N日/Y日)"
-    var baseMatch = r.name && r.name.match(/^(.+?)\s*\(第\d+日\/\d+日\)$/);
-    if (baseMatch) {
-      var baseName = baseMatch[1];
-      var siblings = [r];
-      var j = i + 1;
-      while (j < filtered.length) {
-        var m = filtered[j].name && filtered[j].name.match(/^(.+?)\s*\(第\d+日\/\d+日\)$/);
-        if (m && m[1] === baseName) { siblings.push(filtered[j]); j++; }
-        else break;
+  if (SORT_MODE === 'date') {
+    // 日期模式保留多日營期 grouping
+    var i = 0;
+    while (i < filtered.length) {
+      var r = filtered[i];
+      var baseMatch = r.name && r.name.match(/^(.+?)\s*\(第\d+日\/\d+日\)$/);
+      if (baseMatch) {
+        var baseName = baseMatch[1];
+        var siblings = [r];
+        var j = i + 1;
+        while (j < filtered.length) {
+          var m = filtered[j].name && filtered[j].name.match(/^(.+?)\s*\(第\d+日\/\d+日\)$/);
+          if (m && m[1] === baseName) { siblings.push(filtered[j]); j++; }
+          else break;
+        }
+        if (siblings.length >= 2) {
+          siblings.sort(function(a,b){ return a.date.localeCompare(b.date); });
+          var sDate = siblings[0].date;
+          var eDate = siblings[siblings.length - 1].date;
+          html += '<div class="section-label">\u{1F4C5} ' + esc(baseName) + '（' + sDate + ' 至 ' + eDate + '，共 ' + siblings.length + ' 日）</div>';
+          siblings.forEach(function(sr){ html += cardHTML(sr); });
+          i = j;
+          continue;
+        }
       }
-      if (siblings.length >= 2) {
-        siblings.sort(function(a,b){ return a.date.localeCompare(b.date); });
-        var sDate = siblings[0].date;
-        var eDate = siblings[siblings.length - 1].date;
-        html += '<div class="section-label">\u{1F4C5} ' + esc(baseName) + '（' + sDate + ' 至 ' + eDate + '，共 ' + siblings.length + ' 日）</div>';
-        siblings.forEach(function(sr){ html += cardHTML(sr); });
-        i = j;
-        continue;
-      }
+      html += cardHTML(r);
+      i++;
     }
-    html += cardHTML(r);
-    i++;
+  } else {
+    filtered.forEach(function(r) { html += cardHTML(r); });
   }
   c.innerHTML = html || '<div class="empty"><div class="empty-icon">\u{1F4ED}</div><div class="empty-text">暫無提醒事項</div><div class="empty-sub">按右下角 + 新增</div></div>';
   staggerCards(c);
@@ -1240,12 +1342,8 @@ function renderCaregiverTab(caregiver) {
     // KEN special: also show work items
     if (caregiver === 'KEN' && r.category === 'work') return true;
     return false;
-  }).sort(function(a,b) {
-    var da = getEffectiveDays(a); var db = getEffectiveDays(b);
-    var pa = (da >= 0) ? da : 99999 + Math.abs(da);
-    var pb = (db >= 0) ? db : 99999 + Math.abs(db);
-    return pa - pb;
   });
+  applySort(items);
 
   if (!items.length) {
     c.innerHTML = '<div class="empty"><div class="empty-icon">' + CAREGIVER_EMOJI[caregiver] + '</div><div class="empty-text">暫無 ' + caregiver + ' 的事項</div><div class="empty-sub">新增提醒時選取 ' + caregiver + ' 為照顧者</div></div>';
@@ -1292,7 +1390,7 @@ function cardHTML(r, showRestore) {
   var catInfo = CAT[r.category] || { icon: '\u{1F4CC}', name: r.category || '未分類', bdg: 'bdg-other' };
 
   var h = '';
-  h += '<div class="card ' + urg + '" data-cat="' + (r.category||'other') + '" data-id="' + esc(r.id) + '" data-date="' + effDate + '" data-orig-date="' + r.date + '">';
+  h += '<div class="card ' + urg + '" data-cat="' + (r.category||'other') + '" data-id="' + esc(r.id) + '" data-date="' + effDate + '" data-orig-date="' + r.date + '"' + (ORGANIZE ? ' draggable="true" ondragstart="dragStart(event)" ondragover="dragOver(event)" ondrop="dragDrop(event)"' : '') + '>';
   h += '<div class="card-top">';
   h += '<div class="card-icon">' + catInfo.icon + '</div>';
   h += '<div class="card-body">';
@@ -1338,6 +1436,10 @@ function cardHTML(r, showRestore) {
     h += '<button class="btn-xs btn-restore" onclick="restoreFromHistory(\'' + esc(r.id) + '\')">\u{1F519} 還原</button>';
   } else {
     h += '<button class="btn-xs btn-edit" onclick="openEditModal(\'' + esc(r.id) + '\')">\u270F\uFE0F 編輯</button>';
+  }
+  if (ORGANIZE && SORT_MODE === 'manual') {
+    h += '<button class="btn-xs btn-up" onclick="moveReminder(\'' + esc(r.id) + '\',-1)">\u2191</button>';
+    h += '<button class="btn-xs btn-down" onclick="moveReminder(\'' + esc(r.id) + '\',1)">\u2193</button>';
   }
   h += '<button class="btn-xs btn-del" onclick="deleteReminderSafe(\'' + esc(r.id) + '\',\'' + esc(r.name) + '\', ' + (showRestore ? 'true' : 'false') + ')">\u{1F5D1}</button>';
   h += '</div></div></div></div>';

@@ -717,6 +717,25 @@ body:not(.dark-mode) .toolbar button{ font-size:11px; }
 body:not(.dark-mode) .wa-banner{ background:#fffbeb; border-color:#f59e0b; font-size:12px; }
 body:not(.dark-mode) .toast{ border-radius:999px; }
 
+/* ---- 排序 / 整理模式 ---- */
+body:not(.dark-mode) .sort-select{
+  font-size:11.5px; padding:6px 9px; border-radius:10px;
+  border:1px solid rgba(0,0,0,.14);
+  background:rgba(255,255,255,.72); color:#1c1c1e;
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+  margin-left:auto; max-width:46%;
+}
+body:not(.dark-mode) .toolbar{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+body:not(.dark-mode) .organize-btn{ }
+body:not(.dark-mode) .organize-btn.active{ background:#007aff; color:#fff; border-color:#007aff; }
+body:not(.dark-mode) .btn-up,
+body:not(.dark-mode) .btn-down{ background:rgba(0,122,255,.12); color:#007aff; border:1px solid rgba(0,122,255,.28); }
+body:not(.dark-mode) .organize-mode .card{
+  cursor:grab;
+  box-shadow:0 0 0 2px rgba(0,122,255,.32), 0 3px 12px rgba(0,0,0,.08);
+}
+body:not(.dark-mode) .organize-mode .card:active{ cursor:grabbing; }
+
 /* ============================================================
    Responsive: phone (default) / iPad / desktop
    ============================================================ */
