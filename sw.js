@@ -1,7 +1,7 @@
 // Service Worker for Push Notifications + fresh-content caching
 // family-reminder-cloud v4 (network-first so mobile never shows stale HTML)
 
-const CACHE_NAME = 'frc-push-v2';
+const CACHE_NAME = 'frc-push-v3';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();

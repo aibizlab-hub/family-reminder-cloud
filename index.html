@@ -878,10 +878,18 @@ function syncFromAPI() {
     syncFromGitHub();
   });
 }
+function fetchWithTimeout(url, opts, ms) {
+  var ctrl = new AbortController();
+  var id = setTimeout(function() { ctrl.abort(); }, ms || 8000);
+  opts = opts || {};
+  opts.signal = ctrl.signal;
+  return fetch(url, opts).then(function(r) { clearTimeout(id); return r; }, function(e) { clearTimeout(id); throw e; });
+}
+
 function syncFromGitHub() {
   // ★ 優先：GitHub Pages 同源 data.json（無 CORS、無外部網絡依賴，移動端 iOS 一定能讀到）
   var sameOrigin = location.origin + '/family-reminder-cloud/data.json';
-  return fetch(sameOrigin, { cache: 'no-store' })
+  return fetchWithTimeout(sameOrigin, { cache: 'no-store' }, 8000)
     .then(function(r){ if(!r.ok) throw new Error('same-origin '+r.status); return r.json(); })
     .then(function(D){
       DATA = D;
@@ -901,7 +909,7 @@ function syncFromGitHub() {
       var _ghh = { 'Accept': 'application/vnd.github.v3+json' };
       var _ght = getGHToken();
       if (_ght) _ghh['Authorization'] = 'Bearer ' + _ght;
-      return fetch('https://api.github.com/repos/aibizlab-hub/family-reminder-cloud/contents/data.json', { headers: _ghh })
+      return fetchWithTimeout('https://api.github.com/repos/aibizlab-hub/family-reminder-cloud/contents/data.json', { headers: _ghh }, 8000)
         .then(function(r){ return r.json(); })
         .then(function(j){
           var raw = atob(j.content.replace(/\s/g, ''));
@@ -921,7 +929,7 @@ function syncFromGitHub() {
         })
         .catch(function(e2){
           console.log('api.github.com 失敗，嘗試 raw:', e2);
-          return fetch('https://raw.githubusercontent.com/aibizlab-hub/family-reminder-cloud/master/data.json')
+          return fetchWithTimeout('https://raw.githubusercontent.com/aibizlab-hub/family-reminder-cloud/master/data.json', {}, 8000)
             .then(function(r){ if(!r.ok) throw new Error('raw '+r.status); return r.text(); })
             .then(function(txt){
               DATA = JSON.parse(txt);
