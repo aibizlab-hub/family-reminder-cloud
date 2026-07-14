@@ -196,6 +196,19 @@
       "caregiver": "KEN",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "id": "r1784049546132jt2",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Eppie bay",
+      "date": "2026-07-15",
+      "time": "12:00",
+      "category": "dining",
+      "caregiver": "ALL",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
