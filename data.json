@@ -209,17 +209,6 @@
       "caregiver": "ALL",
       "note": "",
       "repeat": "none"
-    },
-    {
-      "id": "r_e2e_verify_001",
-      "name": "[E2E驗證]臨時",
-      "date": "2026-12-31",
-      "time": "09:00",
-      "category": "test",
-      "caregiver": "KEN",
-      "note": "auto-verify, will remove",
-      "repeat": "none",
-      "repeatDays": []
     }
   ],
   "birthdays": [
