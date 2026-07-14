@@ -209,17 +209,6 @@
       "caregiver": "ALL",
       "note": "",
       "repeat": "none"
-    },
-    {
-      "id": "r_test_diag_001",
-      "name": "[DIAG] 測試新增",
-      "date": "2026-12-25",
-      "time": "10:00",
-      "category": "test",
-      "caregiver": "KEN",
-      "note": "diagnostic test",
-      "repeat": "none",
-      "repeatDays": []
     }
   ],
   "birthdays": [
