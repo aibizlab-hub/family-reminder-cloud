@@ -198,19 +198,6 @@
       "repeat": "none"
     },
     {
-      "id": "r1784049546132jt2",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "Eppie bay",
-      "date": "2026-07-15",
-      "time": "12:00",
-      "category": "dining",
-      "caregiver": "ALL",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r1784107782087654",
       "notified": false,
       "caregiverNotified1d": false,
@@ -501,6 +488,20 @@
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
       "archivedAt": "2026-07-12T02:28:31.847Z"
+    },
+    {
+      "id": "r1784049546132jt2",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Eppie bay",
+      "date": "2026-07-15",
+      "time": "12:00",
+      "category": "dining",
+      "caregiver": "ALL",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-07-15T16:58:13.373Z"
     }
   ],
   "_deletedIds": [],
@@ -516,5 +517,8 @@
     "email_template": "",
     "email_to": ""
   },
-  "pendingMessages": []
+  "pendingMessages": [],
+  "_lastArchived": [
+    "r1784049546132jt2"
+  ]
 }
