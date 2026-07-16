@@ -212,6 +212,19 @@
       "repeatDays": [
         1
       ]
+    },
+    {
+      "id": "r1784185840829jav",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 英文",
+      "date": "2026-07-27",
+      "time": "15:30",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -517,8 +530,5 @@
     "email_template": "",
     "email_to": ""
   },
-  "pendingMessages": [],
-  "_lastArchived": [
-    "r1784049546132jt2"
-  ]
+  "pendingMessages": []
 }
