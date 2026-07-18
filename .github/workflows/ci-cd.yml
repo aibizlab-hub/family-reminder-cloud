@@ -5,6 +5,11 @@ name: CI/CD Pipeline
 # 流程：push master → ① 驗證閘 → ② 部署 gh-pages → ③ 上線驗證
 #       若上線驗證失敗 → 自動回滾上一版 + 開 Incident Issue
 # 你（用家）完全唔使郁手：改完 code push 就去晒，壞嘢唔會上 live。
+#
+# 2026-07-19 增強：validate 加入「公開發佈零 PII 閘門」
+#   - 掃描 CHAN TAK KIN / KEN851004 / ken851004 / 生日 等身份字串
+#   - 排除 data.json 與 backups/（家庭電話等必要資料，唔可誤判）
+#   - 一旦命中即 abort 部署，確保私隱唔會出街
 # ════════════════════════════════════════════════════════════════
 
 on:
@@ -49,6 +54,31 @@ jobs:
       - name: index.html 驗證
         run: |
           node -e "const fs=require('fs');const h=fs.readFileSync('index.html','utf8');if(h.length<1000){console.error('✗ index.html 太細');process.exit(1)} if(!h.includes('HomeMemo')){console.error('✗ 搵唔到標題標記');process.exit(1)} console.log('✓ index.html OK', h.length, 'bytes')"
+
+      - name: PII Guard — 公開發佈零 PII 閘門
+        shell: bash
+        run: |
+          echo "scanning for forbidden identity PII (excluding data.json, backups)..."
+          forbidden=(
+            "CHAN TAK KIN"
+            "KEN851004"
+            "ken851004"
+            "851004"
+            "1985-10-04"
+            "1985/10/04"
+          )
+          hit=0
+          for p in "${forbidden[@]}"; do
+            if grep -rIl --exclude=data.json --exclude-dir=.git --exclude-dir=backups -e "$p" . ; then
+              echo "::error::PII guard triggered: $p"
+              hit=1
+            fi
+          done
+          if [ "$hit" -ne 0 ]; then
+            echo "deploy aborted: identity PII detected in public artifact"
+            exit 1
+          fi
+          echo "PII guard passed"
 
   # ───────────────────────── ② 部署 ─────────────────────────
   deploy:
