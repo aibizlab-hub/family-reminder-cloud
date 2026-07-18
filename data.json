@@ -71,7 +71,7 @@
       "date": "2026-06-27",
       "time": "13:30",
       "category": "class",
-      "caregiver": "KEN",
+      "caregiver": "COFFE",
       "note": "",
       "repeat": "weekly",
       "repeatDays": [
@@ -544,5 +544,14 @@
     "email_template": "",
     "email_to": ""
   },
-  "pendingMessages": []
+  "pendingMessages": [],
+  "groupNotifications": [
+    {
+      "id": "gn-1784387595071",
+      "reminderName": "Obi老師 跳舞",
+      "oldCaregiver": "KEN",
+      "newCaregiver": "COFFE",
+      "changedAt": "2026-07-18T15:13:15.071Z"
+    }
+  ]
 }
