@@ -212,6 +212,19 @@
       "caregiver": "ALL",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "id": "r1784597412461ycw",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 英文",
+      "date": "2026-07-28",
+      "time": "15:30",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
