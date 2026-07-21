@@ -133,7 +133,7 @@
       "caregiverNotified3h": false,
       "name": "中文班",
       "date": "2026-07-15",
-      "time": "09:30",
+      "time": "10:30",
       "category": "class",
       "caregiver": "EPPIE",
       "note": "",
@@ -141,19 +141,6 @@
       "repeatDays": [
         3
       ]
-    },
-    {
-      "id": "r1783166093924ovt",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "小嘟家",
-      "date": "2026-07-17",
-      "time": "12:00",
-      "category": "activity",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none"
     },
     {
       "id": "r1783577708123bid",
@@ -185,28 +172,44 @@
       "repeat": "none"
     },
     {
-      "name": "名古屋 (第4日/4日)",
-      "date": "2026-07-11",
-      "time": "10:00",
-      "category": "travel",
-      "caregiver": "Rosanna Mok",
-      "note": "",
-      "repeat": "none",
-      "id": "r1783583049228kzl",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false
-    },
-    {
-      "id": "r1783583145890fck",
+      "id": "r1784107782087654",
       "notified": false,
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
-      "name": "Leospk",
-      "date": "2026-07-19",
-      "time": "11:00",
-      "category": "activity",
-      "caregiver": "KEN",
+      "name": "數學",
+      "date": "2026-07-20",
+      "time": "17:00",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "荷里活地下 中銀隔離 Maths Concept",
+      "repeat": "weekly",
+      "repeatDays": [
+        1
+      ]
+    },
+    {
+      "id": "r1784185840829jav",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 英文",
+      "date": "2026-07-27",
+      "time": "15:30",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1784387587534arh",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "跳舞表演",
+      "date": "2026-08-30",
+      "time": "17:00",
+      "category": "special",
+      "caregiver": "ALL",
       "note": "",
       "repeat": "none"
     }
@@ -248,72 +251,6 @@
       "note": ""
     }
   ],
-  "pendingMessages": [
-    {
-      "phone": "85262218999",
-      "text": "Hi",
-      "at": "2026-07-09T07:46:23.503Z"
-    }
-  ],
-  "members": [
-    {
-      "id": "ken",
-      "name": "KEN🐏",
-      "role": "adult",
-      "phone": "85262218999",
-      "color": "#4F46E5"
-    },
-    {
-      "id": "eppie",
-      "name": "EPPIE🐏",
-      "role": "child",
-      "phone": "85297510047",
-      "color": "#EC4899"
-    },
-    {
-      "id": "kenny-yam",
-      "name": "Kenny Yam",
-      "role": "adult",
-      "phone": "85291339336",
-      "color": "#10B981"
-    },
-    {
-      "id": "rosanna-mok",
-      "name": "Rosanna Mok",
-      "role": "adult",
-      "phone": "85293398522",
-      "color": "#F59E0B"
-    },
-    {
-      "id": "coffee",
-      "name": "COFFE",
-      "role": "adult",
-      "phone": "85266713322",
-      "color": "#8B5CF6"
-    },
-    {
-      "id": "lou-dau",
-      "name": "老豆",
-      "role": "adult",
-      "phone": "85262269100",
-      "color": "#EF4444"
-    }
-  ],
-  "settings": {
-    "dark_mode": false,
-    "pre_day": true,
-    "pre_3h": true,
-    "on_time": true,
-    "browser_push": true,
-    "wa_auto": true,
-    "email_user": "",
-    "email_service": "",
-    "email_template": "",
-    "email_to": ""
-  },
-  "sent_notifications": {},
-  "_room": "",
-  "_version": 15,
   "history": [
     {
       "id": "r1782033786303xqe",
@@ -537,20 +474,93 @@
       "note": "處理erkcia iff\n交Hugo iff\n影合約\n問媽咪有冇信\n糧單",
       "repeat": "none",
       "archivedAt": "2026-07-11T01:55:26.156Z"
-    }
-  ],
-  "groupNotifications": [],
-  "_lastArchived": [
-    "r1783583049228a7i",
-    "r178361974262353l"
-  ],
-  "pushSubscriptions": [
+    },
     {
-      "endpoint": "https://web.push.apple.com/QK1VQr8bAP7CQaFhQnsiau_Wu-gLSAelqtSaF6mnidlB0DowfOwRDt41f0Xf90LYJimvHuXmn6vE5SuXQDx5BrK7vUqnl-agidr5jf1w1sqa-gDXekeOWLwYhkUWCxwU_tPGlHG10-a5Ji2ejhb2FooTflWAL2WG2rU9TXawW00",
-      "keys": {
-        "p256dh": "BMScytvXE6HEb_xX6YnsB1UcShj51iy4teMNYjM2nnt4BWKMyv1THlQPFR1KGNQD6hF0Q4MxgmFUVIgbTgen15Q",
-        "auth": "FpWd_KB7AU3Ju-6OtiMyxA"
-      }
+      "name": "名古屋 (第4日/4日)",
+      "date": "2026-07-11",
+      "time": "10:00",
+      "category": "travel",
+      "caregiver": "Rosanna Mok",
+      "note": "",
+      "repeat": "none",
+      "id": "r1783583049228kzl",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "archivedAt": "2026-07-12T02:28:31.847Z"
+    },
+    {
+      "id": "r1784049546132jt2",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Eppie bay",
+      "date": "2026-07-15",
+      "time": "12:00",
+      "category": "dining",
+      "caregiver": "ALL",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-07-15T16:58:13.373Z"
+    },
+    {
+      "id": "r1783166093924ovt",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "小嘟家",
+      "date": "2026-07-17",
+      "time": "12:00",
+      "category": "activity",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-07-18T03:56:09.591Z"
+    },
+    {
+      "id": "r1783583145890fck",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Leospk",
+      "date": "2026-07-19",
+      "time": "11:00",
+      "category": "activity",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-07-21T17:58:03.171Z"
+    },
+    {
+      "id": "r1783583145890fck",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Leospk",
+      "date": "2026-07-19",
+      "time": "11:00",
+      "category": "activity",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-07-21T18:01:02.155Z"
     }
+  ],
+  "_deletedIds": [],
+  "settings": {
+    "dark_mode": false,
+    "pre_day": true,
+    "pre_3h": true,
+    "on_time": true,
+    "browser_push": true,
+    "wa_auto": true,
+    "email_user": "",
+    "email_service": "",
+    "email_template": "",
+    "email_to": ""
+  },
+  "pendingMessages": [],
+  "_lastArchived": [
+    "r1783583145890fck"
   ]
 }
