@@ -529,21 +529,7 @@
       "caregiver": "KEN",
       "note": "",
       "repeat": "none",
-      "archivedAt": "2026-07-20T23:15:44.519Z"
-    },
-    {
-      "id": "r1783583145890fck",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "Leospk",
-      "date": "2026-07-19",
-      "time": "11:00",
-      "category": "activity",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none",
-      "archivedAt": "2026-07-20T23:16:43.571Z"
+      "archivedAt": "2026-07-21T01:29:08.320Z"
     }
   ],
   "_deletedIds": [],
