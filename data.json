@@ -194,7 +194,7 @@
       "caregiverNotified3h": false,
       "name": "iPad 英文",
       "date": "2026-07-27",
-      "time": "13:30",
+      "time": "15:30",
       "category": "class",
       "caregiver": "COFFE",
       "note": "",
@@ -210,19 +210,6 @@
       "time": "17:00",
       "category": "special",
       "caregiver": "ALL",
-      "note": "",
-      "repeat": "none"
-    },
-    {
-      "id": "r1784597412461ycw",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "iPad 英文",
-      "date": "2026-07-28",
-      "time": "15:30",
-      "category": "class",
-      "caregiver": "COFFE",
       "note": "",
       "repeat": "none"
     }
@@ -542,21 +529,7 @@
       "caregiver": "KEN",
       "note": "",
       "repeat": "none",
-      "archivedAt": "2026-07-21T01:29:08.320Z"
-    },
-    {
-      "id": "r1783583145890fck",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "Leospk",
-      "date": "2026-07-19",
-      "time": "11:00",
-      "category": "activity",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none",
-      "archivedAt": "2026-07-21T01:30:08.880Z"
+      "archivedAt": "2026-07-21T03:38:57.730Z"
     }
   ],
   "_deletedIds": [],
