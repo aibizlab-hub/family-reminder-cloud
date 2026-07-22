@@ -228,6 +228,19 @@
         "08012604007218"
       ],
       "repeat": "none"
+    },
+    {
+      "id": "r17847109325283uy",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "天炙",
+      "date": "2026-07-24",
+      "time": "12:00",
+      "category": "medical",
+      "caregiver": "KEN",
+      "note": "APM",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -545,20 +558,6 @@
       "caregiver": "KEN",
       "note": "",
       "repeat": "none",
-      "archivedAt": "2026-07-21T17:58:03.171Z"
-    },
-    {
-      "id": "r1783583145890fck",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "Leospk",
-      "date": "2026-07-19",
-      "time": "11:00",
-      "category": "activity",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none",
       "archivedAt": "2026-07-21T18:01:02.155Z"
     }
   ],
@@ -575,8 +574,5 @@
     "email_template": "",
     "email_to": ""
   },
-  "pendingMessages": [],
-  "_lastArchived": [
-    "r1783583145890fck"
-  ]
+  "pendingMessages": []
 }
