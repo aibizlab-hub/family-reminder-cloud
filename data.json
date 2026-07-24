@@ -111,22 +111,6 @@
       ]
     },
     {
-      "id": "r1783163681885r6d",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "VICTOR",
-      "date": "2026-07-10",
-      "time": "17:00",
-      "category": "work",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "weekly",
-      "repeatDays": [
-        5
-      ]
-    },
-    {
       "id": "r1783164945626mwk",
       "notified": false,
       "caregiverNotified1d": false,
@@ -590,6 +574,23 @@
       "note": "APM 1608",
       "repeat": "none",
       "archivedAt": "2026-07-24T16:55:13.039Z"
+    },
+    {
+      "id": "r1783163681885r6d",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "VICTOR",
+      "date": "2026-07-10",
+      "time": "17:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "weekly",
+      "repeatDays": [
+        5
+      ],
+      "archivedAt": "2026-07-24T16:55:29.646Z"
     }
   ],
   "_deletedIds": [],
