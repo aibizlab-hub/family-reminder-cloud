@@ -228,6 +228,22 @@
       "repeatDays": [
         0
       ]
+    },
+    {
+      "id": "r1783163681885r6d",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "VICTOR",
+      "date": "2026-07-10",
+      "time": "17:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "weekly",
+      "repeatDays": [
+        5
+      ]
     }
   ],
   "birthdays": [
@@ -591,6 +607,20 @@
         5
       ],
       "archivedAt": "2026-07-24T16:55:29.646Z"
+    },
+    {
+      "id": "r17847109325283uy",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "天炙",
+      "date": "2026-07-24",
+      "time": "12:00",
+      "category": "medical",
+      "caregiver": "KEN",
+      "note": "APM 1608",
+      "repeat": "none",
+      "archivedAt": "2026-07-24T16:56:12.969Z"
     }
   ],
   "_deletedIds": [],
@@ -613,7 +643,6 @@
       "r1782533365556by6",
       "r17825362469190h9",
       "r1782536287397slr",
-      "r1783163681885r6d",
       "r1783164945626mwk",
       "r1783577708123bid",
       "r1783578101824kw7",
@@ -621,7 +650,8 @@
       "r1784185840829jav",
       "r1784387587534arh",
       "r1784684407605t1u",
-      "r17847109908209qw"
+      "r17847109908209qw",
+      "r1783163681885r6d"
     ]
   },
   "pendingMessages": [],
