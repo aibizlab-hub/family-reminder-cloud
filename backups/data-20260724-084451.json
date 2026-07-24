@@ -133,7 +133,7 @@
       "caregiverNotified3h": false,
       "name": "中文班",
       "date": "2026-07-15",
-      "time": "09:30",
+      "time": "10:30",
       "category": "class",
       "caregiver": "EPPIE",
       "note": "",
@@ -141,19 +141,6 @@
       "repeatDays": [
         3
       ]
-    },
-    {
-      "id": "r1783166093924ovt",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "小嘟家",
-      "date": "2026-07-17",
-      "time": "12:00",
-      "category": "activity",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none"
     },
     {
       "id": "r1783577708123bid",
@@ -185,30 +172,91 @@
       "repeat": "none"
     },
     {
-      "id": "r1783583145890fck",
+      "id": "r1784107782087654",
       "notified": false,
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
-      "name": "Leospk",
-      "date": "2026-07-19",
-      "time": "11:00",
-      "category": "activity",
-      "caregiver": "KEN",
+      "name": "數學",
+      "date": "2026-07-20",
+      "time": "17:00",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "荷里活地下 中銀隔離 Maths Concept",
+      "repeat": "weekly",
+      "repeatDays": [
+        1
+      ]
+    },
+    {
+      "id": "r1784185840829jav",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 英文",
+      "date": "2026-07-27",
+      "time": "15:30",
+      "category": "class",
+      "caregiver": "COFFE",
       "note": "",
       "repeat": "none"
     },
     {
-      "id": "r1784049546132jt2",
+      "id": "r1784387587534arh",
       "notified": false,
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
-      "name": "Eppie bay",
-      "date": "2026-07-15",
-      "time": "12:00",
-      "category": "dining",
+      "name": "跳舞表演",
+      "date": "2026-08-30",
+      "time": "17:00",
+      "category": "special",
       "caregiver": "ALL",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "id": "r1784684407605t1u",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "UBER",
+      "date": "2026-09-01",
+      "time": "11:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "灣仔軍器警處",
+      "details": [
+        "08012604007218"
+      ],
+      "repeat": "none"
+    },
+    {
+      "id": "r17847109325283uy",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "天炙",
+      "date": "2026-07-24",
+      "time": "12:00",
+      "category": "medical",
+      "caregiver": "KEN",
+      "note": "APM 1608",
+      "repeat": "none"
+    },
+    {
+      "id": "r17847109908209qw",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文班",
+      "date": "2026-07-26",
+      "time": "14:30",
+      "category": "class",
+      "caregiver": "Rosanna Mok",
+      "note": "杏花邨 啟蒙",
+      "repeat": "weekly",
+      "repeatDays": [
+        0
+      ]
     }
   ],
   "birthdays": [
@@ -248,72 +296,6 @@
       "note": ""
     }
   ],
-  "pendingMessages": [
-    {
-      "phone": "85262218999",
-      "text": "Hi",
-      "at": "2026-07-09T07:46:23.503Z"
-    }
-  ],
-  "members": [
-    {
-      "id": "ken",
-      "name": "KEN🐏",
-      "role": "adult",
-      "phone": "85262218999",
-      "color": "#4F46E5"
-    },
-    {
-      "id": "eppie",
-      "name": "EPPIE🐏",
-      "role": "child",
-      "phone": "85297510047",
-      "color": "#EC4899"
-    },
-    {
-      "id": "kenny-yam",
-      "name": "Kenny Yam",
-      "role": "adult",
-      "phone": "85291339336",
-      "color": "#10B981"
-    },
-    {
-      "id": "rosanna-mok",
-      "name": "Rosanna Mok",
-      "role": "adult",
-      "phone": "85293398522",
-      "color": "#F59E0B"
-    },
-    {
-      "id": "coffee",
-      "name": "COFFE",
-      "role": "adult",
-      "phone": "85266713322",
-      "color": "#8B5CF6"
-    },
-    {
-      "id": "lou-dau",
-      "name": "老豆",
-      "role": "adult",
-      "phone": "85262269100",
-      "color": "#EF4444"
-    }
-  ],
-  "settings": {
-    "dark_mode": false,
-    "pre_day": true,
-    "pre_3h": true,
-    "on_time": true,
-    "browser_push": true,
-    "wa_auto": true,
-    "email_user": "",
-    "email_service": "",
-    "email_template": "",
-    "email_to": ""
-  },
-  "sent_notifications": {},
-  "_room": "",
-  "_version": 15,
   "history": [
     {
       "id": "r1782033786303xqe",
@@ -551,34 +533,79 @@
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
       "archivedAt": "2026-07-12T02:28:31.847Z"
+    },
+    {
+      "id": "r1784049546132jt2",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Eppie bay",
+      "date": "2026-07-15",
+      "time": "12:00",
+      "category": "dining",
+      "caregiver": "ALL",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-07-15T16:58:13.373Z"
+    },
+    {
+      "id": "r1783166093924ovt",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "小嘟家",
+      "date": "2026-07-17",
+      "time": "12:00",
+      "category": "activity",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-07-18T03:56:09.591Z"
+    },
+    {
+      "id": "r1783583145890fck",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Leospk",
+      "date": "2026-07-19",
+      "time": "11:00",
+      "category": "activity",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-07-21T18:01:02.155Z"
+    },
+    {
+      "id": "r1784717168217sqk",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "數學補堂",
+      "date": "2026-07-23",
+      "time": "16:00",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "荷里活地下 中銀隔離",
+      "repeat": "none",
+      "archivedAt": "2026-07-24T01:58:48.470Z"
     }
   ],
-  "groupNotifications": [],
+  "_deletedIds": [],
+  "settings": {
+    "dark_mode": false,
+    "pre_day": true,
+    "pre_3h": true,
+    "on_time": true,
+    "browser_push": true,
+    "wa_auto": true,
+    "email_user": "",
+    "email_service": "",
+    "email_template": "",
+    "email_to": ""
+  },
+  "pendingMessages": [],
   "_lastArchived": [
-    "r1783583049228kzl"
-  ],
-  "pushSubscriptions": [
-    {
-      "endpoint": "https://web.push.apple.com/QK1VQr8bAP7CQaFhQnsiau_Wu-gLSAelqtSaF6mnidlB0DowfOwRDt41f0Xf90LYJimvHuXmn6vE5SuXQDx5BrK7vUqnl-agidr5jf1w1sqa-gDXekeOWLwYhkUWCxwU_tPGlHG10-a5Ji2ejhb2FooTflWAL2WG2rU9TXawW00",
-      "keys": {
-        "p256dh": "BMScytvXE6HEb_xX6YnsB1UcShj51iy4teMNYjM2nnt4BWKMyv1THlQPFR1KGNQD6hF0Q4MxgmFUVIgbTgen15Q",
-        "auth": "FpWd_KB7AU3Ju-6OtiMyxA"
-      }
-    },
-    {
-      "endpoint": "https://fcm.googleapis.com/fcm/send/elUOTBu3Ff0:APA91bHqnmYKyfQqBoZCQBfG-L6zJL6yxRsC932wV-_LAWH3pOex870OnUNyuXLmlqQaa3iBhUyYNZXGrBqLsv_Bpkut3Ly8drhZXlw0mTMkkJIROtSAhGHbBCpR0sW1xRqfEx3xDSs4",
-      "expirationTime": null,
-      "keys": {
-        "p256dh": "BNt1B-17uRtxCE-jnU-xrW4bTsfejtuejcKElPcQtGbGcpdUBpmuPUmtijzUBwwAGc5nTX1TBcwl9s-H1p8MwI0",
-        "auth": "tMhrnG4DmMGn-LPkvEelnA"
-      }
-    },
-    {
-      "endpoint": "https://web.push.apple.com/QG4-CxSDfgPyKyBCyEb_4KqcbrOIk1XciPoaWH0EXgkaTZ3L8GvGa8YCKGS3R00EBLJTs5sBVDwyFCK2sn4r-1jAhkX1TCkPGPw9hdDyg08Ao8IwvyIr4azFe6X1-t5P-IZAXu3tt-4j0GhNj6gEKYmR1XeVeyzjapIAulYDcsM",
-      "keys": {
-        "p256dh": "BHq2oDlbMlfAM1JoYd8-L-QvKZjDbN9CFPOgdg_9f5Ye2ZFNIgCRGH__bjm2sLtsrZ86om-H4jINrpSmoqocQdQ",
-        "auth": "MFMN60MRQ4UaK5utuH3YOw"
-      }
-    }
+    "r1784717168217sqk"
   ]
 }
