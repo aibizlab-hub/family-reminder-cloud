@@ -254,6 +254,19 @@
       "caregiver": "KEN",
       "note": "APM",
       "repeat": "none"
+    },
+    {
+      "id": "r17849881239720rp",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "拎鞋墊",
+      "date": "2026-07-27",
+      "time": "11:00",
+      "category": "medical",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -650,14 +663,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "groupNotifications": [
-    {
-      "id": "gn-1784956501763",
-      "reminderName": "iPad 英文",
-      "oldCaregiver": "COFFE",
-      "newCaregiver": "EPPIE",
-      "changedAt": "2026-07-25T05:15:01.763Z"
-    }
-  ]
+  "pendingMessages": []
 }
