@@ -111,22 +111,6 @@
       ]
     },
     {
-      "id": "r1783163681885r6d",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "VICTOR",
-      "date": "2026-07-10",
-      "time": "17:00",
-      "category": "work",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "weekly",
-      "repeatDays": [
-        5
-      ]
-    },
-    {
       "id": "r1783164945626mwk",
       "notified": false,
       "caregiverNotified1d": false,
@@ -141,19 +125,6 @@
       "repeatDays": [
         3
       ]
-    },
-    {
-      "id": "r1783166093924ovt",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "小嘟家",
-      "date": "2026-07-17",
-      "time": "12:00",
-      "category": "activity",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none"
     },
     {
       "id": "r1783577708123bid",
@@ -185,19 +156,6 @@
       "repeat": "none"
     },
     {
-      "id": "r1783583145890fck",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "Leospk",
-      "date": "2026-07-19",
-      "time": "11:00",
-      "category": "activity",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r1784107782087654",
       "notified": false,
       "caregiverNotified1d": false,
@@ -219,11 +177,82 @@
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
       "name": "iPad 英文",
-      "date": "2026-07-27",
-      "time": "15:30",
+      "date": "2026-07-30",
+      "time": "09:00",
       "category": "class",
-      "caregiver": "COFFE",
+      "caregiver": "EPPIE",
       "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1784387587534arh",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "跳舞表演",
+      "date": "2026-08-30",
+      "time": "17:00",
+      "category": "special",
+      "caregiver": "ALL",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1784684407605t1u",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "UBER",
+      "date": "2026-09-01",
+      "time": "11:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "灣仔軍器警處",
+      "details": [
+        "08012604007218"
+      ],
+      "repeat": "none"
+    },
+    {
+      "id": "r17847109908209qw",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文班",
+      "date": "2026-07-26",
+      "time": "14:30",
+      "category": "class",
+      "caregiver": "Rosanna Mok",
+      "note": "杏花邨 啟蒙",
+      "repeat": "weekly",
+      "repeatDays": [
+        0
+      ]
+    },
+    {
+      "id": "r17849121755382aj",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "我湊揸揸",
+      "date": "2026-07-31",
+      "time": "15:00",
+      "category": "class",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1784912464903rfu",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "天炙",
+      "date": "2026-08-14",
+      "time": "12:00",
+      "category": "medical",
+      "caregiver": "KEN",
+      "note": "APM",
       "repeat": "none"
     }
   ],
@@ -515,6 +544,79 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-07-15T16:58:13.373Z"
+    },
+    {
+      "id": "r1783166093924ovt",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "小嘟家",
+      "date": "2026-07-17",
+      "time": "12:00",
+      "category": "activity",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-07-18T03:56:09.591Z"
+    },
+    {
+      "id": "r1783583145890fck",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Leospk",
+      "date": "2026-07-19",
+      "time": "11:00",
+      "category": "activity",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-07-21T18:01:02.155Z"
+    },
+    {
+      "id": "r1784717168217sqk",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "數學補堂",
+      "date": "2026-07-23",
+      "time": "16:00",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "荷里活地下 中銀隔離",
+      "repeat": "none",
+      "archivedAt": "2026-07-24T01:58:48.470Z"
+    },
+    {
+      "id": "r17847109325283uy",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "天炙",
+      "date": "2026-07-24",
+      "time": "12:00",
+      "category": "medical",
+      "caregiver": "KEN",
+      "note": "APM 1608",
+      "repeat": "none",
+      "archivedAt": "2026-07-24T16:56:12.969Z"
+    },
+    {
+      "id": "r1783163681885r6d",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "VICTOR",
+      "date": "2026-07-10",
+      "time": "17:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "weekly",
+      "repeatDays": [
+        5
+      ],
+      "archivedAt": "2026-07-24T16:56:27.502Z"
     }
   ],
   "_deletedIds": [],
@@ -528,7 +630,34 @@
     "email_user": "",
     "email_service": "",
     "email_template": "",
-    "email_to": ""
+    "email_to": "",
+    "order": [
+      "r1782033588722kko",
+      "r178203363735416b",
+      "r1782033821850vvd",
+      "r17820338720444q5",
+      "r1782533365556by6",
+      "r17825362469190h9",
+      "r1782536287397slr",
+      "r1783164945626mwk",
+      "r1783577708123bid",
+      "r1783578101824kw7",
+      "r1784107782087654",
+      "r1784185840829jav",
+      "r1784387587534arh",
+      "r1784684407605t1u",
+      "r17847109908209qw",
+      "r1783163681885r6d"
+    ]
   },
-  "pendingMessages": []
+  "pendingMessages": [],
+  "groupNotifications": [
+    {
+      "id": "gn-1784956501763",
+      "reminderName": "iPad 英文",
+      "oldCaregiver": "COFFE",
+      "newCaregiver": "EPPIE",
+      "changedAt": "2026-07-25T05:15:01.763Z"
+    }
+  ]
 }
