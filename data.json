@@ -177,10 +177,10 @@
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
       "name": "iPad 英文",
-      "date": "2026-07-27",
-      "time": "15:30",
+      "date": "2026-07-30",
+      "time": "09:00",
       "category": "class",
-      "caregiver": "COFFE",
+      "caregiver": "EPPIE",
       "note": "",
       "repeat": "none"
     },
@@ -651,5 +651,13 @@
     ]
   },
   "pendingMessages": [],
-  "digestSentDate": "2026-07-25"
+  "groupNotifications": [
+    {
+      "id": "gn-1784956501763",
+      "reminderName": "iPad 英文",
+      "oldCaregiver": "COFFE",
+      "newCaregiver": "EPPIE",
+      "changedAt": "2026-07-25T05:15:01.763Z"
+    }
+  ]
 }
