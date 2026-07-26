@@ -306,6 +306,19 @@
       "caregiver": "EPPIE",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "id": "r1785075913925px0",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文",
+      "date": "2026-08-23",
+      "time": "14:30",
+      "category": "class",
+      "caregiver": "Rosanna Mok",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
