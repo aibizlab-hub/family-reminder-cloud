@@ -264,7 +264,7 @@
       "date": "2026-07-27",
       "time": "11:00",
       "category": "medical",
-      "caregiver": "EPPIE",
+      "caregiver": "KEN",
       "note": "",
       "repeat": "none"
     }
@@ -663,5 +663,14 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": []
+  "pendingMessages": [],
+  "groupNotifications": [
+    {
+      "id": "gn-1785036130876",
+      "reminderName": "拎鞋墊",
+      "oldCaregiver": "EPPIE",
+      "newCaregiver": "KEN",
+      "changedAt": "2026-07-26T03:22:10.876Z"
+    }
+  ]
 }
