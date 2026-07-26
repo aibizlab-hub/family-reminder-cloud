@@ -267,6 +267,19 @@
       "caregiver": "KEN",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "id": "r1785074455334r8q",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Joe Sir 補堂",
+      "date": "2026-08-06",
+      "time": "10:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -663,21 +676,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "groupNotifications": [
-    {
-      "id": "gn-1785036130876",
-      "reminderName": "拎鞋墊",
-      "oldCaregiver": "EPPIE",
-      "newCaregiver": "KEN",
-      "changedAt": "2026-07-26T03:22:10.876Z"
-    },
-    {
-      "id": "gn-1785036146784",
-      "reminderName": "Joe Sir",
-      "oldCaregiver": "KEN",
-      "newCaregiver": "EPPIE",
-      "changedAt": "2026-07-26T03:22:26.784Z"
-    }
-  ]
+  "pendingMessages": []
 }
