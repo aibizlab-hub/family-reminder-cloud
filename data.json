@@ -683,6 +683,20 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-07-28T02:11:41.857Z"
+    },
+    {
+      "id": "r17849881239720rp",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "拎鞋墊",
+      "date": "2026-07-27",
+      "time": "11:00",
+      "category": "medical",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-07-28T02:12:18.261Z"
     }
   ],
   "_deletedIds": [],
