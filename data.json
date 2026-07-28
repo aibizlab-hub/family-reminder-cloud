@@ -306,6 +306,19 @@
       "caregiver": "Rosanna Mok",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "id": "r1785214426018dz6",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 英文",
+      "date": "2026-07-28",
+      "time": "15:30",
+      "category": "class",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -682,20 +695,6 @@
       "caregiver": "KEN",
       "note": "",
       "repeat": "none",
-      "archivedAt": "2026-07-28T02:11:41.857Z"
-    },
-    {
-      "id": "r17849881239720rp",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "拎鞋墊",
-      "date": "2026-07-27",
-      "time": "11:00",
-      "category": "medical",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none",
       "archivedAt": "2026-07-28T02:12:18.261Z"
     }
   ],
@@ -730,8 +729,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "_lastArchived": [
-    "r17849881239720rp"
-  ]
+  "pendingMessages": []
 }
