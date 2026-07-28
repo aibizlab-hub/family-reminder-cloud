@@ -7,7 +7,7 @@
       "date": "2026-06-27",
       "time": "15:00",
       "category": "class",
-      "caregiver": "KEN",
+      "caregiver": "EPPIE",
       "note": "",
       "repeat": "weekly",
       "repeatDays": [
@@ -111,22 +111,6 @@
       ]
     },
     {
-      "id": "r1783163681885r6d",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "VICTOR",
-      "date": "2026-07-10",
-      "time": "17:00",
-      "category": "work",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "weekly",
-      "repeatDays": [
-        5
-      ]
-    },
-    {
       "id": "r1783164945626mwk",
       "notified": false,
       "caregiverNotified1d": false,
@@ -193,10 +177,10 @@
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
       "name": "iPad 英文",
-      "date": "2026-07-27",
-      "time": "15:30",
+      "date": "2026-07-30",
+      "time": "09:00",
       "category": "class",
-      "caregiver": "COFFE",
+      "caregiver": "EPPIE",
       "note": "",
       "repeat": "none"
     },
@@ -210,6 +194,129 @@
       "time": "17:00",
       "category": "special",
       "caregiver": "ALL",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1784684407605t1u",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "UBER",
+      "date": "2026-09-01",
+      "time": "11:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "灣仔軍器警處",
+      "details": [
+        "08012604007218"
+      ],
+      "repeat": "none"
+    },
+    {
+      "id": "r17847109908209qw",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文班",
+      "date": "2026-08-09",
+      "time": "14:30",
+      "category": "class",
+      "caregiver": "Rosanna Mok",
+      "note": "杏花邨 啟蒙",
+      "repeat": "none",
+      "repeatDays": [
+        0
+      ]
+    },
+    {
+      "id": "r17849121755382aj",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "我湊揸揸",
+      "date": "2026-07-31",
+      "time": "15:00",
+      "category": "class",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1784912464903rfu",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "天炙",
+      "date": "2026-08-14",
+      "time": "12:00",
+      "category": "medical",
+      "caregiver": "KEN",
+      "note": "APM",
+      "repeat": "none"
+    },
+    {
+      "id": "r1785074455334r8q",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Joe Sir 補堂",
+      "date": "2026-08-06",
+      "time": "10:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1785075850830cxy",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文補堂",
+      "date": "2026-08-02",
+      "time": "11:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1785075873763bay",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文",
+      "date": "2026-08-16",
+      "time": "11:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1785075913925px0",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文",
+      "date": "2026-08-23",
+      "time": "14:30",
+      "category": "class",
+      "caregiver": "Rosanna Mok",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1785214426018dz6",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 英文",
+      "date": "2026-07-28",
+      "time": "15:30",
+      "category": "class",
+      "caregiver": "KEN",
       "note": "",
       "repeat": "none"
     }
@@ -529,21 +636,66 @@
       "caregiver": "KEN",
       "note": "",
       "repeat": "none",
-      "archivedAt": "2026-07-20T09:31:22.020Z"
+      "archivedAt": "2026-07-21T18:01:02.155Z"
     },
     {
-      "id": "r1783583145890fck",
+      "id": "r1784717168217sqk",
       "notified": false,
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
-      "name": "Leospk",
-      "date": "2026-07-19",
+      "name": "數學補堂",
+      "date": "2026-07-23",
+      "time": "16:00",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "荷里活地下 中銀隔離",
+      "repeat": "none",
+      "archivedAt": "2026-07-24T01:58:48.470Z"
+    },
+    {
+      "id": "r17847109325283uy",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "天炙",
+      "date": "2026-07-24",
+      "time": "12:00",
+      "category": "medical",
+      "caregiver": "KEN",
+      "note": "APM 1608",
+      "repeat": "none",
+      "archivedAt": "2026-07-24T16:56:12.969Z"
+    },
+    {
+      "id": "r1783163681885r6d",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "VICTOR",
+      "date": "2026-07-10",
+      "time": "17:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "weekly",
+      "repeatDays": [
+        5
+      ],
+      "archivedAt": "2026-07-24T16:56:27.502Z"
+    },
+    {
+      "id": "r17849881239720rp",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "拎鞋墊",
+      "date": "2026-07-27",
       "time": "11:00",
-      "category": "activity",
+      "category": "medical",
       "caregiver": "KEN",
       "note": "",
       "repeat": "none",
-      "archivedAt": "2026-07-20T09:33:31.235Z"
+      "archivedAt": "2026-07-28T02:12:18.261Z"
     }
   ],
   "_deletedIds": [],
@@ -557,10 +709,25 @@
     "email_user": "",
     "email_service": "",
     "email_template": "",
-    "email_to": ""
+    "email_to": "",
+    "order": [
+      "r1782033588722kko",
+      "r178203363735416b",
+      "r1782033821850vvd",
+      "r17820338720444q5",
+      "r1782533365556by6",
+      "r17825362469190h9",
+      "r1782536287397slr",
+      "r1783164945626mwk",
+      "r1783577708123bid",
+      "r1783578101824kw7",
+      "r1784107782087654",
+      "r1784185840829jav",
+      "r1784387587534arh",
+      "r1784684407605t1u",
+      "r17847109908209qw",
+      "r1783163681885r6d"
+    ]
   },
-  "pendingMessages": [],
-  "_lastArchived": [
-    "r1783583145890fck"
-  ]
+  "pendingMessages": []
 }
