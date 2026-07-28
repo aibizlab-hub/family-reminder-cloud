@@ -256,19 +256,6 @@
       "repeat": "none"
     },
     {
-      "id": "r17849881239720rp",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "拎鞋墊",
-      "date": "2026-07-27",
-      "time": "11:00",
-      "category": "medical",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r1785074455334r8q",
       "notified": false,
       "caregiverNotified1d": false,
@@ -682,6 +669,20 @@
         5
       ],
       "archivedAt": "2026-07-24T16:56:27.502Z"
+    },
+    {
+      "id": "r17849881239720rp",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "拎鞋墊",
+      "date": "2026-07-27",
+      "time": "11:00",
+      "category": "medical",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-07-28T02:11:41.857Z"
     }
   ],
   "_deletedIds": [],
@@ -716,5 +717,7 @@
     ]
   },
   "pendingMessages": [],
-  "digestSentDate": "2026-07-28"
+  "_lastArchived": [
+    "r17849881239720rp"
+  ]
 }
