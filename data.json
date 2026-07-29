@@ -306,6 +306,19 @@
       "caregiver": "Rosanna Mok",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "id": "r1785288343957l0u",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "軒軒生日會",
+      "date": "2026-08-02",
+      "time": "09:00",
+      "category": "school",
+      "caregiver": "ALL",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -730,8 +743,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "_lastArchived": [
-    "r1785214426018dz6"
-  ]
+  "pendingMessages": []
 }
