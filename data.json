@@ -319,6 +319,19 @@
       "caregiver": "ALL",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "id": "r1785423201303zau",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "音小 二面",
+      "date": "2026-08-29",
+      "time": "09:45",
+      "category": "school",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
