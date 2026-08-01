@@ -7,12 +7,19 @@
  * ✅ 覆蓋：① 提早 1 日  ② 提早 3 小時  ③ 準時  ④ 每日 07:00 HKT 日程 digest
  *
  * 由 .github/workflows/cloud-reminder.yml 定時觸發 (每 30 分鐘)。
+ * 資料源 = jsonblob (單一真相源)，bot 經 putJsonblob 寫回通知 flag。
  *
  * Env:
- *   GITHUB_TOKEN / GH_PAT  讀寫 data.json (GitHub API)
+ *   GITHUB_TOKEN / GH_PAT  降級讀取用 (DATA_URL 唔到時)
  *   CALLMEBOT_KEN / _EPPIE / _KENNY / _ROSANNA / _COFFE / _LODOU
- *   DATA_URL (選填)        data.json 來源，預設 raw.githubusercontent (公開倉，唔使 token 讀)
+ *   DATA_URL (選填)        預設 jsonblob (公開 blob，唔使 token 讀)
  *   DRY_RUN=1              只記錄唔發送 (測試用)
+ *
+ * 修復紀錄 (2026-07-24 code review):
+ *   P0 時區：準時窗口改用 HKT 絕對 UTC (Date.UTC - 8h)，唔再用本地時區 (Actions=UTC，舊 parseDt 錯 8 小時)
+ *   P1 去重：標記搬去 data.notifyLedger (id::type)，寫回 jsonblob 唔會被 app 全量 PUT 抹走 → 杜絕重複發送
+ *   P2 熔斷：CallMeBot 回 402/429 立即跳過剩餘發送，避免浪費配額 / 惡性循環
+ *   P2 保安：KEN/EPPIE 用緊 hardcode fallback → 提醒 set GitHub Secrets 後拆走
  */
 
 const https = require('https');
@@ -49,7 +56,11 @@ const CALLMEBOT_KEYS = {
 const CAT_ICONS = { school: '🏫', class: '🎨', special: '🎂', summer: '☀️', routine: '📅', default: '📌' };
 const DAY_NAMES = ['日', '一', '二', '三', '四', '五', '六'];
 
-// ===== GitHub API helpers =====
+// ===== 熔斷器 (Circuit Breaker) =====
+// CallMeBot 回 402 (配額用盡) / 429 (被封鎖) 時立即跳過剩餘發送，避免浪費配額 / 觸發更長封鎖
+let apiBlocked = false;
+
+// ===== GitHub API helpers (降級用) =====
 function githubApiGet(apiPath) {
   return new Promise((resolve, reject) => {
     const opts = {
@@ -110,7 +121,7 @@ function githubApiPut(apiPath, content, sha, message) {
   });
 }
 
-// ===== 讀取 data.json (有 token 用 API 拿 sha；本地 file:// 直讀；冇就 raw URL 只讀) =====
+// ===== 讀取 (本地 file:// 直讀；否則主路徑讀 DATA_URL = jsonblob) =====
 function isLocalPath(u) {
   return u.startsWith('file://') || u.startsWith('/') || /^[A-Za-z]:[\\/]/.test(u);
 }
@@ -158,10 +169,11 @@ function formatDate(dateStr) {
   const d = new Date(dateStr + 'T00:00:00');
   return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
 }
-function parseDt(r) {
+// ★ 時區修正 (P0)：用 HKT 絕對 UTC 時間，唔好再用本地時區 (GitHub Actions 係 UTC，舊 parseDt 用 local time 會錯 8 小時)
+function eventMsHKT(r) {
   const [y, mo, d] = String(r.date).split('-').map(Number);
   const [h, mi] = String(r.time || '09:00').split(':').map(Number);
-  return new Date(y, mo - 1, d, h, mi, 0, 0);
+  return Date.UTC(y, mo - 1, d, h, mi) - 8 * 3600000;
 }
 
 function buildMsg(r, type) {
@@ -194,13 +206,17 @@ function buildDigest(memberName, items) {
   return msg;
 }
 
-// ===== CallMeBot WhatsApp Gateway send =====
+// ===== CallMeBot WhatsApp Gateway send (含熔斷器) =====
 // GET https://api.callmebot.com/whatsapp.php?phone=PHONE&text=TEXT&apikey=APIKEY
 async function sendCallMeBot(caregiver, text) {
   const key = CALLMEBOT_KEYS[caregiver];
   const phone = CAREGIVER_PHONES[caregiver] && CAREGIVER_PHONES[caregiver].phone;
   if (!key || !phone) {
     console.log(`[SKIP] ${caregiver}: 無 CallMeBot key/電話，跳過`);
+    return false;
+  }
+  if (apiBlocked) {
+    console.warn(`[BREAKER] CallMeBot 已熔斷，跳過 ${caregiver} 發送以節省配額`);
     return false;
   }
   if (DRY_RUN) {
@@ -218,6 +234,12 @@ async function sendCallMeBot(caregiver, text) {
       console.log(`[CALLMEBOT] ✓ ${caregiver} (${phone}): 已排隊發送`);
       return true;
     }
+    // 熔斷：配額用盡 (402) 或被封鎖 (429) → 跳過剩餘發送，避免惡性循環 / 更長封鎖
+    if (res.status === 402 || res.status === 429) {
+      apiBlocked = true;
+      console.error(`[BREAKER] CallMeBot 回 ${res.status} (${caregiver})，觸發熔斷：跳過剩餘發送。`);
+      return false;
+    }
     console.error(`[CALLMEBOT] ✗ ${caregiver} (${phone}): HTTP ${res.status} ${body.slice(0, 120)}`);
     return false;
   } catch (e) {
@@ -231,6 +253,9 @@ async function main() {
   console.log('=== Cloud Reminder Bot (CallMeBot) ===' + (DRY_RUN ? ' [DRY-RUN]' : ''));
   const configuredKeys = Object.entries(CALLMEBOT_KEYS).filter(([, v]) => v).map(([k]) => k);
   console.log(`[KEYS] 已配置 CallMeBot key: ${configuredKeys.length ? configuredKeys.join(', ') : '（全無 → 請 set GitHub Secrets）'}`);
+  if (!process.env.CALLMEBOT_KEN || !process.env.CALLMEBOT_EPPIE) {
+    console.warn('[SECURITY] ⚠️ KEN/EPPIE 用緊 hardcode fallback key（repo 若 public 即公開）。請儘快 set GitHub Secrets CALLMEBOT_KEN/EPPIE，收齊 6 把後拆走 source 入面嘅 fallback。');
+  }
 
   const now = new Date();
   const hkNow = new Date(now.getTime() + 8 * 3600000);
@@ -247,32 +272,37 @@ async function main() {
   const reminders = data.reminders || [];
   console.log(`[DATA] 載入 ${reminders.length} 個提醒`);
 
+  // ★ 去重 ledger (P1)：標記放 data.notifyLedger (id::type)，寫回 jsonblob 唔會被 app 全量 PUT 抹走 → 杜絕重複發送
+  const ledger = (data.notifyLedger = data.notifyLedger || {});
+  const lk = (id, t) => id + '::' + t;
+
   let dataChanged = false;
   let sent = 0, totalTargets = 0;
 
   for (const r of reminders) {
     if (r.isDone || r.isArchived || r.archived) continue;
     if (!r.caregiver) continue;
+    if (!r.id) { console.log('[WARN] 提醒缺 id，跳過:', r.name); continue; }
     const eventTime = r.time || '09:00';
     const today = new Date(hkDateStr + 'T00:00:00');
     const eventDay = new Date(r.date + 'T00:00:00');
     const daysUntil = Math.ceil((eventDay - today) / 86400000);
-    const dtMs = parseDt(r).getTime();
+    const dtMs = eventMsHKT(r);
     const nowMs = now.getTime();
 
     // --- ① 提早 1 日 (09:00 HKT) ---
-    if (daysUntil === 1 && hkHour === 9 && !r.caregiverNotified1d) {
+    if (daysUntil === 1 && hkHour === 9 && !ledger[lk(r.id, '1d')]) {
       const targets = r.caregiver === 'ALL' ? Object.keys(CAREGIVER_PHONES) : [r.caregiver];
       for (const c of targets) {
         if (!CAREGIVER_PHONES[c]) continue;
         totalTargets++;
-        if (await sendCallMeBot(c, buildMsg(r, '1day'))) { sent++; r.caregiverNotified1d = true; dataChanged = true; }
+        if (await sendCallMeBot(c, buildMsg(r, '1day'))) { sent++; ledger[lk(r.id, '1d')] = true; dataChanged = true; }
         await new Promise(res => setTimeout(res, 3500));
       }
     }
 
     // --- ② 提早 3 小時 ---
-    if (daysUntil === 0 && !r.caregiverNotified3h) {
+    if (daysUntil === 0 && !ledger[lk(r.id, '3h')]) {
       const [eh, em] = eventTime.split(':').map(Number);
       const eventHkMin = eh * 60 + em;
       const nowHkMin = hkHour * 60 + hkMin;
@@ -282,35 +312,35 @@ async function main() {
         for (const c of targets) {
           if (!CAREGIVER_PHONES[c]) continue;
           totalTargets++;
-          if (await sendCallMeBot(c, buildMsg(r, '3hour'))) { sent++; r.caregiverNotified3h = true; dataChanged = true; }
+          if (await sendCallMeBot(c, buildMsg(r, '3hour'))) { sent++; ledger[lk(r.id, '3h')] = true; dataChanged = true; }
           await new Promise(res => setTimeout(res, 3500));
         }
       }
     }
 
-    // --- ③ 準時 (window = [dt-25min, dt+20min]，30min cron 必中) ---
-    if (!r.notified && nowMs >= dtMs - 25 * 60000 && nowMs <= dtMs + 20 * 60000) {
+    // --- ③ 準時 (window = [dt-25min, dt+20min]，30min cron 必中)；dtMs 用 HKT 絕對 UTC (P0 修正) ---
+    if (!ledger[lk(r.id, 'ontime')] && nowMs >= dtMs - 25 * 60000 && nowMs <= dtMs + 20 * 60000) {
       const targets = r.caregiver === 'ALL' ? Object.keys(CAREGIVER_PHONES) : [r.caregiver];
       for (const c of targets) {
         if (!CAREGIVER_PHONES[c]) continue;
         totalTargets++;
-        if (await sendCallMeBot(c, buildMsg(r, 'ontime'))) { sent++; r.notified = true; dataChanged = true; }
+        if (await sendCallMeBot(c, buildMsg(r, 'ontime'))) { sent++; ledger[lk(r.id, 'ontime')] = true; dataChanged = true; }
         await new Promise(res => setTimeout(res, 3500));
       }
     }
 
     // --- 過期重置 (等下次 / 避免永久唔重試) ---
-    if (daysUntil < 0 && (r.caregiverNotified1d || r.caregiverNotified3h || r.notified)) {
-      r.caregiverNotified1d = false;
-      r.caregiverNotified3h = false;
-      r.notified = false;
+    if (daysUntil < 0 && (ledger[lk(r.id, '1d')] || ledger[lk(r.id, '3h')] || ledger[lk(r.id, 'ontime')])) {
+      delete ledger[lk(r.id, '1d')];
+      delete ledger[lk(r.id, '3h')];
+      delete ledger[lk(r.id, 'ontime')];
       dataChanged = true;
     }
   }
 
   // --- ④ 每日 07:00 HKT 日程 digest (每位照顧者各一則) ---
   if (hkHour === 7 && hkMin < 30) {
-    const digestDate = r_digestDate(hkDateStr);
+    const digestDate = hkDateStr;
     if (data.digestSentDate !== digestDate) {
       const todays = reminders.filter(r =>
         !r.isDone && !r.isArchived && !r.archived && r.date === hkDateStr);
@@ -351,8 +381,9 @@ async function main() {
 
   async function flush() {
     try {
+      // data 已含 notifyLedger (bot 去重標記)，整份寫回 jsonblob
       await putJsonblob(data);
-      console.log('[DATA] 已寫回通知 flag 至 jsonblob');
+      console.log('[DATA] 已寫回通知 flag 至 jsonblob（含 notifyLedger）');
     } catch (e) {
       console.error('[DATA] 寫回失敗:', e.message);
     }
@@ -360,14 +391,14 @@ async function main() {
 
   if (sent === 0 && !dataChanged) {
     console.log('[CRON] 暫無需要發送嘅提醒。');
+    if (apiBlocked) console.error('[ALERT] CallMeBot 熔斷中，請檢查配額 / 封鎖狀態。');
     process.exit(0);
   }
   if (dataChanged) await flush();
+  if (apiBlocked) console.error('[ALERT] CallMeBot 熔斷觸發！剩餘發送已跳過，請檢查配額 / 封鎖並處理。');
   console.log(`[CALLMEBOT] 完成！發送 ${sent}/${totalTargets}` + (DRY_RUN ? ' (DRY-RUN)' : ''));
   process.exit(0);
 }
-
-function r_digestDate(hkDateStr) { return hkDateStr; }
 
 main().then(() => process.exit(0)).catch(err => {
   console.error('Error:', err.message);

@@ -19,6 +19,13 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: '22'   # Node 22 有 global fetch — 唔使 baileys / wacli
+      - name: Sync cloud data (reconcile data.json ↔ jsonblob)
+        # 修復 (P1)：先對賬 repo data.json 同 jsonblob (bot 雲端源)，確保 bot 讀到最新提醒；
+        # sync-data.js 雙向合併 + 防 wipe，唔會抹走任何一邊。JSONBLOB_ID 未 set 會用內建預設值。
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JSONBLOB_ID:  ${{ secrets.JSONBLOB_ID }}
+        run: node sync-data.js
       - name: Run cloud reminder bot (CallMeBot WhatsApp)
         env:
           DATA_URL:         https://jsonblob.com/api/jsonBlob/019fbcb0-45fe-7396-8713-75286c4be862

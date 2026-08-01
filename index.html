@@ -1019,11 +1019,25 @@ function pushToGitHub(retryCount) {
       console.log('No SHA from API, skip push'); return Promise.resolve(false);
     }).catch(function(e){ console.log('SHA fetch failed:', e); return Promise.resolve(false); });
   }
-  var jsonStr = JSON.stringify(DATA, null, 2);
-  var bytes = new TextEncoder().encode(jsonStr);
-  var binary = '';
-  bytes.forEach(function(b) { binary += String.fromCharCode(b); });
-  var b64 = btoa(binary);
+  // 修復 (P1)：app PUT 前先攞 server 最新 data.json，合併 bot 寫嘅 notifyLedger / digestSentDate，避免全量 PUT 抹走 → 重複發送
+  return fetch('https://api.github.com/repos/aibizlab-hub/family-reminder-cloud/contents/data.json', {
+    headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
+  }).then(function(r){ return r.json(); }).then(function(j){
+    if (j && j.content) {
+      try {
+        var raw = atob(j.content.replace(/\s/g, ''));
+        var _b = new Uint8Array(raw.length);
+        for (var i = 0; i < raw.length; i++) _b[i] = raw.charCodeAt(i);
+        var srv = JSON.parse(new TextDecoder('utf-8').decode(_b));
+        DATA.notifyLedger = Object.assign({}, srv.notifyLedger || {}, DATA.notifyLedger || {});
+        if (!DATA.digestSentDate && srv.digestSentDate) DATA.digestSentDate = srv.digestSentDate;
+      } catch (e) { console.log('merge server ledger failed:', e); }
+    }
+    var jsonStr = JSON.stringify(DATA, null, 2);
+    var bytes = new TextEncoder().encode(jsonStr);
+    var binary = '';
+    bytes.forEach(function(b) { binary += String.fromCharCode(b); });
+    var b64 = btoa(binary);
   setConnStatus(false);
   var connEl = document.getElementById('conn-badge');
   if (connEl) { connEl.innerHTML = '\u{1F504} 同步中...'; connEl.className = 'conn-status conn-sync'; }
@@ -1062,6 +1076,7 @@ function pushToGitHub(retryCount) {
     console.log('GitHub push failed:', e);
     setConnStatus(API_ONLINE);
     return false;
+  });
   });
 }
 
