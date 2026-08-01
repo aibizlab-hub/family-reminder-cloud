@@ -21,10 +21,7 @@ jobs:
           node-version: '22'   # Node 22 有 global fetch — 唔使 baileys / wacli
       - name: Run cloud reminder bot (CallMeBot WhatsApp)
         env:
-          # Built-in token has `contents: write` (see permissions above) and is
-          # preferred by cloud-reminder-bot.js (GITHUB_TOKEN || GH_PAT). No
-          # long-lived PAT needed -> safe to revoke any stored PAT.
-          GITHUB_TOKEN:     ${{ secrets.GITHUB_TOKEN }}
+          DATA_URL:         https://jsonblob.com/api/jsonBlob/019fbcb0-45fe-7396-8713-75286c4be862
           CALLMEBOT_KEN:     ${{ secrets.CALLMEBOT_KEN }}
           CALLMEBOT_EPPIE:   ${{ secrets.CALLMEBOT_EPPIE }}
           CALLMEBOT_KENNY:   ${{ secrets.CALLMEBOT_KENNY }}

@@ -21,7 +21,7 @@ const REPO = process.env.GITHUB_REPO || 'aibizlab-hub/family-reminder-cloud';
 const GH_TOKEN = process.env.GITHUB_TOKEN || process.env.GH_PAT;
 const DRY_RUN = process.argv.includes('--dry-run') || process.env.DRY_RUN === '1';
 const DATA_URL = process.env.DATA_URL ||
-  `https://raw.githubusercontent.com/${REPO}/master/data.json`;
+  `https://jsonblob.com/api/jsonBlob/019fbcb0-45fe-7396-8713-75286c4be862`;
 
 // ===== 照顧者電話對照表 (E.164 without '+') =====
 const CAREGIVER_PHONES = {
@@ -111,21 +111,12 @@ function githubApiPut(apiPath, content, sha, message) {
 function isLocalPath(u) {
   return u.startsWith('file://') || u.startsWith('/') || /^[A-Za-z]:[\\/]/.test(u);
 }
-async function loadData() {
-  if (isLocalPath(DATA_URL)) {
-    try {
-      const p = DATA_URL.replace(/^file:\/\//, '');
-      return { data: JSON.parse(fs.readFileSync(p, 'utf-8')), sha: null };
-    } catch (e) { console.error('[DATA] 本地檔讀取失敗: ' + e.message); process.exit(1); }
-  }
-  if (GH_TOKEN) {
-    try { return await githubApiGet('data.json'); }
-    catch (e) { console.log('[DATA] API 讀取失敗，降級 raw URL: ' + e.message); }
-  }
+function fetchUrl(url) {
   return new Promise((resolve, reject) => {
-    const url = new URL(DATA_URL);
+    const u = new URL(url);
     const req = https.get({
-      hostname: url.hostname, path: url.pathname, timeout: 10000
+      hostname: u.hostname, path: u.pathname, timeout: 10000,
+      headers: { 'Accept': 'application/json', 'User-Agent': 'cloud-reminder-bot' }
     }, res => {
       if (res.statusCode !== 200) { reject(new Error('HTTP ' + res.statusCode)); return; }
       let d = ''; res.on('data', c => d += c);
@@ -134,6 +125,28 @@ async function loadData() {
     req.on('error', reject);
     req.on('timeout', () => { req.destroy(); reject(new Error('Timeout')); });
   });
+}
+
+async function loadData() {
+  if (isLocalPath(DATA_URL)) {
+    try {
+      const p = DATA_URL.replace(/^file:\/\//, '');
+      return { data: JSON.parse(fs.readFileSync(p, 'utf-8')), sha: null };
+    } catch (e) { console.error('[DATA] 本地檔讀取失敗: ' + e.message); process.exit(1); }
+  }
+  // 主路徑：直接讀 DATA_URL (jsonblob / raw github)，加 Accept header
+  try {
+    const r = await fetchUrl(DATA_URL);
+    console.log('[DATA] 經 DATA_URL 讀取成功: ' + DATA_URL);
+    return r;
+  } catch (e) {
+    console.error('[DATA] DATA_URL 讀取失敗: ' + e.message);
+    if (GH_TOKEN) {
+      try { const r = await githubApiGet('data.json'); console.log('[DATA] 降級 GitHub API'); return r; }
+      catch (e2) { console.error('[DATA] GitHub 降級都失敗: ' + e2.message); }
+    }
+    process.exit(1);
+  }
 }
 
 // ===== helpers =====
@@ -312,14 +325,31 @@ async function main() {
     }
   }
 
+  function putJsonblob(payload) {
+    return new Promise((resolve, reject) => {
+      const body = JSON.stringify(payload);
+      const u = new URL(DATA_URL);
+      const req = https.request({
+        hostname: u.hostname, path: u.pathname, method: 'PUT', timeout: 15000,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Content-Length': Buffer.byteLength(body)
+        }
+      }, res => {
+        let b = ''; res.on('data', c => b += c);
+        res.on('end', () => { if (res.statusCode >= 200 && res.statusCode < 300) resolve(b); else reject(new Error('jsonblob PUT ' + res.statusCode + ': ' + b.slice(0, 120))); });
+      });
+      req.on('error', reject);
+      req.write(body);
+      req.end();
+    });
+  }
+
   async function flush() {
-    if (!sha || !GH_TOKEN) {
-      console.log('[DATA] 無 sha/token，跳過寫回 (dry-run 或 raw 模式)');
-      return;
-    }
     try {
-      await githubApiPut('data.json', data, sha, 'Update reminder notification flags (cloud bot)');
-      console.log('[DATA] 已寫回 flag 至 GitHub');
+      await putJsonblob(data);
+      console.log('[DATA] 已寫回通知 flag 至 jsonblob');
     } catch (e) {
       console.error('[DATA] 寫回失敗:', e.message);
     }
