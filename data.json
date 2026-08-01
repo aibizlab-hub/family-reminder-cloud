@@ -288,10 +288,10 @@
       "caregiverNotified3h": false,
       "name": "軒軒生日會",
       "date": "2026-08-02",
-      "time": "09:00",
+      "time": "13:30",
       "category": "school",
       "caregiver": "ALL",
-      "note": "",
+      "note": "樂富冒險樂園",
       "repeat": "none"
     },
     {
@@ -771,9 +771,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "_lastArchived": [
-    "r1784185840829jav",
-    "r17849121755382aj"
-  ]
+  "pendingMessages": []
 }
