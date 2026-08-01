@@ -172,19 +172,6 @@
       ]
     },
     {
-      "id": "r1784185840829jav",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "iPad 英文",
-      "date": "2026-07-31",
-      "time": "18:30",
-      "category": "class",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r1784387587534arh",
       "notified": false,
       "caregiverNotified1d": false,
@@ -228,19 +215,6 @@
       "repeatDays": [
         0
       ]
-    },
-    {
-      "id": "r17849121755382aj",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "我湊揸揸 畫畫",
-      "date": "2026-07-31",
-      "time": "15:45",
-      "category": "class",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none"
     },
     {
       "id": "r1784912464903rfu",
@@ -723,6 +697,34 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-07-29T00:34:52.161Z"
+    },
+    {
+      "id": "r1784185840829jav",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 英文",
+      "date": "2026-07-31",
+      "time": "18:30",
+      "category": "class",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-01T06:35:59.123Z"
+    },
+    {
+      "id": "r17849121755382aj",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "我湊揸揸 畫畫",
+      "date": "2026-07-31",
+      "time": "15:45",
+      "category": "class",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-01T06:35:59.123Z"
     }
   ],
   "_deletedIds": [],
@@ -757,14 +759,8 @@
     ]
   },
   "pendingMessages": [],
-  "groupNotifications": [
-    {
-      "id": "gn-1785423132645",
-      "reminderName": "iPad 英文",
-      "oldCaregiver": "EPPIE",
-      "newCaregiver": "KEN",
-      "changedAt": "2026-07-30T14:52:12.645Z"
-    }
-  ],
-  "digestSentDate": "2026-07-31"
+  "_lastArchived": [
+    "r1784185840829jav",
+    "r17849121755382aj"
+  ]
 }
