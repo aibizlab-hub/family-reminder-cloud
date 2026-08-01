@@ -33,10 +33,13 @@ const CAREGIVER_PHONES = {
   '老豆':        { phone: '85262269100', name: '老豆' }
 };
 
-// ===== CallMeBot API keys (per caregiver, from GitHub Secrets) =====
+// ===== CallMeBot API keys (per caregiver) =====
+// 優先讀 GitHub Secrets (env)；若 env 冇值，先用已驗證嘅 fallback default，令 KEN+EPPIE 24/7 即時生效。
+// 其餘 4 位未激活 → env 為空 → 自動 SKIP（唔會報錯）。
+// ⚠️ 保安：呢兩把 fallback 暫時 hardcode 喺 source（repo 若 public 即公開）。收齊 6 把並 set 咗 GitHub Secrets 後，拆走呢個 fallback。
 const CALLMEBOT_KEYS = {
-  'KEN':         process.env.CALLMEBOT_KEN,
-  'EPPIE':       process.env.CALLMEBOT_EPPIE,
+  'KEN':         process.env.CALLMEBOT_KEN     || '1426181',
+  'EPPIE':       process.env.CALLMEBOT_EPPIE   || '5016776',
   'Kenny Yam':   process.env.CALLMEBOT_KENNY,
   'Rosanna Mok': process.env.CALLMEBOT_ROSANNA,
   'COFFE':       process.env.CALLMEBOT_COFFE,
