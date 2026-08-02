@@ -24,6 +24,7 @@
 
 const https = require('https');
 const fs = require('fs');
+const path = require('path');
 const REPO = process.env.GITHUB_REPO || 'aibizlab-hub/family-reminder-cloud';
 const GH_TOKEN = process.env.GITHUB_TOKEN || process.env.GH_PAT;
 const DRY_RUN = process.argv.includes('--dry-run') || process.env.DRY_RUN === '1';
@@ -142,25 +143,33 @@ function fetchUrl(url) {
 }
 
 async function loadData() {
-  if (isLocalPath(DATA_URL)) {
+  // ① 優先讀 CI checkout 落嚟嘅本地 data.json（永遠喺，唔受 jsonblob 過期/被刪影響）
+  const localPath = path.join(process.cwd(), 'data.json');
+  if (fs.existsSync(localPath)) {
     try {
-      const p = DATA_URL.replace(/^file:\/\//, '');
-      return { data: JSON.parse(fs.readFileSync(p, 'utf-8')), sha: null };
-    } catch (e) { console.error('[DATA] 本地檔讀取失敗: ' + e.message); process.exit(1); }
+      const data = JSON.parse(fs.readFileSync(localPath, 'utf-8'));
+      console.log('[DATA] 經本地 data.json 讀取成功 (CI checkout)');
+      return { data, sha: null, source: 'local' };
+    } catch (e) { console.error('[DATA] 本地 data.json 讀取失敗: ' + e.message); }
   }
-  // 主路徑：直接讀 DATA_URL (jsonblob / raw github)，加 Accept header
+  // ② 主路徑：DATA_URL (jsonblob / raw github)
   try {
     const r = await fetchUrl(DATA_URL);
     console.log('[DATA] 經 DATA_URL 讀取成功: ' + DATA_URL);
-    return r;
+    return Object.assign({}, r, { source: 'url' });
   } catch (e) {
     console.error('[DATA] DATA_URL 讀取失敗: ' + e.message);
-    if (GH_TOKEN) {
-      try { const r = await githubApiGet('data.json'); console.log('[DATA] 降級 GitHub API'); return r; }
-      catch (e2) { console.error('[DATA] GitHub 降級都失敗: ' + e2.message); }
-    }
-    process.exit(1);
   }
+  // ③ 降級：GitHub API（需 GITHUB_TOKEN）
+  if (GH_TOKEN) {
+    try {
+      const r = await githubApiGet('data.json');
+      console.log('[DATA] 降級 GitHub API 讀取成功');
+      return Object.assign({}, r, { source: 'api' });
+    } catch (e2) { console.error('[DATA] GitHub 降級讀取失敗: ' + e2.message); }
+  }
+  console.error('[DATA] 三個資料源都讀取失敗，放棄');
+  process.exit(1);
 }
 
 // ===== helpers =====
@@ -380,13 +389,25 @@ async function main() {
   }
 
   async function flush() {
-    try {
-      // data 已含 notifyLedger (bot 去重標記)，整份寫回 jsonblob
-      await putJsonblob(data);
-      console.log('[DATA] 已寫回通知 flag 至 jsonblob（含 notifyLedger）');
-    } catch (e) {
-      console.error('[DATA] 寫回失敗:', e.message);
+    let wrote = false;
+    // ① 寫回 repo data.json（單一真相源）：保證 notifyLedger 跨 run 保留 → 去重有效
+    if (GH_TOKEN) {
+      try {
+        const cur = await githubApiGet('data.json');   // 拎最新 sha，避免覆蓋他人改動
+        cur.data.notifyLedger = data.notifyLedger || {};
+        cur.data.digestSentDate = data.digestSentDate;
+        await githubApiPut('data.json', cur.data, cur.sha, 'Reminder bot: persist notifyLedger');
+        console.log('[DATA] 已寫回 notifyLedger 至 repo data.json');
+        wrote = true;
+      } catch (e) { console.error('[DATA] 寫回 repo 失敗: ' + e.message); }
     }
+    // ② 鏡像寫回 jsonblob（best-effort，404/過期唔阻擋）
+    try {
+      await putJsonblob(data);
+      console.log('[DATA] 已寫回 jsonblob（鏡像）');
+      wrote = true;
+    } catch (e) { console.error('[DATA] jsonblob 鏡像寫回失敗 (best-effort): ' + e.message); }
+    if (!wrote) console.error('[ALERT] notifyLedger 兩個寫回都失敗，去重標記可能流失');
   }
 
   if (sent === 0 && !dataChanged) {
@@ -394,7 +415,8 @@ async function main() {
     if (apiBlocked) console.error('[ALERT] CallMeBot 熔斷中，請檢查配額 / 封鎖狀態。');
     process.exit(0);
   }
-  if (dataChanged) await flush();
+  if (DRY_RUN) console.log('[DRY-RUN] 跳過寫回');
+  else if (dataChanged) await flush();
   if (apiBlocked) console.error('[ALERT] CallMeBot 熔斷觸發！剩餘發送已跳過，請檢查配額 / 封鎖並處理。');
   console.log(`[CALLMEBOT] 完成！發送 ${sent}/${totalTargets}` + (DRY_RUN ? ' (DRY-RUN)' : ''));
   process.exit(0);

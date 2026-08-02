@@ -28,6 +28,7 @@ jobs:
         run: node sync-data.js
       - name: Run cloud reminder bot (CallMeBot WhatsApp)
         env:
+          GITHUB_TOKEN:      ${{ secrets.GITHUB_TOKEN }}
           DATA_URL:         https://jsonblob.com/api/jsonBlob/019fbcb0-45fe-7396-8713-75286c4be862
           CALLMEBOT_KEN:     ${{ secrets.CALLMEBOT_KEN }}
           CALLMEBOT_EPPIE:   ${{ secrets.CALLMEBOT_EPPIE }}
