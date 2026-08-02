@@ -321,19 +321,6 @@
       "repeat": "none"
     },
     {
-      "id": "r17855661885431vq",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "Obi跳舞",
-      "date": "2026-08-20",
-      "time": "17:00",
-      "category": "class",
-      "caregiver": "EPPIE",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r1785669004546lbc",
       "notified": false,
       "caregiverNotified1d": false,
@@ -804,6 +791,20 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-08-02T11:09:20.867Z"
+    },
+    {
+      "id": "r17855661885431vq",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Obi跳舞",
+      "date": "2026-08-20",
+      "time": "17:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-02T11:12:24.071Z"
     }
   ],
   "_deletedIds": [],
