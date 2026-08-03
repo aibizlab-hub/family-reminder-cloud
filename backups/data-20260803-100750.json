@@ -172,19 +172,6 @@
       ]
     },
     {
-      "id": "r1784185840829jav",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "iPad 英文",
-      "date": "2026-07-30",
-      "time": "09:00",
-      "category": "class",
-      "caregiver": "EPPIE",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r1784387587534arh",
       "notified": false,
       "caregiverNotified1d": false,
@@ -224,23 +211,10 @@
       "category": "class",
       "caregiver": "Rosanna Mok",
       "note": "杏花邨 啟蒙",
-      "repeat": "weekly",
+      "repeat": "none",
       "repeatDays": [
         0
       ]
-    },
-    {
-      "id": "r17849121755382aj",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "我湊揸揸",
-      "date": "2026-07-31",
-      "time": "15:00",
-      "category": "class",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none"
     },
     {
       "id": "r1784912464903rfu",
@@ -256,14 +230,105 @@
       "repeat": "none"
     },
     {
-      "id": "r17849881239720rp",
+      "id": "r1785074455334r8q",
       "notified": false,
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
-      "name": "拎鞋墊",
-      "date": "2026-07-27",
+      "name": "Joe Sir 補堂",
+      "date": "2026-08-06",
+      "time": "10:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1785075873763bay",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文",
+      "date": "2026-08-16",
       "time": "11:00",
-      "category": "medical",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1785075913925px0",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文",
+      "date": "2026-08-23",
+      "time": "14:30",
+      "category": "class",
+      "caregiver": "Rosanna Mok",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1785423201303zau",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "音小 二面",
+      "date": "2026-08-29",
+      "time": "09:45",
+      "category": "school",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1785668909711qyu",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "數學補堂",
+      "date": "2026-08-06",
+      "time": "16:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1785669004546lbc",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "熙珞生日會",
+      "date": "2026-08-23",
+      "time": "18:00",
+      "category": "activity",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r178566909810439r",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "畫畫",
+      "date": "2026-08-07",
+      "time": "17:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1785669129454ql8",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "房屋署",
+      "date": "2026-08-06",
+      "time": "11:30",
+      "category": "other",
       "caregiver": "KEN",
       "note": "",
       "repeat": "none"
@@ -630,6 +695,104 @@
         5
       ],
       "archivedAt": "2026-07-24T16:56:27.502Z"
+    },
+    {
+      "id": "r17849881239720rp",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "拎鞋墊",
+      "date": "2026-07-27",
+      "time": "11:00",
+      "category": "medical",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-07-28T02:12:18.261Z"
+    },
+    {
+      "id": "r1785214426018dz6",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 英文",
+      "date": "2026-07-28",
+      "time": "15:30",
+      "category": "class",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-07-29T00:34:52.161Z"
+    },
+    {
+      "id": "r1784185840829jav",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 英文",
+      "date": "2026-07-31",
+      "time": "18:30",
+      "category": "class",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-01T06:35:59.123Z"
+    },
+    {
+      "id": "r17849121755382aj",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "我湊揸揸 畫畫",
+      "date": "2026-07-31",
+      "time": "15:45",
+      "category": "class",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-01T06:35:59.123Z"
+    },
+    {
+      "id": "r17855661885431vq",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Obi跳舞",
+      "date": "2026-08-20",
+      "time": "17:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-02T11:12:24.071Z"
+    },
+    {
+      "id": "r1785075850830cxy",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文補堂",
+      "date": "2026-08-02",
+      "time": "11:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-02T19:43:22.190Z"
+    },
+    {
+      "id": "r1785288343957l0u",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "軒軒生日會",
+      "date": "2026-08-02",
+      "time": "13:30",
+      "category": "school",
+      "caregiver": "ALL",
+      "note": "樂富冒險樂園",
+      "repeat": "none",
+      "archivedAt": "2026-08-02T19:43:22.190Z"
     }
   ],
   "_deletedIds": [],
@@ -664,20 +827,9 @@
     ]
   },
   "pendingMessages": [],
-  "groupNotifications": [
-    {
-      "id": "gn-1785036130876",
-      "reminderName": "拎鞋墊",
-      "oldCaregiver": "EPPIE",
-      "newCaregiver": "KEN",
-      "changedAt": "2026-07-26T03:22:10.876Z"
-    },
-    {
-      "id": "gn-1785036146784",
-      "reminderName": "Joe Sir",
-      "oldCaregiver": "KEN",
-      "newCaregiver": "EPPIE",
-      "changedAt": "2026-07-26T03:22:26.784Z"
-    }
-  ]
+  "_lastArchived": [
+    "r1785075850830cxy",
+    "r1785288343957l0u"
+  ],
+  "notifyLedger": {}
 }
