@@ -36,20 +36,20 @@ const CAREGIVER_PHONES = {
   'KEN':         { phone: '85262218999', name: 'KEN' },
   'EPPIE':       { phone: '85297510047', name: 'EPPIE（太太）' },
   'Kenny Yam':   { phone: '85291339336', name: 'Kenny Yam' },
-  'Rosanna Mok': { phone: '85293398522', name: 'Rosanna Mok' },
+  'Rosanna Mok': { phone: '852933398522', name: 'Rosanna Mok' },
   'COFFE':       { phone: '85266713322', name: 'COFFE' },
   '老豆':        { phone: '85262269100', name: '老豆' }
 };
 
 // ===== CallMeBot API keys (per caregiver) =====
-// 優先讀 GitHub Secrets (env)；若 env 冇值，先用已驗證嘅 fallback default，令 KEN+EPPIE 24/7 即時生效。
-// 其餘 4 位未激活 → env 為空 → 自動 SKIP（唔會報錯）。
-// ⚠️ 保安：呢兩把 fallback 暫時 hardcode 喺 source（repo 若 public 即公開）。收齊 6 把並 set 咗 GitHub Secrets 後，拆走呢個 fallback。
+// 優先讀 GitHub Secrets (env)；若 env 冇值，先用已驗證嘅 fallback default，令 KEN+EPPIE+ROSANNA 24/7 即時生效。
+// 其餘 3 位未激活 → env 為空 → 自動 SKIP（唔會報錯）。
+// ⚠️ 保安：呢 3 把 fallback 暫時 hardcode 喺 source（repo 若 public 即公開）。收齊 6 把並 set 咗 GitHub Secrets 後，拆走呢個 fallback。
 const CALLMEBOT_KEYS = {
   'KEN':         process.env.CALLMEBOT_KEN     || '1426181',
   'EPPIE':       process.env.CALLMEBOT_EPPIE   || '5016776',
   'Kenny Yam':   process.env.CALLMEBOT_KENNY,
-  'Rosanna Mok': process.env.CALLMEBOT_ROSANNA,
+  'Rosanna Mok': process.env.CALLMEBOT_ROSANNA || '6381815',
   'COFFE':       process.env.CALLMEBOT_COFFE,
   '老豆':        process.env.CALLMEBOT_LODOU
 };
@@ -262,8 +262,8 @@ async function main() {
   console.log('=== Cloud Reminder Bot (CallMeBot) ===' + (DRY_RUN ? ' [DRY-RUN]' : ''));
   const configuredKeys = Object.entries(CALLMEBOT_KEYS).filter(([, v]) => v).map(([k]) => k);
   console.log(`[KEYS] 已配置 CallMeBot key: ${configuredKeys.length ? configuredKeys.join(', ') : '（全無 → 請 set GitHub Secrets）'}`);
-  if (!process.env.CALLMEBOT_KEN || !process.env.CALLMEBOT_EPPIE) {
-    console.warn('[SECURITY] ⚠️ KEN/EPPIE 用緊 hardcode fallback key（repo 若 public 即公開）。請儘快 set GitHub Secrets CALLMEBOT_KEN/EPPIE，收齊 6 把後拆走 source 入面嘅 fallback。');
+  if (!process.env.CALLMEBOT_KEN || !process.env.CALLMEBOT_EPPIE || !process.env.CALLMEBOT_ROSANNA) {
+    console.warn('[SECURITY] ⚠️ KEN/EPPIE/ROSANNA 用緊 hardcode fallback key（repo 若 public 即公開）。請儘快 set GitHub Secrets CALLMEBOT_KEN/EPPIE/ROSANNA，收齊 6 把後拆走 source 入面嘅 fallback。');
   }
 
   const now = new Date();
