@@ -10,7 +10,7 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "baileys": "^6.7.0",
+    "baileys": "^6.7.24",
     "qrcode": "^1.5.3",
     "pino": "^9.0.0",
     "node-cache": "^5.1.2",
