@@ -354,6 +354,19 @@
       "category": "special",
       "note": "如果你收到呢個，即係 WhatsApp 提醒已經修復返好！",
       "isDone": false
+    },
+    {
+      "id": "r17859351413846bt",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "英華面試",
+      "date": "2026-08-22",
+      "time": "11:00",
+      "category": "school",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -848,12 +861,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "notifyLedger": {
-    "r1785074455334r8q::1d": true,
-    "r1785668909711qyu::1d": true,
-    "r1785669129454ql8::1d": true,
-    "TEST-FIX-1785928544110::ontime": true,
-    "TEST-FIX-1785928687269::ontime": true
-  }
+  "pendingMessages": []
 }
