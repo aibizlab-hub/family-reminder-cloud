@@ -22,7 +22,7 @@
       "notified": false,
       "name": "軟網球班",
       "date": "2026-07-22",
-      "time": "09:00",
+      "time": "13:45",
       "category": "summer",
       "caregiver": "EPPIE",
       "note": "七，八月\n坪石青協",
@@ -826,20 +826,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "_lastArchived": [
-    "r1785075850830cxy",
-    "r1785288343957l0u"
-  ],
-  "notifyLedger": {},
-  "pushSubscriptions": [
-    {
-      "endpoint": "https://web.push.apple.com/QLk1yjMcRqiYoic2Ak9S47dp3ZzveSWbz3R-g0xnzgv2QEuAZbvmbL5fEQtIikLCq0SGFXatQbHqOivr7ihE_hPJgx8nqsjdMd_sgSd2f2DfWbQ-DSp9_1HAwa4-8dSLsSGEmBOsUxtwtROExMIJY3M-CQJYuVqeP8BSZbM_e-E",
-      "keys": {
-        "p256dh": "BOrN8WdKgpcJZmR4kJwynsm4R4T-MMkraJMQ6OPGDiubKy2HZ3xYrTMazj0sMq9w6AgF5L-zDZ7hNjVBzGpCqiM",
-        "auth": "c8z5X8ndL9zJ44ChdaX8Vw"
-      }
-    }
-  ],
-  "digestSentDate": "2026-08-05"
+  "pendingMessages": []
 }
