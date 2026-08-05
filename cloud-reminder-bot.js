@@ -299,8 +299,8 @@ async function main() {
     const dtMs = eventMsHKT(r);
     const nowMs = now.getTime();
 
-    // --- ① 提早 1 日 (09:00 HKT) ---
-    if (daysUntil === 1 && hkHour === 9 && !ledger[lk(r.id, '1d')]) {
+    // --- ① 提早 1 日 (anytime 08:00–22:00 HKT 嗰日；錯過 9 點都會發，ledger 防重複) ---
+    if (daysUntil === 1 && hkHour >= 8 && hkHour <= 22 && !ledger[lk(r.id, '1d')]) {
       const targets = r.caregiver === 'ALL' ? Object.keys(CAREGIVER_PHONES) : [r.caregiver];
       for (const c of targets) {
         if (!CAREGIVER_PHONES[c]) continue;
@@ -347,8 +347,8 @@ async function main() {
     }
   }
 
-  // --- ④ 每日 07:00 HKT 日程 digest (每位照顧者各一則) ---
-  if (hkHour === 7 && hkMin < 30) {
+  // --- ④ 每日 07:00–12:00 HKT 日程 digest (錯過 7 點都會發，digestSentDate 防重複) ---
+  if (hkHour >= 7 && hkHour < 12) {
     const digestDate = hkDateStr;
     if (data.digestSentDate !== digestDate) {
       const todays = reminders.filter(r =>

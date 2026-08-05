@@ -9,11 +9,17 @@ on:
 
 permissions:
   contents: write
+  actions: write   # 允許被 web-push.yml 經 gh workflow run 觸發
+
+# 防止 web-push 每 5 分鐘 trigger 造成多個 run 疊埋；cancel-in-progress: false = 排隊唔取消
+concurrency:
+  group: cloud-reminder
+  cancel-in-progress: false
 
 jobs:
   remind:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v6

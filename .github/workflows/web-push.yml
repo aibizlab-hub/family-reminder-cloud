@@ -33,6 +33,17 @@ jobs:
           VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
           VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
         run: node web-push-send.js
+      # ★ 修復 (2026-08-05)：原生 schedule cron 唔可靠（過去 8 鐘只成功跑 2 次），
+      #   所以將 WhatsApp bot 掛喺呢條穩定嘅 5 分鐘 self-perpetuate loop 入面，
+      #   每次 web-push 跑就順手 launch cloud-reminder.yml，令 WhatsApp 提醒 24/7 可靠發送。
+      - name: Trigger Cloud Reminder Bot (WhatsApp / CallMeBot)
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: aibizlab-hub/family-reminder-cloud
+        run: |
+          echo "📲 Triggering WhatsApp reminder bot (CallMeBot)…"
+          gh workflow run cloud-reminder.yml --ref "${{ github.ref_name }}" || echo "::warning::Failed to trigger cloud-reminder (will retry next cycle)"
       - name: Re-arm timer (self-perpetuate next run, ~5 min cadence)
         if: always()
         env:
