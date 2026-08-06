@@ -6,6 +6,8 @@ on:
   schedule:
     - cron: '*/30 * * * *'
   workflow_dispatch:   # 手動 test：GitHub → Actions → 此 workflow → Run workflow
+  push:
+    branches: [master]   # 任何 push 都重啟 loop（包括本修復 commit），確保服務即時恢復
 
 permissions:
   contents: write
@@ -43,5 +45,27 @@ jobs:
           CALLMEBOT_COFFE:   ${{ secrets.CALLMEBOT_COFFE }}
           CALLMEBOT_LODOU:   ${{ secrets.CALLMEBOT_LODOU }}
         run: node cloud-reminder-bot.js
+      # ★ 修復 (2026-08-07)：之前 WhatsApp bot 完全依賴 web-push loop 觸發，
+      #   一旦 web-push 嘅 re-arm 偶發失敗/被 cancel (run #9046) 就全軍覆沒、80 分鐘零發送。
+      #   改成 cloud-reminder 自己 self-perpetuate（唔靠 web-push / scheduler），
+      #   24/7 獨立穩定跑；web-push 觸發只作冗餘備用。repo 公開 = Actions 免費，雙 loop 零成本。
+      - name: Re-arm timer (self-perpetuate ~5min cadence, 獨立於 web-push)
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: aibizlab-hub/family-reminder-cloud
+        run: |
+          echo "⏳ Self-perpetuating WhatsApp bot (sleep ~285s before re-arm)…"
+          sleep 285
+          for i in 1 2 3 4 5; do
+            if gh workflow run cloud-reminder.yml --ref "${{ github.ref_name }}"; then
+              echo "✅ Re-armed cloud-reminder (attempt $i)"
+              exit 0
+            fi
+            echo "⚠️ Re-arm attempt $i failed, retry in $((i*10))s…"
+            sleep $((i*10))
+          done
+          echo "::error::Failed to re-arm cloud-reminder after 5 retries"
+          exit 1
       # 覆蓋：① 提早 1 日 (09:00 HKT) ② 提早 3 小時 ③ 準時 ④ 每日 07:00 HKT 日程 digest
       # 全部經 CallMeBot 雲端 WhatsApp 發送，唔使 wacli / baileys / 掃 QR

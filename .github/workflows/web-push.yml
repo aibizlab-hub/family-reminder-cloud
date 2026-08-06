@@ -6,6 +6,8 @@ on:
   workflow_dispatch:
   repository_dispatch:
     types: [web-push-tick]
+  push:
+    branches: [master]   # push 重啟 loop（備用，方便修復後即時恢復）
 
 permissions:
   contents: write
@@ -56,13 +58,13 @@ jobs:
           # the sleep just sets the reminder check granularity.
           echo "⏳ Sleeping ~4m15s before re-arming (target 5-min cadence)…"
           sleep 255
-          for i in 1 2 3; do
+          for i in 1 2 3 4 5; do
             if gh workflow run web-push.yml --ref "${{ github.ref_name }}"; then
               echo "✅ Re-armed web-push timer (attempt $i)"
               exit 0
             fi
-            echo "⚠️ Re-arm attempt $i failed, retrying in 15s..."
-            sleep 15
+            echo "⚠️ Re-arm attempt $i failed, retrying in $((i*10))s..."
+            sleep $((i*10))
           done
           echo "::error::Failed to re-arm web-push timer after 3 retries"
           exit 1

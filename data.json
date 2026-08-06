@@ -345,17 +345,6 @@
       "caregiver": "EPPIE",
       "note": "",
       "repeat": "none"
-    },
-    {
-      "id": "TEST-FIX-1785947260208",
-      "name": "【測試】WhatsApp 修復確認",
-      "date": "2026-08-06",
-      "time": "00:37",
-      "repeat": "none",
-      "caregiver": "ALL",
-      "category": "special",
-      "note": "如果你收到呢個，即係 WhatsApp 提醒已經 24/7 雲端穩定跑，唔使開電腦！",
-      "isDone": false
     }
   ],
   "birthdays": [
