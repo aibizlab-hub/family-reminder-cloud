@@ -230,19 +230,6 @@
       "repeat": "none"
     },
     {
-      "id": "r1785074455334r8q",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "Joe Sir 補堂",
-      "date": "2026-08-06",
-      "time": "10:00",
-      "category": "class",
-      "caregiver": "EPPIE",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r1785075873763bay",
       "notified": false,
       "caregiverNotified1d": false,
@@ -282,19 +269,6 @@
       "repeat": "none"
     },
     {
-      "id": "r1785668909711qyu",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "數學補堂",
-      "date": "2026-08-06",
-      "time": "16:00",
-      "category": "class",
-      "caregiver": "EPPIE",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r1785669004546lbc",
       "notified": false,
       "caregiverNotified1d": false,
@@ -317,19 +291,6 @@
       "time": "17:00",
       "category": "class",
       "caregiver": "EPPIE",
-      "note": "",
-      "repeat": "none"
-    },
-    {
-      "id": "r1785669129454ql8",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "房屋署",
-      "date": "2026-08-06",
-      "time": "11:30",
-      "category": "other",
-      "caregiver": "KEN",
       "note": "",
       "repeat": "none"
     },
@@ -806,6 +767,60 @@
       "note": "樂富冒險樂園",
       "repeat": "none",
       "archivedAt": "2026-08-02T19:43:22.190Z"
+    },
+    {
+      "id": "r1785074455334r8q",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Joe Sir 補堂",
+      "date": "2026-08-06",
+      "time": "10:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-07T02:53:12.263Z"
+    },
+    {
+      "id": "r1785668909711qyu",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "數學補堂",
+      "date": "2026-08-06",
+      "time": "16:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-07T02:53:12.263Z"
+    },
+    {
+      "id": "r1785669129454ql8",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "房屋署",
+      "date": "2026-08-06",
+      "time": "11:30",
+      "category": "other",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-07T02:53:12.263Z"
+    },
+    {
+      "id": "TEST-FIX-1785947260208",
+      "name": "【測試】WhatsApp 修復確認",
+      "date": "2026-08-06",
+      "time": "00:37",
+      "repeat": "none",
+      "caregiver": "ALL",
+      "category": "special",
+      "note": "如果你收到呢個，即係 WhatsApp 提醒已經 24/7 雲端穩定跑，唔使開電腦！",
+      "isDone": false,
+      "archivedAt": "2026-08-07T02:53:12.263Z"
     }
   ],
   "_deletedIds": [],
@@ -840,9 +855,10 @@
     ]
   },
   "pendingMessages": [],
-  "notifyLedger": {
-    "TEST-FIX-1785947260208::ontime": true,
-    "r178566909810439r::1d": true
-  },
-  "digestSentDate": "2026-08-07"
+  "_lastArchived": [
+    "r1785074455334r8q",
+    "r1785668909711qyu",
+    "r1785669129454ql8",
+    "TEST-FIX-1785947260208"
+  ]
 }
