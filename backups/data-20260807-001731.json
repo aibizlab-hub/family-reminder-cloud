@@ -22,7 +22,7 @@
       "notified": false,
       "name": "軟網球班",
       "date": "2026-07-22",
-      "time": "09:00",
+      "time": "13:45",
       "category": "summer",
       "caregiver": "EPPIE",
       "note": "七，八月\n坪石青協",
@@ -172,19 +172,6 @@
       ]
     },
     {
-      "id": "r1784185840829jav",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "iPad 英文",
-      "date": "2026-07-30",
-      "time": "09:00",
-      "category": "class",
-      "caregiver": "EPPIE",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r1784387587534arh",
       "notified": false,
       "caregiverNotified1d": false,
@@ -230,19 +217,6 @@
       ]
     },
     {
-      "id": "r17849121755382aj",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "我湊揸揸",
-      "date": "2026-07-31",
-      "time": "15:00",
-      "category": "class",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r1784912464903rfu",
       "notified": false,
       "caregiverNotified1d": false,
@@ -263,19 +237,6 @@
       "name": "Joe Sir 補堂",
       "date": "2026-08-06",
       "time": "10:00",
-      "category": "class",
-      "caregiver": "EPPIE",
-      "note": "",
-      "repeat": "none"
-    },
-    {
-      "id": "r1785075850830cxy",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "中文補堂",
-      "date": "2026-08-02",
-      "time": "11:00",
       "category": "class",
       "caregiver": "EPPIE",
       "note": "",
@@ -308,15 +269,80 @@
       "repeat": "none"
     },
     {
-      "id": "r1785288343957l0u",
+      "id": "r1785423201303zau",
       "notified": false,
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
-      "name": "軒軒生日會",
-      "date": "2026-08-02",
-      "time": "09:00",
+      "name": "音小 二面",
+      "date": "2026-08-29",
+      "time": "09:45",
       "category": "school",
-      "caregiver": "ALL",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1785668909711qyu",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "數學補堂",
+      "date": "2026-08-06",
+      "time": "16:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1785669004546lbc",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "熙珞生日會",
+      "date": "2026-08-23",
+      "time": "18:00",
+      "category": "activity",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r178566909810439r",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "畫畫",
+      "date": "2026-08-07",
+      "time": "17:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1785669129454ql8",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "房屋署",
+      "date": "2026-08-06",
+      "time": "11:30",
+      "category": "other",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r17859351413846bt",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "英華面試",
+      "date": "2026-08-22",
+      "time": "11:00",
+      "category": "school",
+      "caregiver": "EPPIE",
       "note": "",
       "repeat": "none"
     }
@@ -710,6 +736,76 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-07-29T00:34:52.161Z"
+    },
+    {
+      "id": "r1784185840829jav",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 英文",
+      "date": "2026-07-31",
+      "time": "18:30",
+      "category": "class",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-01T06:35:59.123Z"
+    },
+    {
+      "id": "r17849121755382aj",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "我湊揸揸 畫畫",
+      "date": "2026-07-31",
+      "time": "15:45",
+      "category": "class",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-01T06:35:59.123Z"
+    },
+    {
+      "id": "r17855661885431vq",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Obi跳舞",
+      "date": "2026-08-20",
+      "time": "17:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-02T11:12:24.071Z"
+    },
+    {
+      "id": "r1785075850830cxy",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文補堂",
+      "date": "2026-08-02",
+      "time": "11:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-02T19:43:22.190Z"
+    },
+    {
+      "id": "r1785288343957l0u",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "軒軒生日會",
+      "date": "2026-08-02",
+      "time": "13:30",
+      "category": "school",
+      "caregiver": "ALL",
+      "note": "樂富冒險樂園",
+      "repeat": "none",
+      "archivedAt": "2026-08-02T19:43:22.190Z"
     }
   ],
   "_deletedIds": [],
@@ -743,5 +839,19 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": []
+  "pendingMessages": [],
+  "notifyLedger": {
+    "r1785074455334r8q::1d": true,
+    "r1785668909711qyu::1d": true,
+    "r1785669129454ql8::1d": true,
+    "TEST-FIX-1785947260208::ontime": true,
+    "r1785074455334r8q::3h": true,
+    "r178566909810439r::1d": true,
+    "r1785669129454ql8::3h": true,
+    "r1785074455334r8q::ontime": true,
+    "r1785669129454ql8::ontime": true,
+    "r1785668909711qyu::3h": true,
+    "r1785668909711qyu::ontime": true
+  },
+  "digestSentDate": "2026-08-06"
 }
