@@ -861,9 +861,6 @@
     "r1785669129454ql8",
     "TEST-FIX-1785947260208"
   ],
-  "notifyLedger": {
-    "r178566909810439r::3h": true,
-    "r178566909810439r::ontime": true
-  },
+  "notifyLedger": {},
   "digestSentDate": "2026-08-07"
 }
