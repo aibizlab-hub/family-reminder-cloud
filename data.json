@@ -293,6 +293,19 @@
       "caregiver": "EPPIE",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "id": "r1786175116396fol",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "套牌",
+      "date": "2026-08-13",
+      "time": "11:15",
+      "category": "other",
+      "caregiver": "KEN",
+      "note": "長沙灣政府合署",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -855,9 +868,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "_lastArchived": [
-    "r178566909810439r"
-  ],
-  "notifyLedger": {}
+  "pendingMessages": []
 }
