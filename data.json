@@ -881,5 +881,6 @@
       "changedAt": "2026-08-08T05:46:27.054Z"
     }
   ],
-  "notifyLedger": {}
+  "notifyLedger": {},
+  "digestSentDate": "2026-08-09"
 }
