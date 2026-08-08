@@ -278,7 +278,7 @@
       "time": "18:00",
       "category": "activity",
       "caregiver": "KEN",
-      "note": "",
+      "note": "5:30到杏花邨接佢",
       "repeat": "none"
     },
     {
@@ -290,7 +290,7 @@
       "date": "2026-08-22",
       "time": "11:00",
       "category": "school",
-      "caregiver": "EPPIE",
+      "caregiver": "KEN",
       "note": "",
       "repeat": "none"
     },
@@ -868,5 +868,17 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": []
+  "pendingMessages": [],
+  "_lastArchived": [
+    "r178566909810439r"
+  ],
+  "groupNotifications": [
+    {
+      "id": "gn-1786167987054",
+      "reminderName": "英華面試",
+      "oldCaregiver": "EPPIE",
+      "newCaregiver": "KEN",
+      "changedAt": "2026-08-08T05:46:27.054Z"
+    }
+  ]
 }
