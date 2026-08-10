@@ -873,5 +873,6 @@
   "_lastArchived": [
     "r17847109908209qw"
   ],
-  "notifyLedger": {}
+  "notifyLedger": {},
+  "digestSentDate": "2026-08-10"
 }
