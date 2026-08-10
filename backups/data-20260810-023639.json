@@ -22,7 +22,7 @@
       "notified": false,
       "name": "軟網球班",
       "date": "2026-07-22",
-      "time": "09:00",
+      "time": "13:45",
       "category": "summer",
       "caregiver": "EPPIE",
       "note": "七，八月\n坪石青協",
@@ -201,22 +201,6 @@
       "repeat": "none"
     },
     {
-      "id": "r17847109908209qw",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "中文班",
-      "date": "2026-08-09",
-      "time": "14:30",
-      "category": "class",
-      "caregiver": "Rosanna Mok",
-      "note": "杏花邨 啟蒙",
-      "repeat": "none",
-      "repeatDays": [
-        0
-      ]
-    },
-    {
       "id": "r1784912464903rfu",
       "notified": false,
       "caregiverNotified1d": false,
@@ -227,32 +211,6 @@
       "category": "medical",
       "caregiver": "KEN",
       "note": "APM",
-      "repeat": "none"
-    },
-    {
-      "id": "r1785074455334r8q",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "Joe Sir 補堂",
-      "date": "2026-08-06",
-      "time": "10:00",
-      "category": "class",
-      "caregiver": "EPPIE",
-      "note": "",
-      "repeat": "none"
-    },
-    {
-      "id": "r1785075850830cxy",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "中文補堂",
-      "date": "2026-08-02",
-      "time": "11:00",
-      "category": "class",
-      "caregiver": "EPPIE",
-      "note": "",
       "repeat": "none"
     },
     {
@@ -282,19 +240,6 @@
       "repeat": "none"
     },
     {
-      "id": "r1785288343957l0u",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "軒軒生日會",
-      "date": "2026-08-02",
-      "time": "13:30",
-      "category": "school",
-      "caregiver": "ALL",
-      "note": "樂富冒險樂園",
-      "repeat": "none"
-    },
-    {
       "id": "r1785423201303zau",
       "notified": false,
       "caregiverNotified1d": false,
@@ -308,15 +253,54 @@
       "repeat": "none"
     },
     {
-      "id": "r17855661885431vq",
+      "id": "r1785669004546lbc",
       "notified": false,
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
-      "name": "Obi跳舞",
-      "date": "2026-08-20",
-      "time": "17:00",
+      "name": "熙珞生日會",
+      "date": "2026-08-23",
+      "time": "18:00",
+      "category": "activity",
+      "caregiver": "KEN",
+      "note": "5:30到杏花邨接佢",
+      "repeat": "none"
+    },
+    {
+      "id": "r17859351413846bt",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "英華面試",
+      "date": "2026-08-22",
+      "time": "11:00",
+      "category": "school",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1786175116396fol",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "套牌",
+      "date": "2026-08-13",
+      "time": "11:15",
+      "category": "other",
+      "caregiver": "KEN",
+      "note": "長沙灣政府合署",
+      "repeat": "none"
+    },
+    {
+      "id": "r1786322384730wpi",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad英文",
+      "date": "2026-08-13",
+      "time": "15:30",
       "category": "class",
-      "caregiver": "EPPIE",
+      "caregiver": "COFFE",
       "note": "",
       "repeat": "none"
     }
@@ -738,6 +722,133 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-08-01T06:35:59.123Z"
+    },
+    {
+      "id": "r17855661885431vq",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Obi跳舞",
+      "date": "2026-08-20",
+      "time": "17:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-02T11:12:24.071Z"
+    },
+    {
+      "id": "r1785075850830cxy",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文補堂",
+      "date": "2026-08-02",
+      "time": "11:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-02T19:43:22.190Z"
+    },
+    {
+      "id": "r1785288343957l0u",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "軒軒生日會",
+      "date": "2026-08-02",
+      "time": "13:30",
+      "category": "school",
+      "caregiver": "ALL",
+      "note": "樂富冒險樂園",
+      "repeat": "none",
+      "archivedAt": "2026-08-02T19:43:22.190Z"
+    },
+    {
+      "id": "r1785074455334r8q",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Joe Sir 補堂",
+      "date": "2026-08-06",
+      "time": "10:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-07T02:53:12.263Z"
+    },
+    {
+      "id": "r1785668909711qyu",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "數學補堂",
+      "date": "2026-08-06",
+      "time": "16:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-07T02:53:12.263Z"
+    },
+    {
+      "id": "r1785669129454ql8",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "房屋署",
+      "date": "2026-08-06",
+      "time": "11:30",
+      "category": "other",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-07T02:53:12.263Z"
+    },
+    {
+      "id": "TEST-FIX-1785947260208",
+      "name": "【測試】WhatsApp 修復確認",
+      "date": "2026-08-06",
+      "time": "00:37",
+      "repeat": "none",
+      "caregiver": "ALL",
+      "category": "special",
+      "note": "如果你收到呢個，即係 WhatsApp 提醒已經 24/7 雲端穩定跑，唔使開電腦！",
+      "isDone": false,
+      "archivedAt": "2026-08-07T02:53:12.263Z"
+    },
+    {
+      "id": "r178566909810439r",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "畫畫",
+      "date": "2026-08-07",
+      "time": "17:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-08T05:45:53.251Z"
+    },
+    {
+      "id": "r17847109908209qw",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文班",
+      "date": "2026-08-09",
+      "time": "14:30",
+      "category": "class",
+      "caregiver": "Rosanna Mok",
+      "note": "杏花邨 啟蒙",
+      "repeat": "none",
+      "repeatDays": [
+        0
+      ],
+      "archivedAt": "2026-08-10T00:21:58.519Z"
     }
   ],
   "_deletedIds": [],
@@ -772,5 +883,6 @@
     ]
   },
   "pendingMessages": [],
-  "notifyLedger": {}
+  "notifyLedger": {},
+  "digestSentDate": "2026-08-10"
 }
