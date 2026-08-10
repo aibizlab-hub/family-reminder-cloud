@@ -201,22 +201,6 @@
       "repeat": "none"
     },
     {
-      "id": "r17847109908209qw",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "中文班",
-      "date": "2026-08-09",
-      "time": "14:30",
-      "category": "class",
-      "caregiver": "Rosanna Mok",
-      "note": "杏花邨 啟蒙",
-      "repeat": "none",
-      "repeatDays": [
-        0
-      ]
-    },
-    {
       "id": "r1784912464903rfu",
       "notified": false,
       "caregiverNotified1d": false,
@@ -835,6 +819,23 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-08-08T05:45:53.251Z"
+    },
+    {
+      "id": "r17847109908209qw",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文班",
+      "date": "2026-08-09",
+      "time": "14:30",
+      "category": "class",
+      "caregiver": "Rosanna Mok",
+      "note": "杏花邨 啟蒙",
+      "repeat": "none",
+      "repeatDays": [
+        0
+      ],
+      "archivedAt": "2026-08-10T00:21:58.519Z"
     }
   ],
   "_deletedIds": [],
@@ -870,17 +871,6 @@
   },
   "pendingMessages": [],
   "_lastArchived": [
-    "r178566909810439r"
-  ],
-  "groupNotifications": [
-    {
-      "id": "gn-1786167987054",
-      "reminderName": "英華面試",
-      "oldCaregiver": "EPPIE",
-      "newCaregiver": "KEN",
-      "changedAt": "2026-08-08T05:46:27.054Z"
-    }
-  ],
-  "notifyLedger": {},
-  "digestSentDate": "2026-08-10"
+    "r17847109908209qw"
+  ]
 }
