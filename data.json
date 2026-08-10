@@ -290,6 +290,19 @@
       "caregiver": "KEN",
       "note": "長沙灣政府合署",
       "repeat": "none"
+    },
+    {
+      "id": "r1786322316390h5t",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad英文",
+      "date": "2026-08-10",
+      "time": "18:30",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -869,10 +882,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "_lastArchived": [
-    "r17847109908209qw"
-  ],
-  "notifyLedger": {},
-  "digestSentDate": "2026-08-10"
+  "pendingMessages": []
 }
