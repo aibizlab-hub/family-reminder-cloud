@@ -13,10 +13,9 @@ permissions:
   contents: write
   actions: write   # 允許被 web-push.yml 經 gh workflow run 觸發
 
-# 防止 web-push 每 5 分鐘 trigger 造成多個 run 疊埋；cancel-in-progress: false = 排隊唔取消
-concurrency:
-  group: cloud-reminder
-  cancel-in-progress: false
+# 唔用 concurrency group：self-perpetuate 每 5 分鐘 + web-push 觸發 + schedule + push 都會 launch run，
+# 若用 group 會令 GitHub 取消排隊中嘅舊 run (observed: 連續 cancelled)。移除 group 後 run 自由並行，
+# 重複發送由 cloud-reminder-bot.js 嘅 notifyLedger 去重機制防止 (首個 run 發完 set ledger=true，其餘 skip)。
 
 jobs:
   remind:
