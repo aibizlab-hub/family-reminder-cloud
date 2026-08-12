@@ -935,5 +935,6 @@
     ]
   },
   "pendingMessages": [],
-  "notifyLedger": {}
+  "notifyLedger": {},
+  "digestSentDate": "2026-08-12"
 }
