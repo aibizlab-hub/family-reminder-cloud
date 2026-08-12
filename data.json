@@ -355,6 +355,19 @@
       "caregiver": "KEN",
       "note": "將軍澳",
       "repeat": "none"
+    },
+    {
+      "id": "r1786510214627xoo",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 數學",
+      "date": "2026-08-13",
+      "time": "10:00",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -934,10 +947,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "notifyLedger": {
-    "r1786175116396fol::1d": true,
-    "r17864955486561bw::1d": true
-  },
-  "digestSentDate": "2026-08-12"
+  "pendingMessages": []
 }
