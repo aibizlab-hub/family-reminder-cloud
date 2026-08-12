@@ -39,10 +39,10 @@
       "notified": false,
       "name": "嶺南小學",
       "date": "2026-08-29",
-      "time": "14:15",
+      "time": "12:00",
       "category": "school",
       "caregiver": "EPPIE",
-      "note": "",
+      "note": "時間待定",
       "repeat": "none",
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
@@ -366,6 +366,19 @@
       "time": "10:00",
       "category": "class",
       "caregiver": "COFFE",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1786519499851drw",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文 補堂",
+      "date": "2026-08-20",
+      "time": "14:30",
+      "category": "class",
+      "caregiver": "KEN",
       "note": "",
       "repeat": "none"
     }
@@ -947,6 +960,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "notifyLedger": {}
+  "pendingMessages": []
 }
