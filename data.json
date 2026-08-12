@@ -329,6 +329,19 @@
       "caregiver": "KEN",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "id": "r17864955486561bw",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "灣仔軍器廠街",
+      "date": "2026-08-13",
+      "time": "15:30",
+      "category": "other",
+      "caregiver": "KEN",
+      "note": "Eecheck",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -908,6 +921,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "notifyLedger": {}
+  "pendingMessages": []
 }
