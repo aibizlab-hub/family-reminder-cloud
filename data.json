@@ -342,6 +342,19 @@
       "caregiver": "KEN",
       "note": "Eecheck",
       "repeat": "none"
+    },
+    {
+      "id": "r1786495652161myt",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Byd",
+      "date": "2026-08-13",
+      "time": "17:00",
+      "category": "other",
+      "caregiver": "KEN",
+      "note": "將軍澳",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -921,6 +934,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "notifyLedger": {}
+  "pendingMessages": []
 }
