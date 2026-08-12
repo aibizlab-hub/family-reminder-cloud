@@ -355,6 +355,45 @@
       "caregiver": "KEN",
       "note": "將軍澳",
       "repeat": "none"
+    },
+    {
+      "id": "r1786510214627xoo",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 數學",
+      "date": "2026-08-13",
+      "time": "10:00",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1786519499851drw",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文 補堂",
+      "date": "2026-08-20",
+      "time": "14:30",
+      "category": "class",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1786519563076jyq",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "跳舞 加堂",
+      "date": "2026-08-20",
+      "time": "17:00",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -935,6 +974,5 @@
     ]
   },
   "pendingMessages": [],
-  "notifyLedger": {},
-  "digestSentDate": "2026-08-12"
+  "notifyLedger": {}
 }
