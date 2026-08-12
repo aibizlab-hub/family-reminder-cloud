@@ -42,7 +42,7 @@
       "time": "14:15",
       "category": "school",
       "caregiver": "EPPIE",
-      "note": "時間待定",
+      "note": "",
       "repeat": "none",
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
@@ -947,6 +947,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "notifyLedger": {}
+  "pendingMessages": []
 }
