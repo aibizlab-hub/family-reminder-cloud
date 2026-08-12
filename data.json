@@ -935,6 +935,9 @@
     ]
   },
   "pendingMessages": [],
-  "notifyLedger": {},
+  "notifyLedger": {
+    "r1786175116396fol::1d": true,
+    "r1786495652161myt::1d": true
+  },
   "digestSentDate": "2026-08-12"
 }
