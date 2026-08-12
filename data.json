@@ -39,7 +39,7 @@
       "notified": false,
       "name": "嶺南小學",
       "date": "2026-08-29",
-      "time": "12:00",
+      "time": "14:15",
       "category": "school",
       "caregiver": "EPPIE",
       "note": "時間待定",
@@ -947,6 +947,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "notifyLedger": {}
+  "pendingMessages": []
 }
