@@ -318,19 +318,6 @@
       "repeat": "none"
     },
     {
-      "id": "r1786495365612xby",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "順利簽約",
-      "date": "2026-08-12",
-      "time": "10:30",
-      "category": "other",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r17864955486561bw",
       "notified": false,
       "caregiverNotified1d": false,
@@ -940,6 +927,20 @@
         0
       ],
       "archivedAt": "2026-08-10T00:21:58.519Z"
+    },
+    {
+      "id": "r1786495365612xby",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "順利簽約",
+      "date": "2026-08-12",
+      "time": "10:30",
+      "category": "other",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-13T15:03:57.997Z"
     }
   ],
   "_deletedIds": [],
@@ -974,6 +975,7 @@
     ]
   },
   "pendingMessages": [],
-  "notifyLedger": {},
-  "digestSentDate": "2026-08-13"
+  "_lastArchived": [
+    "r1786495365612xby"
+  ]
 }
