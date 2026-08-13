@@ -162,6 +162,11 @@ async function main() {
   // 3. 合併
   const merged = merge(repo, blob || {});
 
+  // ★ 寫返本地 data.json，令緊接嘅 bot step 讀到最新 (含 notifyLedger / app 新加嘅提醒)，
+  //   唔使等下一次 checkout 先見到 — 避免 bot 讀到過期 local 而漏發 / 重發
+  try { fs.writeFileSync(localPath, stableStringify(merged)); console.log('[REPO] 已寫返本地 data.json (供 bot 讀最新)'); }
+  catch (e) { console.error('[REPO] 本地寫回失敗:', e.message); }
+
   // 4. 寫回 repo (有變先寫)
   if (stableStringify(merged) !== stableStringify(repo)) {
     if (GH_TOKEN && repoSha) {

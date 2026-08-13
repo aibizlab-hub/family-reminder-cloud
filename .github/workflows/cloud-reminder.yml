@@ -13,9 +13,13 @@ permissions:
   contents: write
   actions: write   # 允許被 web-push.yml 經 gh workflow run 觸發
 
-# 唔用 concurrency group：self-perpetuate 每 5 分鐘 + web-push 觸發 + schedule + push 都會 launch run，
-# 若用 group 會令 GitHub 取消排隊中嘅舊 run (observed: 連續 cancelled)。移除 group 後 run 自由並行，
-# 重複發送由 cloud-reminder-bot.js 嘅 notifyLedger 去重機制防止 (首個 run 發完 set ledger=true，其餘 skip)。
+# ★ 修復 (2026-08-14)：早前移除 concurrency group 令多個 run 並行，加上 sync-data 喺每次 run 重寫遠端、
+#   bot 讀過期 local checkout + flush 寫回 SHA 衝突，導致 notifyLedger 去重標記流失 → 同一提醒重複發送 (實測 15 次)。
+#   改為用 concurrency group + cancel-in-progress:false：新 run 排隊等舊 run 完成 (唔 cancel)，確保去重跨 run 持久化；
+#   配合 bot 嘅「讀穿合併遠端 ledger」+ flush SHA 重試合併，雙重熔斷重複發送。
+concurrency:
+  group: cloud-reminder
+  cancel-in-progress: false   # 排隊唔 cancel：避免 early fix 嘅連續 cancelled，同時序列化令去重生效
 
 jobs:
   remind:

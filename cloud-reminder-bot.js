@@ -285,6 +285,19 @@ async function main() {
   const ledger = (data.notifyLedger = data.notifyLedger || {});
   const lk = (id, t) => id + '::' + t;
 
+  // ★ 讀穿去重 (read-through dedup)：合併遠端 repo 目前嘅 notifyLedger / digestSentDate，
+  //   尊重其他並行 run 已寫落嘅「已發」標記，杜絕重疊 run 造成嘅重複發送 (P0 熔斷級防護)
+  if (GH_TOKEN) {
+    try {
+      const remote = await githubApiGet('data.json');
+      const rLed = (remote.data && remote.data.notifyLedger) || {};
+      let mergedCount = 0;
+      for (const k in rLed) if (rLed[k] && !ledger[k]) { ledger[k] = true; mergedCount++; }
+      if (remote.data && remote.data.digestSentDate) data.digestSentDate = data.digestSentDate || remote.data.digestSentDate;
+      console.log(`[DEDUP] 讀穿合併遠端 ledger：+${mergedCount} 條 (共 ${Object.keys(ledger).length})`);
+    } catch (e) { console.warn('[DEDUP] 遠端 ledger 讀取失敗，降級用本地 ledger: ' + e.message); }
+  }
+
   let dataChanged = false;
   let sent = 0, totalTargets = 0;
 
@@ -392,14 +405,21 @@ async function main() {
     let wrote = false;
     // ① 寫回 repo data.json（單一真相源）：保證 notifyLedger 跨 run 保留 → 去重有效
     if (GH_TOKEN) {
-      try {
-        const cur = await githubApiGet('data.json');   // 拎最新 sha，避免覆蓋他人改動
-        cur.data.notifyLedger = data.notifyLedger || {};
-        cur.data.digestSentDate = data.digestSentDate;
-        await githubApiPut('data.json', cur.data, cur.sha, 'Reminder bot: persist notifyLedger');
-        console.log('[DATA] 已寫回 notifyLedger 至 repo data.json');
-        wrote = true;
-      } catch (e) { console.error('[DATA] 寫回 repo 失敗: ' + e.message); }
+      let ok = false;
+      for (let attempt = 1; attempt <= 5 && !ok; attempt++) {
+        try {
+          const cur = await githubApiGet('data.json');   // 拎最新 sha + 最新 ledger
+          // 合併：保留遠端已有嘅 ledger / digestSentDate，唔會被今次本地副本覆蓋抹走 (防止並行 run 互相 clobber)
+          cur.data.notifyLedger = Object.assign({}, cur.data.notifyLedger || {}, data.notifyLedger || {});
+          cur.data.digestSentDate = data.digestSentDate || cur.data.digestSentDate;
+          await githubApiPut('data.json', cur.data, cur.sha, 'Reminder bot: persist notifyLedger');
+          console.log('[DATA] 已寫回 notifyLedger 至 repo data.json (attempt ' + attempt + ')');
+          ok = true; wrote = true;
+        } catch (e) {
+          console.error('[DATA] 寫回 repo 失敗 (attempt ' + attempt + '): ' + e.message);
+        }
+      }
+      if (!ok) console.error('[ALERT] notifyLedger 寫回 repo 失敗 5 次，去重標記可能流失 — 請檢查權限 / 衝突');
     }
     // ② 鏡像寫回 jsonblob（best-effort，404/過期唔阻擋）
     try {
