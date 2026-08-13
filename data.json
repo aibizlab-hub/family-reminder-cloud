@@ -978,5 +978,6 @@
   "_lastArchived": [
     "r1786495365612xby"
   ],
-  "notifyLedger": {}
+  "notifyLedger": {},
+  "digestSentDate": "2026-08-14"
 }
