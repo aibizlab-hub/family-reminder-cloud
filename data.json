@@ -941,6 +941,20 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-08-13T15:03:57.997Z"
+    },
+    {
+      "id": "r1786495365612xby",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "順利簽約",
+      "date": "2026-08-12",
+      "time": "10:30",
+      "category": "other",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-13T15:04:58.362Z"
     }
   ],
   "_deletedIds": [],
@@ -977,6 +991,5 @@
   "pendingMessages": [],
   "_lastArchived": [
     "r1786495365612xby"
-  ],
-  "notifyLedger": {}
+  ]
 }
