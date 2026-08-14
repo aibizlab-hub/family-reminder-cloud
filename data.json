@@ -361,6 +361,19 @@
       "repeatDays": [
         4
       ]
+    },
+    {
+      "id": "r1786717184065u00",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad英文",
+      "date": "2026-08-24",
+      "time": "14:30",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -1024,6 +1037,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "notifyLedger": {}
+  "pendingMessages": []
 }
