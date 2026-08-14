@@ -345,6 +345,22 @@
       "caregiver": "EPPIE",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "id": "r1786717144779ntw",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 數學",
+      "date": "2026-08-20",
+      "time": "19:15",
+      "category": "class",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "weekly",
+      "repeatDays": [
+        4
+      ]
     }
   ],
   "birthdays": [
