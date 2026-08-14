@@ -332,6 +332,19 @@
       "repeatDays": [
         5
       ]
+    },
+    {
+      "id": "r1786717073205zl0",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 英文",
+      "date": "2026-08-17",
+      "time": "21:30",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -995,14 +1008,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "_lastArchived": [
-    "r1786175116396fol",
-    "r1786322384730wpi",
-    "r17864955486561bw",
-    "r1786495652161myt",
-    "r1786510214627xoo"
-  ],
-  "notifyLedger": {},
-  "digestSentDate": "2026-08-14"
+  "pendingMessages": []
 }
