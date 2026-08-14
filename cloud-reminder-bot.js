@@ -42,15 +42,14 @@ const CAREGIVER_PHONES = {
 };
 
 // ===== CallMeBot API keys (per caregiver) =====
-// 優先讀 GitHub Secrets (env)；若 env 冇值，先用已驗證嘅 fallback default，令 5 位照顧者 24/7 即時生效。
-// COFFE 仍未激活 → env 為空 → 自動 SKIP（唔會報錯）。
-// ⚠️ 保安：呢啲 fallback 暫時 hardcode 喺 source（repo 若 public 即公開）。收齊 6 把並 set 咗 GitHub Secrets 後，拆走呢個 fallback。
+// 優先讀 GitHub Secrets (env)；若 env 冇值，先用已驗證嘅 fallback default，令 6 位照顧者 24/7 即時生效。
+// ⚠️ 保安：呢啲 fallback 暫時 hardcode 喺 source（repo 若 public 即公開）。建議 set GitHub Secrets CALLMEBOT_KEN/EPPIE/ROSANNA/KENNY/COFFE/LODOU 後，拆走 source 入面嘅 fallback。
 const CALLMEBOT_KEYS = {
   'KEN':         process.env.CALLMEBOT_KEN     || '1426181',
   'EPPIE':       process.env.CALLMEBOT_EPPIE   || '5016776',
   'Kenny Yam':   process.env.CALLMEBOT_KENNY   || '1952209',
   'Rosanna Mok': process.env.CALLMEBOT_ROSANNA || '6381815',
-  'COFFE':       process.env.CALLMEBOT_COFFE,
+  'COFFE':       process.env.CALLMEBOT_COFFE   || '6434667',
   '老豆':        process.env.CALLMEBOT_LODOU   || '6255499'
 };
 
@@ -262,8 +261,8 @@ async function main() {
   console.log('=== Cloud Reminder Bot (CallMeBot) ===' + (DRY_RUN ? ' [DRY-RUN]' : ''));
   const configuredKeys = Object.entries(CALLMEBOT_KEYS).filter(([, v]) => v).map(([k]) => k);
   console.log(`[KEYS] 已配置 CallMeBot key: ${configuredKeys.length ? configuredKeys.join(', ') : '（全無 → 請 set GitHub Secrets）'}`);
-  if (!process.env.CALLMEBOT_KEN || !process.env.CALLMEBOT_EPPIE || !process.env.CALLMEBOT_ROSANNA || !process.env.CALLMEBOT_KENNY || !process.env.CALLMEBOT_LODOU) {
-    console.warn('[SECURITY] ⚠️ KEN/EPPIE/ROSANNA/Kenny Yam/老豆 用緊 hardcode fallback key（repo 若 public 即公開）。請儘快 set GitHub Secrets CALLMEBOT_KEN/EPPIE/ROSANNA/KENNY/LODOU，收齊 6 把後拆走 source 入面嘅 fallback。');
+  if (!process.env.CALLMEBOT_KEN || !process.env.CALLMEBOT_EPPIE || !process.env.CALLMEBOT_ROSANNA || !process.env.CALLMEBOT_KENNY || !process.env.CALLMEBOT_COFFE || !process.env.CALLMEBOT_LODOU) {
+    console.warn('[SECURITY] ⚠️ KEN/EPPIE/ROSANNA/Kenny Yam/COFFE/老豆 用緊 hardcode fallback key（repo 若 public 即公開）。請儘快 set GitHub Secrets CALLMEBOT_KEN/EPPIE/ROSANNA/KENNY/COFFE/LODOU 後拆走 source 入面嘅 fallback。');
   }
 
   const now = new Date();
