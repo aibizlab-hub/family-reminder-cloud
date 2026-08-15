@@ -201,19 +201,6 @@
       "repeat": "none"
     },
     {
-      "id": "r1784912464903rfu",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "天炙",
-      "date": "2026-08-14",
-      "time": "12:00",
-      "category": "medical",
-      "caregiver": "KEN",
-      "note": "APM",
-      "repeat": "none"
-    },
-    {
       "id": "r1785075873763bay",
       "notified": false,
       "caregiverNotified1d": false,
@@ -1017,6 +1004,20 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-08-13T23:06:37.565Z"
+    },
+    {
+      "id": "r1784912464903rfu",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "天炙",
+      "date": "2026-08-14",
+      "time": "12:00",
+      "category": "medical",
+      "caregiver": "KEN",
+      "note": "APM",
+      "repeat": "none",
+      "archivedAt": "2026-08-15T05:20:37.464Z"
     }
   ],
   "_deletedIds": [],
@@ -1051,8 +1052,7 @@
     ]
   },
   "pendingMessages": [],
-  "notifyLedger": {
-    "r1785075873763bay::1d": true
-  },
-  "digestSentDate": "2026-08-15"
+  "_lastArchived": [
+    "r1784912464903rfu"
+  ]
 }
