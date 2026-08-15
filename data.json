@@ -387,6 +387,58 @@
       "caregiver": "KEN",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "name": "Leo (第1日/4日)",
+      "date": "2026-08-16",
+      "time": "14:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "id": "r17868149455596ix",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false
+    },
+    {
+      "name": "Leo (第2日/4日)",
+      "date": "2026-08-17",
+      "time": "14:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "id": "r1786814945559pb9",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false
+    },
+    {
+      "name": "Leo (第3日/4日)",
+      "date": "2026-08-18",
+      "time": "14:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "id": "r178681494555912u",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false
+    },
+    {
+      "name": "Leo (第4日/4日)",
+      "date": "2026-08-19",
+      "time": "14:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "id": "r1786814945559jqe",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false
     }
   ],
   "birthdays": [
