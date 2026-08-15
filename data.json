@@ -374,6 +374,19 @@
       "caregiver": "COFFE",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "id": "r1786814894895qhy",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Hin 灣仔",
+      "date": "2026-08-16",
+      "time": "09:30",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -1051,11 +1064,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "_lastArchived": [
-    "r1784912464903rfu"
-  ],
-  "notifyLedger": {
-    "r1785075873763bay::1d": true
-  }
+  "pendingMessages": []
 }
