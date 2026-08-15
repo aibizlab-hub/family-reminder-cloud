@@ -1051,6 +1051,8 @@
     ]
   },
   "pendingMessages": [],
-  "notifyLedger": {},
+  "notifyLedger": {
+    "r1785075873763bay::1d": true
+  },
   "digestSentDate": "2026-08-15"
 }
