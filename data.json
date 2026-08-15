@@ -1055,5 +1055,7 @@
   "_lastArchived": [
     "r1784912464903rfu"
   ],
-  "notifyLedger": {}
+  "notifyLedger": {
+    "r1785075873763bay::1d": true
+  }
 }
