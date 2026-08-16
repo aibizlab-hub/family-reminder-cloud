@@ -1119,7 +1119,8 @@
   "pendingMessages": [],
   "notifyLedger": {
     "r1785075873763bay::3h": true,
-    "r1786717073205zl0::1d": true
+    "r1786717073205zl0::1d": true,
+    "r1785075873763bay::ontime": true
   },
   "digestSentDate": "2026-08-16"
 }
