@@ -242,10 +242,17 @@ async function sendCallMeBot(caregiver, text) {
       console.log(`[CALLMEBOT] ✓ ${caregiver} (${phone}): 已排隊發送`);
       return true;
     }
-    // 熔斷：配額用盡 (402) 或被封鎖 (429) → 跳過剩餘發送，避免惡性循環 / 更長封鎖
-    if (res.status === 402 || res.status === 429) {
+    // ★ 熔斷偵測 (P0 補強)：CallMeBot 封禁/配額唔係用 402/429，而係用 HTTP 202 + body 寫
+    //   "blocked/banned/credit/restricted"。舊 code 只 check 402/429 → 封禁無聲漏走（KEN 1681 條被封個案）。
+    //   呢度任何非 200 且 body 含關鍵字 → 一律當熔斷 + 警報，杜絕無聲失效。
+    const low = (body || '').toLowerCase();
+    const banned = /blocked|banned|credit|restricted|not allowed/i.test(low);
+    if (res.status === 402 || res.status === 429 || banned) {
       apiBlocked = true;
-      console.error(`[BREAKER] CallMeBot 回 ${res.status} (${caregiver})，觸發熔斷：跳過剩餘發送。`);
+      const reason = banned
+        ? '封禁/配額 (CallMeBot: ' + body.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim().slice(0, 90) + ')'
+        : 'HTTP ' + res.status;
+      console.error(`[BREAKER] CallMeBot 回 ${res.status} (${caregiver}) — ${reason}，觸發熔斷：跳過剩餘發送並警報管理員。`);
       return false;
     }
     console.error(`[CALLMEBOT] ✗ ${caregiver} (${phone}): HTTP ${res.status} ${body.slice(0, 120)}`);
