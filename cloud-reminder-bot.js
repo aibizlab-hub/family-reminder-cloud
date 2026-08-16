@@ -19,6 +19,7 @@
  *   P0 時區：準時窗口改用 HKT 絕對 UTC (Date.UTC - 8h)，唔再用本地時區 (Actions=UTC，舊 parseDt 錯 8 小時)
  *   P1 去重：標記搬去 data.notifyLedger (id::type)，寫回 jsonblob 唔會被 app 全量 PUT 抹走 → 杜絕重複發送
  *   P2 熔斷：CallMeBot 回 402/429 立即跳過剩餘發送，避免浪費配額 / 惡性循環
+ *   P0 每日發送量上限：每號 ≤50 / 全系統 ≤200 條/日，超額即熔斷 (anti-re-ban，KEN 曾因 1681 條/日被封)
  *   P2 保安：KEN/EPPIE 用緊 hardcode fallback → 提醒 set GitHub Secrets 後拆走
  */
 
@@ -59,6 +60,42 @@ const DAY_NAMES = ['日', '一', '二', '三', '四', '五', '六'];
 // ===== 熔斷器 (Circuit Breaker) =====
 // CallMeBot 回 402 (配額用盡) / 429 (被封鎖) 時立即跳過剩餘發送，避免浪費配額 / 觸發更長封鎖
 let apiBlocked = false;
+
+// ===== 每日發送量熔斷上限 (anti-re-ban guardrail) =====
+// CallMeBot 免費層防濫發：一日發太多會 auto-ban (KEN 曾因 1681 條/日被封)。
+// 硬上限：每號每日 ≤50、全系統每日 ≤200；超過即熔斷並警報，絕對唔會再爆到被封。
+const PER_PHONE_DAILY_CAP = 50;
+const GLOBAL_DAILY_CAP = 200;
+let sendCaps = { date: '', perPhone: {}, global: 0 };
+let capsChanged = false;
+let capsTripped = false;
+function resetCapsIfNewDay(todayStr) {
+  if (sendCaps.date !== todayStr) {
+    sendCaps = { date: todayStr, perPhone: {}, global: 0 };
+    capsChanged = true;
+    return true;
+  }
+  return false;
+}
+function checkCap(phone) {
+  if (capsTripped) return false;
+  if (sendCaps.global >= GLOBAL_DAILY_CAP) {
+    capsTripped = true;
+    console.error(`[CAP-BREAKER] 全系統今日已發 ${sendCaps.global} 條 ≥ 上限 ${GLOBAL_DAILY_CAP}，觸發熔斷，跳過餘下所有發送（防止被 CallMeBot 再封號）。`);
+    return false;
+  }
+  const pc = sendCaps.perPhone[phone] || 0;
+  if (pc >= PER_PHONE_DAILY_CAP) {
+    console.error(`[CAP-BREAKER] ${phone} 今日已發 ${pc} 條 ≥ 上限 ${PER_PHONE_DAILY_CAP}，跳過此號（保護避免再被封）。`);
+    return false;
+  }
+  return true;
+}
+function bumpCap(phone) {
+  sendCaps.perPhone[phone] = (sendCaps.perPhone[phone] || 0) + 1;
+  sendCaps.global = (sendCaps.global || 0) + 1;
+  capsChanged = true;
+}
 
 // ===== GitHub API helpers (降級用) =====
 function githubApiGet(apiPath) {
@@ -227,6 +264,8 @@ async function sendCallMeBot(caregiver, text) {
     console.warn(`[BREAKER] CallMeBot 已熔斷，跳過 ${caregiver} 發送以節省配額`);
     return false;
   }
+  // ★ 每日發送量熔斷 (anti-re-ban)：每號/全系統硬上限，超額即跳過 (生產模式才計數)
+  if (!DRY_RUN && !checkCap(phone)) return false;
   if (DRY_RUN) {
     console.log(`[DRY-RUN] 會經 CallMeBot 發去 ${caregiver} (${phone}):\n${text}\n`);
     return true;
@@ -239,7 +278,8 @@ async function sendCallMeBot(caregiver, text) {
     const body = await res.text();
     clearTimeout(timer);
     if (res.status === 200) {
-      console.log(`[CALLMEBOT] ✓ ${caregiver} (${phone}): 已排隊發送`);
+      bumpCap(phone); // ★ 計入每日發送量上限
+      console.log(`[CALLMEBOT] ✓ ${caregiver} (${phone}): 已排隊發送 (今日第 ${(sendCaps.perPhone[phone] || 0)} 條)`);
       return true;
     }
     // ★ 熔斷偵測 (P0 補強)：CallMeBot 封禁/配額唔係用 402/429，而係用 HTTP 202 + body 寫
@@ -278,6 +318,7 @@ async function main() {
   const hkMin = hkNow.getUTCMinutes();
   const hkDateStr = `${hkNow.getUTCFullYear()}-${String(hkNow.getUTCMonth() + 1).padStart(2, '0')}-${String(hkNow.getUTCDate()).padStart(2, '0')}`;
   console.log(`[TIME] HKT: ${hkDateStr} ${String(hkHour).padStart(2, '0')}:${String(hkMin).padStart(2, '0')}`);
+  resetCapsIfNewDay(hkDateStr); // ★ 每日發送量上限計數器：換日自動歸零
 
   let gh;
   try { gh = await loadData(); }
@@ -300,6 +341,13 @@ async function main() {
       let mergedCount = 0;
       for (const k in rLed) if (rLed[k] && !ledger[k]) { ledger[k] = true; mergedCount++; }
       if (remote.data && remote.data.digestSentDate) data.digestSentDate = data.digestSentDate || remote.data.digestSentDate;
+      // 合併每日發送量計數 (max-merge，尊重其他並行 run 已發數，防止互相清零)
+      const rCaps = (remote.data && remote.data.sendCaps) || {};
+      if (rCaps.date === hkDateStr) {
+        for (const p in (rCaps.perPhone || {})) sendCaps.perPhone[p] = Math.max(sendCaps.perPhone[p] || 0, rCaps.perPhone[p]);
+        sendCaps.global = Math.max(sendCaps.global || 0, rCaps.global || 0);
+        console.log(`[CAP] 讀穿合併遠端每日計數：全 ${sendCaps.global} 條`);
+      }
       console.log(`[DEDUP] 讀穿合併遠端 ledger：+${mergedCount} 條 (共 ${Object.keys(ledger).length})`);
     } catch (e) { console.warn('[DEDUP] 遠端 ledger 讀取失敗，降級用本地 ledger: ' + e.message); }
   }
@@ -418,6 +466,15 @@ async function main() {
           // 合併：保留遠端已有嘅 ledger / digestSentDate，唔會被今次本地副本覆蓋抹走 (防止並行 run 互相 clobber)
           cur.data.notifyLedger = Object.assign({}, cur.data.notifyLedger || {}, data.notifyLedger || {});
           cur.data.digestSentDate = data.digestSentDate || cur.data.digestSentDate;
+          // 合併每日發送量計數 (max-merge，防止並行 run 互相清零)
+          const cCaps = cur.data.sendCaps || {};
+          if (cCaps.date === sendCaps.date) {
+            const merged = Object.assign({}, cCaps.perPhone || {}, sendCaps.perPhone);
+            for (const p in merged) merged[p] = Math.max((cCaps.perPhone && cCaps.perPhone[p]) || 0, sendCaps.perPhone[p] || 0);
+            cur.data.sendCaps = { date: sendCaps.date, perPhone: merged, global: Math.max(cCaps.global || 0, sendCaps.global || 0) };
+          } else {
+            cur.data.sendCaps = sendCaps;
+          }
           await githubApiPut('data.json', cur.data, cur.sha, 'Reminder bot: persist notifyLedger');
           console.log('[DATA] 已寫回 notifyLedger 至 repo data.json (attempt ' + attempt + ')');
           ok = true; wrote = true;
@@ -436,13 +493,14 @@ async function main() {
     if (!wrote) console.error('[ALERT] notifyLedger 兩個寫回都失敗，去重標記可能流失');
   }
 
-  if (sent === 0 && !dataChanged) {
+  data.sendCaps = sendCaps; // 寫回每日發送量計數
+  if (sent === 0 && !dataChanged && !capsChanged) {
     console.log('[CRON] 暫無需要發送嘅提醒。');
     if (apiBlocked) console.error('[ALERT] CallMeBot 熔斷中，請檢查配額 / 封鎖狀態。');
     process.exit(0);
   }
   if (DRY_RUN) console.log('[DRY-RUN] 跳過寫回');
-  else if (dataChanged) await flush();
+  else if (dataChanged || capsChanged) await flush();
   if (apiBlocked) console.error('[ALERT] CallMeBot 熔斷觸發！剩餘發送已跳過，請檢查配額 / 封鎖並處理。');
   console.log(`[CALLMEBOT] 完成！發送 ${sent}/${totalTargets}` + (DRY_RUN ? ' (DRY-RUN)' : ''));
   process.exit(0);
