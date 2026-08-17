@@ -1121,14 +1121,15 @@
     "r1785075873763bay::3h": true,
     "r1786717073205zl0::1d": true,
     "r1785075873763bay::ontime": true,
-    "r1786717073205zl0::3h": true
+    "r1786717073205zl0::3h": true,
+    "r1786717073205zl0::ontime": true
   },
   "digestSentDate": "2026-08-17",
   "sendCaps": {
     "date": "2026-08-17",
     "perPhone": {
-      "85297510047": 1
+      "85297510047": 2
     },
-    "global": 1
+    "global": 2
   }
 }
