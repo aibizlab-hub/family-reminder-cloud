@@ -374,6 +374,19 @@
       "notified": false,
       "caregiverNotified1d": false,
       "caregiverNotified3h": false
+    },
+    {
+      "id": "r1787046016382io3",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "黃錦輝面試",
+      "date": "2026-09-19",
+      "time": "14:45",
+      "category": "school",
+      "caregiver": "KEN",
+      "note": "帶面試信，家長須知信",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -1121,18 +1134,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "_lastArchived": [
-    "r1785075873763bay",
-    "r1786717073205zl0",
-    "r1786814894895qhy",
-    "r17868149455596ix",
-    "r1786814945559pb9"
-  ],
-  "notifyLedger": {},
-  "sendCaps": {
-    "date": "2026-08-18",
-    "perPhone": {},
-    "global": 0
-  }
+  "pendingMessages": []
 }
