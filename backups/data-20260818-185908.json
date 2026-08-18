@@ -201,19 +201,6 @@
       "repeat": "none"
     },
     {
-      "id": "r1785075873763bay",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "中文",
-      "date": "2026-08-16",
-      "time": "11:00",
-      "category": "class",
-      "caregiver": "EPPIE",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r1785075913925px0",
       "notified": false,
       "caregiverNotified1d": false,
@@ -321,19 +308,6 @@
       ]
     },
     {
-      "id": "r1786717073205zl0",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "iPad 英文",
-      "date": "2026-08-17",
-      "time": "21:30",
-      "category": "class",
-      "caregiver": "EPPIE",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r1786717144779ntw",
       "notified": false,
       "caregiverNotified1d": false,
@@ -373,6 +347,45 @@
       "category": "class",
       "caregiver": "COFFE",
       "note": "",
+      "repeat": "none"
+    },
+    {
+      "name": "Leo (第3日/4日)",
+      "date": "2026-08-18",
+      "time": "14:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "id": "r178681494555912u",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false
+    },
+    {
+      "name": "Leo (第4日/4日)",
+      "date": "2026-08-19",
+      "time": "14:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "id": "r1786814945559jqe",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false
+    },
+    {
+      "id": "r1787046016382io3",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "黃錦輝面試",
+      "date": "2026-09-19",
+      "time": "14:45",
+      "category": "school",
+      "caregiver": "KEN",
+      "note": "帶面試信，家長須知信",
       "repeat": "none"
     }
   ],
@@ -1018,6 +1031,76 @@
       "note": "APM",
       "repeat": "none",
       "archivedAt": "2026-08-15T05:20:37.464Z"
+    },
+    {
+      "id": "r1785075873763bay",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文",
+      "date": "2026-08-16",
+      "time": "11:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-18T08:51:51.413Z"
+    },
+    {
+      "id": "r1786717073205zl0",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 英文",
+      "date": "2026-08-17",
+      "time": "21:30",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-18T08:51:51.413Z"
+    },
+    {
+      "id": "r1786814894895qhy",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Hin 灣仔",
+      "date": "2026-08-16",
+      "time": "09:30",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-18T08:51:51.413Z"
+    },
+    {
+      "name": "Leo (第1日/4日)",
+      "date": "2026-08-16",
+      "time": "14:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "id": "r17868149455596ix",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "archivedAt": "2026-08-18T08:51:51.413Z"
+    },
+    {
+      "name": "Leo (第2日/4日)",
+      "date": "2026-08-17",
+      "time": "14:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "id": "r1786814945559pb9",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "archivedAt": "2026-08-18T08:51:51.413Z"
     }
   ],
   "_deletedIds": [],
@@ -1052,10 +1135,10 @@
     ]
   },
   "pendingMessages": [],
-  "_lastArchived": [
-    "r1784912464903rfu"
-  ],
-  "notifyLedger": {
-    "r1785075873763bay::1d": true
+  "notifyLedger": {},
+  "sendCaps": {
+    "date": "2026-08-19",
+    "perPhone": {},
+    "global": 0
   }
 }
