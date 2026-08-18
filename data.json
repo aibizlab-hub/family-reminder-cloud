@@ -1129,5 +1129,10 @@
     "r17868149455596ix",
     "r1786814945559pb9"
   ],
-  "notifyLedger": {}
+  "notifyLedger": {},
+  "sendCaps": {
+    "date": "2026-08-18",
+    "perPhone": {},
+    "global": 0
+  }
 }
