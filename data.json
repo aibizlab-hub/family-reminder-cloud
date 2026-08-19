@@ -387,6 +387,22 @@
       "caregiver": "COFFE",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "id": "r1787137663811ndf",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 普通話",
+      "date": "2026-08-24",
+      "time": "09:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "weekly",
+      "repeatDays": [
+        1
+      ]
     }
   ],
   "birthdays": [
