@@ -1165,5 +1165,10 @@
     ]
   },
   "pendingMessages": [],
-  "notifyLedger": {}
+  "notifyLedger": {},
+  "sendCaps": {
+    "date": "2026-08-19",
+    "perPhone": {},
+    "global": 0
+  }
 }
