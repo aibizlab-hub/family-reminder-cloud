@@ -343,7 +343,7 @@
       "caregiverNotified3h": false,
       "name": "iPad 英文",
       "date": "2026-08-27",
-      "time": "10:30",
+      "time": "14:00",
       "category": "class",
       "caregiver": "COFFE",
       "note": "",
@@ -1135,11 +1135,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "notifyLedger": {},
-  "sendCaps": {
-    "date": "2026-08-19",
-    "perPhone": {},
-    "global": 0
-  }
+  "pendingMessages": []
 }
