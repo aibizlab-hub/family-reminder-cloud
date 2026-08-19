@@ -272,7 +272,7 @@
       "caregiverNotified3h": false,
       "name": "中文 補堂",
       "date": "2026-08-20",
-      "time": "14:30",
+      "time": "14:00",
       "category": "class",
       "caregiver": "KEN",
       "note": "",
@@ -1135,15 +1135,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "_lastArchived": [
-    "r178681494555912u"
-  ],
-  "notifyLedger": {},
-  "sendCaps": {
-    "date": "2026-08-19",
-    "perPhone": {},
-    "global": 0
-  },
-  "digestSentDate": "2026-08-19"
+  "pendingMessages": []
 }
