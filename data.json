@@ -374,6 +374,19 @@
       "caregiver": "KEN",
       "note": "帶面試信，家長須知信",
       "repeat": "none"
+    },
+    {
+      "id": "r1787137622669x87",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 英文",
+      "date": "2026-08-28",
+      "time": "14:00",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -1135,11 +1148,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "notifyLedger": {},
-  "sendCaps": {
-    "date": "2026-08-19",
-    "perPhone": {},
-    "global": 0
-  }
+  "pendingMessages": []
 }
