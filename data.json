@@ -1169,5 +1169,11 @@
   "_lastArchived": [
     "r1786814945559jqe"
   ],
-  "notifyLedger": {}
+  "notifyLedger": {},
+  "digestSentDate": "2026-08-20",
+  "sendCaps": {
+    "date": "2026-08-20",
+    "perPhone": {},
+    "global": 0
+  }
 }
