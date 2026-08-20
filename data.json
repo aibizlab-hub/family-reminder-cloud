@@ -350,19 +350,6 @@
       "repeat": "none"
     },
     {
-      "name": "Leo (第4日/4日)",
-      "date": "2026-08-19",
-      "time": "14:00",
-      "category": "work",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none",
-      "id": "r1786814945559jqe",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false
-    },
-    {
       "id": "r1787046016382io3",
       "notified": false,
       "caregiverNotified1d": false,
@@ -1131,6 +1118,20 @@
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
       "archivedAt": "2026-08-18T22:29:21.393Z"
+    },
+    {
+      "name": "Leo (第4日/4日)",
+      "date": "2026-08-19",
+      "time": "14:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "id": "r1786814945559jqe",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "archivedAt": "2026-08-20T02:03:24.618Z"
     }
   ],
   "_deletedIds": [],
@@ -1165,11 +1166,7 @@
     ]
   },
   "pendingMessages": [],
-  "notifyLedger": {},
-  "sendCaps": {
-    "date": "2026-08-20",
-    "perPhone": {},
-    "global": 0
-  },
-  "digestSentDate": "2026-08-20"
+  "_lastArchived": [
+    "r1786814945559jqe"
+  ]
 }
