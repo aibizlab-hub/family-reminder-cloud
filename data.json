@@ -1175,10 +1175,8 @@
   },
   "digestSentDate": "2026-08-20",
   "sendCaps": {
-    "date": "2026-08-20",
-    "perPhone": {
-      "85266713322": 2
-    },
-    "global": 2
+    "date": "2026-08-21",
+    "perPhone": {},
+    "global": 0
   }
 }
