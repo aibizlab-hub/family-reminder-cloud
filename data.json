@@ -1174,5 +1174,11 @@
     "r1786519499851drw",
     "r1786519563076jyq"
   ],
-  "notifyLedger": {}
+  "notifyLedger": {},
+  "digestSentDate": "2026-08-21",
+  "sendCaps": {
+    "date": "2026-08-21",
+    "perPhone": {},
+    "global": 0
+  }
 }
