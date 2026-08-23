@@ -201,32 +201,6 @@
       "repeat": "none"
     },
     {
-      "id": "r1784912464903rfu",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "天炙",
-      "date": "2026-08-14",
-      "time": "12:00",
-      "category": "medical",
-      "caregiver": "KEN",
-      "note": "APM",
-      "repeat": "none"
-    },
-    {
-      "id": "r1785075873763bay",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "中文",
-      "date": "2026-08-16",
-      "time": "11:00",
-      "category": "class",
-      "caregiver": "EPPIE",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r1785075913925px0",
       "notified": false,
       "caregiverNotified1d": false,
@@ -279,45 +253,6 @@
       "repeat": "none"
     },
     {
-      "id": "r1786333878476ikt",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "風水白馬",
-      "date": "2026-08-20",
-      "time": "21:30",
-      "category": "other",
-      "caregiver": "KEN",
-      "note": "8月20日 晚上9:30-11點前，你親手放好隻馬喺東邊，馬頭望向自己個座位（如果你有紅紙，最好放喺馬底，冇嘅話就由佢）",
-      "repeat": "none"
-    },
-    {
-      "id": "r1786519499851drw",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "中文 補堂",
-      "date": "2026-08-20",
-      "time": "14:30",
-      "category": "class",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none"
-    },
-    {
-      "id": "r1786519563076jyq",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "跳舞 加堂",
-      "date": "2026-08-20",
-      "time": "17:00",
-      "category": "class",
-      "caregiver": "COFFE",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r1783163681885r6d",
       "notified": false,
       "caregiverNotified1d": false,
@@ -332,19 +267,6 @@
       "repeatDays": [
         5
       ]
-    },
-    {
-      "id": "r1786717073205zl0",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "iPad 英文",
-      "date": "2026-08-17",
-      "time": "21:30",
-      "category": "class",
-      "caregiver": "EPPIE",
-      "note": "",
-      "repeat": "none"
     },
     {
       "id": "r1786717144779ntw",
@@ -382,11 +304,53 @@
       "caregiverNotified3h": false,
       "name": "iPad 英文",
       "date": "2026-08-27",
-      "time": "10:30",
+      "time": "14:00",
       "category": "class",
       "caregiver": "COFFE",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "id": "r1787046016382io3",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "黃錦輝面試",
+      "date": "2026-09-19",
+      "time": "14:45",
+      "category": "school",
+      "caregiver": "KEN",
+      "note": "帶面試信，家長須知信",
+      "repeat": "none"
+    },
+    {
+      "id": "r1787137622669x87",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 英文",
+      "date": "2026-08-28",
+      "time": "14:00",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1787137663811ndf",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 普通話",
+      "date": "2026-08-24",
+      "time": "09:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "weekly",
+      "repeatDays": [
+        1
+      ]
     }
   ],
   "birthdays": [
@@ -1017,6 +981,160 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-08-13T23:06:37.565Z"
+    },
+    {
+      "id": "r1784912464903rfu",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "天炙",
+      "date": "2026-08-14",
+      "time": "12:00",
+      "category": "medical",
+      "caregiver": "KEN",
+      "note": "APM",
+      "repeat": "none",
+      "archivedAt": "2026-08-15T05:20:37.464Z"
+    },
+    {
+      "id": "r1785075873763bay",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文",
+      "date": "2026-08-16",
+      "time": "11:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-18T08:51:51.413Z"
+    },
+    {
+      "id": "r1786717073205zl0",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 英文",
+      "date": "2026-08-17",
+      "time": "21:30",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-18T08:51:51.413Z"
+    },
+    {
+      "id": "r1786814894895qhy",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Hin 灣仔",
+      "date": "2026-08-16",
+      "time": "09:30",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-18T08:51:51.413Z"
+    },
+    {
+      "name": "Leo (第1日/4日)",
+      "date": "2026-08-16",
+      "time": "14:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "id": "r17868149455596ix",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "archivedAt": "2026-08-18T08:51:51.413Z"
+    },
+    {
+      "name": "Leo (第2日/4日)",
+      "date": "2026-08-17",
+      "time": "14:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "id": "r1786814945559pb9",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "archivedAt": "2026-08-18T08:51:51.413Z"
+    },
+    {
+      "name": "Leo (第3日/4日)",
+      "date": "2026-08-18",
+      "time": "14:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "id": "r178681494555912u",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "archivedAt": "2026-08-18T22:29:21.393Z"
+    },
+    {
+      "name": "Leo (第4日/4日)",
+      "date": "2026-08-19",
+      "time": "14:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "id": "r1786814945559jqe",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "archivedAt": "2026-08-20T02:03:24.618Z"
+    },
+    {
+      "id": "r1786333878476ikt",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "風水白馬",
+      "date": "2026-08-20",
+      "time": "21:30",
+      "category": "other",
+      "caregiver": "KEN",
+      "note": "8月20日 晚上9:30-11點前，你親手放好隻馬喺東邊，馬頭望向自己個座位（如果你有紅紙，最好放喺馬底，冇嘅話就由佢）",
+      "repeat": "none",
+      "archivedAt": "2026-08-21T02:03:25.423Z"
+    },
+    {
+      "id": "r1786519499851drw",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文 補堂",
+      "date": "2026-08-20",
+      "time": "14:00",
+      "category": "class",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-21T02:03:25.423Z"
+    },
+    {
+      "id": "r1786519563076jyq",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "跳舞 加堂",
+      "date": "2026-08-20",
+      "time": "17:00",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-21T02:03:25.423Z"
     }
   ],
   "_deletedIds": [],
@@ -1051,5 +1169,22 @@
     ]
   },
   "pendingMessages": [],
-  "notifyLedger": {}
+  "_lastArchived": [
+    "r1786333878476ikt",
+    "r1786519499851drw",
+    "r1786519563076jyq"
+  ],
+  "notifyLedger": {
+    "r1786717184065u00::1d": true,
+    "r1787137663811ndf::1d": true
+  },
+  "digestSentDate": "2026-08-23",
+  "sendCaps": {
+    "date": "2026-08-23",
+    "perPhone": {
+      "85266713322": 1,
+      "85297510047": 1
+    },
+    "global": 2
+  }
 }
