@@ -240,19 +240,6 @@
       "repeat": "none"
     },
     {
-      "id": "r17859351413846bt",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "英華面試",
-      "date": "2026-08-22",
-      "time": "11:00",
-      "category": "school",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r1783163681885r6d",
       "notified": false,
       "caregiverNotified1d": false,
@@ -1135,6 +1122,20 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-08-21T02:03:25.423Z"
+    },
+    {
+      "id": "r17859351413846bt",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "英華面試",
+      "date": "2026-08-22",
+      "time": "11:00",
+      "category": "school",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-23T04:11:04.496Z"
     }
   ],
   "_deletedIds": [],
@@ -1170,21 +1171,6 @@
   },
   "pendingMessages": [],
   "_lastArchived": [
-    "r1786333878476ikt",
-    "r1786519499851drw",
-    "r1786519563076jyq"
-  ],
-  "notifyLedger": {
-    "r1786717184065u00::1d": true,
-    "r1787137663811ndf::1d": true
-  },
-  "digestSentDate": "2026-08-23",
-  "sendCaps": {
-    "date": "2026-08-23",
-    "perPhone": {
-      "85266713322": 1,
-      "85297510047": 1
-    },
-    "global": 2
-  }
+    "r17859351413846bt"
+  ]
 }
