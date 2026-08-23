@@ -201,19 +201,6 @@
       "repeat": "none"
     },
     {
-      "id": "r1785075913925px0",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "中文",
-      "date": "2026-08-23",
-      "time": "14:30",
-      "category": "class",
-      "caregiver": "Rosanna Mok",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r1785423201303zau",
       "notified": false,
       "caregiverNotified1d": false,
@@ -224,19 +211,6 @@
       "category": "school",
       "caregiver": "EPPIE",
       "note": "",
-      "repeat": "none"
-    },
-    {
-      "id": "r1785669004546lbc",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "熙珞生日會",
-      "date": "2026-08-23",
-      "time": "18:00",
-      "category": "activity",
-      "caregiver": "KEN",
-      "note": "5:30到杏花邨接佢",
       "repeat": "none"
     },
     {
@@ -1135,21 +1109,35 @@
       "caregiver": "KEN",
       "note": "",
       "repeat": "none",
-      "archivedAt": "2026-08-23T04:11:04.496Z"
+      "archivedAt": "2026-08-23T04:11:09.001Z"
     },
     {
-      "id": "r17859351413846bt",
+      "id": "r1785075913925px0",
       "notified": false,
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
-      "name": "英華面試",
-      "date": "2026-08-22",
-      "time": "11:00",
-      "category": "school",
-      "caregiver": "KEN",
+      "name": "中文",
+      "date": "2026-08-23",
+      "time": "14:30",
+      "category": "class",
+      "caregiver": "Rosanna Mok",
       "note": "",
       "repeat": "none",
-      "archivedAt": "2026-08-23T04:11:09.001Z"
+      "archivedAt": "2026-08-23T17:36:59.999Z"
+    },
+    {
+      "id": "r1785669004546lbc",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "熙珞生日會",
+      "date": "2026-08-23",
+      "time": "18:00",
+      "category": "activity",
+      "caregiver": "KEN",
+      "note": "5:30到杏花邨接佢",
+      "repeat": "none",
+      "archivedAt": "2026-08-23T17:36:59.999Z"
     }
   ],
   "_deletedIds": [],
@@ -1185,15 +1173,7 @@
   },
   "pendingMessages": [],
   "_lastArchived": [
-    "r17859351413846bt"
-  ],
-  "notifyLedger": {
-    "r1786717184065u00::1d": true,
-    "r1787137663811ndf::1d": true
-  },
-  "sendCaps": {
-    "date": "2026-08-24",
-    "perPhone": {},
-    "global": 0
-  }
+    "r1785075913925px0",
+    "r1785669004546lbc"
+  ]
 }
