@@ -1177,14 +1177,15 @@
     "r1785669004546lbc"
   ],
   "notifyLedger": {
-    "r1787137663811ndf::3h": true
+    "r1787137663811ndf::3h": true,
+    "r1787137663811ndf::ontime": true
   },
   "sendCaps": {
     "date": "2026-08-24",
     "perPhone": {
-      "85297510047": 1
+      "85297510047": 2
     },
-    "global": 1
+    "global": 2
   },
   "digestSentDate": "2026-08-24"
 }
