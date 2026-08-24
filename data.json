@@ -1183,12 +1183,9 @@
     "r1786717184065u00::ontime": true
   },
   "sendCaps": {
-    "date": "2026-08-24",
-    "perPhone": {
-      "85297510047": 2,
-      "85266713322": 2
-    },
-    "global": 4
+    "date": "2026-08-25",
+    "perPhone": {},
+    "global": 0
   },
   "digestSentDate": "2026-08-24"
 }
