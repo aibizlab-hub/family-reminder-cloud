@@ -299,6 +299,19 @@
       "repeatDays": [
         1
       ]
+    },
+    {
+      "id": "r1787654750596lws",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "親子旅行",
+      "date": "2026-12-02",
+      "time": "09:00",
+      "category": "special",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -1172,14 +1185,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "_lastArchived": [
-    "r1786717184065u00"
-  ],
-  "notifyLedger": {},
-  "sendCaps": {
-    "date": "2026-08-25",
-    "perPhone": {},
-    "global": 0
-  }
+  "pendingMessages": []
 }
