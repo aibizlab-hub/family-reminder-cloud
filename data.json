@@ -246,19 +246,6 @@
       ]
     },
     {
-      "id": "r1786717184065u00",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "iPad英文",
-      "date": "2026-08-24",
-      "time": "14:30",
-      "category": "class",
-      "caregiver": "COFFE",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r1786717219053us9",
       "notified": false,
       "caregiverNotified1d": false,
@@ -1138,6 +1125,20 @@
       "note": "5:30到杏花邨接佢",
       "repeat": "none",
       "archivedAt": "2026-08-23T17:36:59.999Z"
+    },
+    {
+      "id": "r1786717184065u00",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad英文",
+      "date": "2026-08-24",
+      "time": "14:30",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-25T05:54:46.068Z"
     }
   ],
   "_deletedIds": [],
@@ -1173,19 +1174,6 @@
   },
   "pendingMessages": [],
   "_lastArchived": [
-    "r1785075913925px0",
-    "r1785669004546lbc"
-  ],
-  "notifyLedger": {
-    "r1787137663811ndf::3h": true,
-    "r1787137663811ndf::ontime": true,
-    "r1786717184065u00::3h": true,
-    "r1786717184065u00::ontime": true
-  },
-  "sendCaps": {
-    "date": "2026-08-25",
-    "perPhone": {},
-    "global": 0
-  },
-  "digestSentDate": "2026-08-25"
+    "r1786717184065u00"
+  ]
 }
