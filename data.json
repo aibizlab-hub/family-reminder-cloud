@@ -1190,11 +1190,9 @@
     "r1786717219053us9::1d": true
   },
   "sendCaps": {
-    "date": "2026-08-26",
-    "perPhone": {
-      "85266713322": 1
-    },
-    "global": 1
+    "date": "2026-08-27",
+    "perPhone": {},
+    "global": 0
   },
   "digestSentDate": "2026-08-26"
 }
