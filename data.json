@@ -1188,14 +1188,15 @@
   "pendingMessages": [],
   "notifyLedger": {
     "r1786717219053us9::1d": true,
-    "r1787137622669x87::1d": true
+    "r1787137622669x87::1d": true,
+    "r1786717219053us9::3h": true
   },
   "sendCaps": {
     "date": "2026-08-27",
     "perPhone": {
-      "85266713322": 1
+      "85266713322": 2
     },
-    "global": 1
+    "global": 2
   },
   "digestSentDate": "2026-08-27"
 }
