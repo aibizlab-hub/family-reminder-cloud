@@ -246,19 +246,6 @@
       ]
     },
     {
-      "id": "r1786717219053us9",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "iPad 英文",
-      "date": "2026-08-27",
-      "time": "14:00",
-      "category": "class",
-      "caregiver": "COFFE",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r1787046016382io3",
       "notified": false,
       "caregiverNotified1d": false,
@@ -1152,6 +1139,20 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-08-25T05:54:46.068Z"
+    },
+    {
+      "id": "r1786717219053us9",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 英文",
+      "date": "2026-08-27",
+      "time": "14:00",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-28T00:29:28.633Z"
     }
   ],
   "_deletedIds": [],
@@ -1186,20 +1187,7 @@
     ]
   },
   "pendingMessages": [],
-  "notifyLedger": {
-    "r1786717219053us9::1d": true,
-    "r1787137622669x87::1d": true,
-    "r1786717219053us9::3h": true,
-    "r1786717219053us9::ontime": true,
-    "r1782033821850vvd::1d": true,
-    "r1785423201303zau::1d": true
-  },
-  "sendCaps": {
-    "date": "2026-08-28",
-    "perPhone": {
-      "85297510047": 2
-    },
-    "global": 2
-  },
-  "digestSentDate": "2026-08-28"
+  "_lastArchived": [
+    "r1786717219053us9"
+  ]
 }
