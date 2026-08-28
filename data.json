@@ -1195,12 +1195,15 @@
     "r1782033821850vvd::1d": true,
     "r1785423201303zau::1d": true,
     "r1787137622669x87::3h": true,
-    "r1787137622669x87::ontime": true
+    "r1787137622669x87::ontime": true,
+    "r1785423201303zau::3h": true
   },
   "digestSentDate": "2026-08-28",
   "sendCaps": {
     "date": "2026-08-29",
-    "perPhone": {},
-    "global": 0
+    "perPhone": {
+      "85297510047": 1
+    },
+    "global": 1
   }
 }
