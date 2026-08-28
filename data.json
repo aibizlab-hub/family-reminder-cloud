@@ -79,22 +79,6 @@
       ]
     },
     {
-      "id": "r17825362469190h9",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "iPad 數學",
-      "date": "2026-06-27",
-      "time": "10:00",
-      "category": "class",
-      "caregiver": "ALL",
-      "note": "",
-      "repeat": "weekly",
-      "repeatDays": [
-        6
-      ]
-    },
-    {
       "id": "r1782536287397slr",
       "notified": false,
       "caregiverNotified1d": false,
@@ -1153,6 +1137,23 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-08-28T00:29:28.633Z"
+    },
+    {
+      "id": "r17825362469190h9",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 數學",
+      "date": "2026-06-27",
+      "time": "10:00",
+      "category": "class",
+      "caregiver": "ALL",
+      "note": "",
+      "repeat": "weekly",
+      "repeatDays": [
+        6
+      ],
+      "archivedAt": "2026-08-28T00:29:59.756Z"
     }
   ],
   "_deletedIds": [],
