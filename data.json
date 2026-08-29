@@ -1198,14 +1198,15 @@
     "r1787137622669x87::ontime": true,
     "r1785423201303zau::3h": true,
     "r17820338720444q5::1d": true,
-    "r1782033821850vvd::3h": true
+    "r1782033821850vvd::3h": true,
+    "r1782033821850vvd::ontime": true
   },
   "digestSentDate": "2026-08-29",
   "sendCaps": {
     "date": "2026-08-29",
     "perPhone": {
-      "85297510047": 3
+      "85297510047": 4
     },
-    "global": 3
+    "global": 4
   }
 }
