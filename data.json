@@ -1194,14 +1194,15 @@
   ],
   "notifyLedger": {
     "r17820338720444q5::1d": true,
-    "r17820338720444q5::3h": true
+    "r17820338720444q5::3h": true,
+    "r17820338720444q5::ontime": true
   },
   "sendCaps": {
     "date": "2026-08-30",
     "perPhone": {
-      "85297510047": 1
+      "85297510047": 2
     },
-    "global": 1
+    "global": 2
   },
   "digestSentDate": "2026-08-30"
 }
