@@ -35,20 +35,6 @@
       "address": ""
     },
     {
-      "id": "r17820338720444q5",
-      "notified": false,
-      "name": "Jarvis生日會",
-      "date": "2026-08-30",
-      "time": "13:00",
-      "category": "special",
-      "caregiver": "EPPIE",
-      "note": "樂富冒險樂園",
-      "repeat": "none",
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "address": ""
-    },
-    {
       "id": "r1782533365556by6",
       "notified": false,
       "caregiverNotified1d": false,
@@ -140,19 +126,6 @@
       "repeatDays": [
         1
       ]
-    },
-    {
-      "id": "r1784387587534arh",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "跳舞表演",
-      "date": "2026-08-30",
-      "time": "17:00",
-      "category": "special",
-      "caregiver": "ALL",
-      "note": "",
-      "repeat": "none"
     },
     {
       "id": "r1784684407605t1u",
@@ -1157,6 +1130,35 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-08-30T11:26:28.321Z"
+    },
+    {
+      "id": "r17820338720444q5",
+      "notified": false,
+      "name": "Jarvis生日會",
+      "date": "2026-08-30",
+      "time": "13:00",
+      "category": "special",
+      "caregiver": "EPPIE",
+      "note": "樂富冒險樂園",
+      "repeat": "none",
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "address": "",
+      "archivedAt": "2026-08-30T18:31:21.972Z"
+    },
+    {
+      "id": "r1784387587534arh",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "跳舞表演",
+      "date": "2026-08-30",
+      "time": "17:00",
+      "category": "special",
+      "caregiver": "ALL",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-30T18:31:21.972Z"
     }
   ],
   "_deletedIds": [],
@@ -1192,13 +1194,7 @@
   },
   "pendingMessages": [],
   "_lastArchived": [
-    "r1782033821850vvd",
-    "r1785423201303zau"
-  ],
-  "notifyLedger": {},
-  "sendCaps": {
-    "date": "2026-08-31",
-    "perPhone": {},
-    "global": 0
-  }
+    "r17820338720444q5",
+    "r1784387587534arh"
+  ]
 }
