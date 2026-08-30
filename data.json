@@ -1193,12 +1193,15 @@
     "r1787137622669x87"
   ],
   "notifyLedger": {
-    "r17820338720444q5::1d": true
+    "r17820338720444q5::1d": true,
+    "r17820338720444q5::3h": true
   },
   "sendCaps": {
     "date": "2026-08-30",
-    "perPhone": {},
-    "global": 0
+    "perPhone": {
+      "85297510047": 1
+    },
+    "global": 1
   },
   "digestSentDate": "2026-08-30"
 }
