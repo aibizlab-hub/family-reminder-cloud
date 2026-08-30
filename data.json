@@ -35,20 +35,6 @@
       "address": ""
     },
     {
-      "id": "r1782033821850vvd",
-      "notified": false,
-      "name": "嶺南小學",
-      "date": "2026-08-29",
-      "time": "14:00",
-      "category": "school",
-      "caregiver": "EPPIE",
-      "note": "時間待定",
-      "repeat": "none",
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "address": ""
-    },
-    {
       "id": "r17820338720444q5",
       "notified": false,
       "name": "Jarvis生日會",
@@ -182,19 +168,6 @@
       "details": [
         "08012604007218"
       ],
-      "repeat": "none"
-    },
-    {
-      "id": "r1785423201303zau",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "音小 二面",
-      "date": "2026-08-29",
-      "time": "09:45",
-      "category": "school",
-      "caregiver": "EPPIE",
-      "note": "",
       "repeat": "none"
     },
     {
@@ -1155,6 +1128,35 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-08-29T14:23:30.465Z"
+    },
+    {
+      "id": "r1782033821850vvd",
+      "notified": false,
+      "name": "嶺南小學",
+      "date": "2026-08-29",
+      "time": "14:00",
+      "category": "school",
+      "caregiver": "EPPIE",
+      "note": "時間待定",
+      "repeat": "none",
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "address": "",
+      "archivedAt": "2026-08-30T11:26:28.321Z"
+    },
+    {
+      "id": "r1785423201303zau",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "音小 二面",
+      "date": "2026-08-29",
+      "time": "09:45",
+      "category": "school",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-30T11:26:28.321Z"
     }
   ],
   "_deletedIds": [],
@@ -1190,23 +1192,7 @@
   },
   "pendingMessages": [],
   "_lastArchived": [
-    "r1787137622669x87"
-  ],
-  "notifyLedger": {
-    "r17820338720444q5::1d": true,
-    "r17820338720444q5::3h": true,
-    "r17820338720444q5::ontime": true,
-    "r1784387587534arh::ontime": true
-  },
-  "sendCaps": {
-    "date": "2026-08-30",
-    "perPhone": {
-      "85297510047": 3,
-      "85291339336": 1,
-      "85266713322": 1,
-      "85262269100": 1
-    },
-    "global": 6
-  },
-  "digestSentDate": "2026-08-30"
+    "r1782033821850vvd",
+    "r1785423201303zau"
+  ]
 }
