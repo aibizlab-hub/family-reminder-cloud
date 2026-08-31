@@ -35,34 +35,6 @@
       "address": ""
     },
     {
-      "id": "r1782033821850vvd",
-      "notified": false,
-      "name": "嶺南小學",
-      "date": "2026-08-29",
-      "time": "12:00",
-      "category": "school",
-      "caregiver": "EPPIE",
-      "note": "時間待定",
-      "repeat": "none",
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "address": ""
-    },
-    {
-      "id": "r17820338720444q5",
-      "notified": false,
-      "name": "Jarvis生日會",
-      "date": "2026-08-30",
-      "time": "13:00",
-      "category": "special",
-      "caregiver": "EPPIE",
-      "note": "樂富冒險樂園",
-      "repeat": "none",
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "address": ""
-    },
-    {
       "id": "r1782533365556by6",
       "notified": false,
       "caregiverNotified1d": false,
@@ -72,22 +44,6 @@
       "time": "13:30",
       "category": "class",
       "caregiver": "COFFE",
-      "note": "",
-      "repeat": "weekly",
-      "repeatDays": [
-        6
-      ]
-    },
-    {
-      "id": "r17825362469190h9",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "iPad 數學",
-      "date": "2026-06-27",
-      "time": "10:00",
-      "category": "class",
-      "caregiver": "ALL",
       "note": "",
       "repeat": "weekly",
       "repeatDays": [
@@ -172,19 +128,6 @@
       ]
     },
     {
-      "id": "r1784387587534arh",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "跳舞表演",
-      "date": "2026-08-30",
-      "time": "17:00",
-      "category": "special",
-      "caregiver": "ALL",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r1784684407605t1u",
       "notified": false,
       "caregiverNotified1d": false,
@@ -198,58 +141,6 @@
       "details": [
         "08012604007218"
       ],
-      "repeat": "none"
-    },
-    {
-      "id": "r1785075913925px0",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "中文",
-      "date": "2026-08-23",
-      "time": "14:30",
-      "category": "class",
-      "caregiver": "Rosanna Mok",
-      "note": "",
-      "repeat": "none"
-    },
-    {
-      "id": "r1785423201303zau",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "音小 二面",
-      "date": "2026-08-29",
-      "time": "09:45",
-      "category": "school",
-      "caregiver": "EPPIE",
-      "note": "",
-      "repeat": "none"
-    },
-    {
-      "id": "r1785669004546lbc",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "熙珞生日會",
-      "date": "2026-08-23",
-      "time": "18:00",
-      "category": "activity",
-      "caregiver": "KEN",
-      "note": "5:30到杏花邨接佢",
-      "repeat": "none"
-    },
-    {
-      "id": "r17859351413846bt",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "英華面試",
-      "date": "2026-08-22",
-      "time": "11:00",
-      "category": "school",
-      "caregiver": "KEN",
-      "note": "",
       "repeat": "none"
     },
     {
@@ -285,32 +176,6 @@
       ]
     },
     {
-      "id": "r1786717184065u00",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "iPad英文",
-      "date": "2026-08-24",
-      "time": "14:30",
-      "category": "class",
-      "caregiver": "COFFE",
-      "note": "",
-      "repeat": "none"
-    },
-    {
-      "id": "r1786717219053us9",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "iPad 英文",
-      "date": "2026-08-27",
-      "time": "14:00",
-      "category": "class",
-      "caregiver": "COFFE",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r1787046016382io3",
       "notified": false,
       "caregiverNotified1d": false,
@@ -321,19 +186,6 @@
       "category": "school",
       "caregiver": "KEN",
       "note": "帶面試信，家長須知信",
-      "repeat": "none"
-    },
-    {
-      "id": "r1787137622669x87",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "iPad 英文",
-      "date": "2026-08-28",
-      "time": "14:00",
-      "category": "class",
-      "caregiver": "COFFE",
-      "note": "",
       "repeat": "none"
     },
     {
@@ -351,6 +203,19 @@
       "repeatDays": [
         1
       ]
+    },
+    {
+      "id": "r1787654750596lws",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "親子旅行",
+      "date": "2026-12-02",
+      "time": "09:00",
+      "category": "special",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -1135,6 +1000,165 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-08-21T02:03:25.423Z"
+    },
+    {
+      "id": "r17859351413846bt",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "英華面試",
+      "date": "2026-08-22",
+      "time": "11:00",
+      "category": "school",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-23T04:11:09.001Z"
+    },
+    {
+      "id": "r1785075913925px0",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文",
+      "date": "2026-08-23",
+      "time": "14:30",
+      "category": "class",
+      "caregiver": "Rosanna Mok",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-23T17:36:59.999Z"
+    },
+    {
+      "id": "r1785669004546lbc",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "熙珞生日會",
+      "date": "2026-08-23",
+      "time": "18:00",
+      "category": "activity",
+      "caregiver": "KEN",
+      "note": "5:30到杏花邨接佢",
+      "repeat": "none",
+      "archivedAt": "2026-08-23T17:36:59.999Z"
+    },
+    {
+      "id": "r1786717184065u00",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad英文",
+      "date": "2026-08-24",
+      "time": "14:30",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-25T05:54:46.068Z"
+    },
+    {
+      "id": "r1786717219053us9",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 英文",
+      "date": "2026-08-27",
+      "time": "14:00",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-28T00:29:28.633Z"
+    },
+    {
+      "id": "r17825362469190h9",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 數學",
+      "date": "2026-06-27",
+      "time": "10:00",
+      "category": "class",
+      "caregiver": "ALL",
+      "note": "",
+      "repeat": "weekly",
+      "repeatDays": [
+        6
+      ],
+      "archivedAt": "2026-08-28T00:29:59.756Z"
+    },
+    {
+      "id": "r1787137622669x87",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 英文",
+      "date": "2026-08-28",
+      "time": "14:00",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-29T14:23:30.465Z"
+    },
+    {
+      "id": "r1782033821850vvd",
+      "notified": false,
+      "name": "嶺南小學",
+      "date": "2026-08-29",
+      "time": "14:00",
+      "category": "school",
+      "caregiver": "EPPIE",
+      "note": "時間待定",
+      "repeat": "none",
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "address": "",
+      "archivedAt": "2026-08-30T11:26:28.321Z"
+    },
+    {
+      "id": "r1785423201303zau",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "音小 二面",
+      "date": "2026-08-29",
+      "time": "09:45",
+      "category": "school",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-30T11:26:28.321Z"
+    },
+    {
+      "id": "r17820338720444q5",
+      "notified": false,
+      "name": "Jarvis生日會",
+      "date": "2026-08-30",
+      "time": "13:00",
+      "category": "special",
+      "caregiver": "EPPIE",
+      "note": "樂富冒險樂園",
+      "repeat": "none",
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "address": "",
+      "archivedAt": "2026-08-30T18:31:21.972Z"
+    },
+    {
+      "id": "r1784387587534arh",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "跳舞表演",
+      "date": "2026-08-30",
+      "time": "17:00",
+      "category": "special",
+      "caregiver": "ALL",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-08-30T18:31:21.972Z"
     }
   ],
   "_deletedIds": [],
@@ -1170,15 +1194,14 @@
   },
   "pendingMessages": [],
   "_lastArchived": [
-    "r1786333878476ikt",
-    "r1786519499851drw",
-    "r1786519563076jyq"
+    "r17820338720444q5",
+    "r1784387587534arh"
   ],
   "notifyLedger": {},
-  "digestSentDate": "2026-08-22",
   "sendCaps": {
-    "date": "2026-08-22",
+    "date": "2026-09-01",
     "perPhone": {},
     "global": 0
-  }
+  },
+  "digestSentDate": "2026-08-31"
 }
