@@ -199,6 +199,19 @@
       "caregiver": "KEN",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "id": "r1788229800454oxo",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "播道",
+      "date": "2026-09-12",
+      "time": "09:00",
+      "category": "school",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -1193,12 +1206,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "notifyLedger": {},
-  "digestSentDate": "2026-09-01",
-  "sendCaps": {
-    "date": "2026-09-01",
-    "perPhone": {},
-    "global": 0
-  }
+  "pendingMessages": []
 }
