@@ -56,7 +56,7 @@
       "caregiverNotified3h": false,
       "name": "中文班",
       "date": "2026-07-15",
-      "time": "09:30",
+      "time": "10:30",
       "category": "class",
       "caregiver": "EPPIE",
       "note": "",
@@ -1159,7 +1159,7 @@
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
       "address": "",
-      "archivedAt": "2026-09-01T02:28:59.314Z"
+      "archivedAt": "2026-09-01T02:29:27.805Z"
     }
   ],
   "_deletedIds": [],
@@ -1193,6 +1193,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "notifyLedger": {}
+  "pendingMessages": []
 }
