@@ -73,7 +73,7 @@
       "caregiverNotified3h": false,
       "name": "中文班",
       "date": "2026-07-15",
-      "time": "10:30",
+      "time": "09:30",
       "category": "class",
       "caregiver": "EPPIE",
       "note": "",
@@ -1192,16 +1192,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "_lastArchived": [
-    "r17820338720444q5",
-    "r1784387587534arh"
-  ],
-  "notifyLedger": {},
-  "sendCaps": {
-    "date": "2026-09-01",
-    "perPhone": {},
-    "global": 0
-  },
-  "digestSentDate": "2026-09-01"
+  "pendingMessages": []
 }
