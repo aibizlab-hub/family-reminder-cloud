@@ -1223,5 +1223,6 @@
   "pendingMessages": [],
   "_lastArchived": [
     "r1784684407605t1u"
-  ]
+  ],
+  "notifyLedger": {}
 }
