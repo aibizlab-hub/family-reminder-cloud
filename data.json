@@ -210,7 +210,7 @@
       "time": "09:00",
       "category": "school",
       "caregiver": "EPPIE",
-      "note": "",
+      "note": "帶面試信，出世紙正本",
       "repeat": "none"
     }
   ],
@@ -1172,7 +1172,7 @@
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
       "address": "",
-      "archivedAt": "2026-09-01T02:29:27.805Z"
+      "archivedAt": "2026-09-01T02:28:59.314Z"
     }
   ],
   "_deletedIds": [],
