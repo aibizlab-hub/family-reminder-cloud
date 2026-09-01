@@ -1207,5 +1207,11 @@
     ]
   },
   "pendingMessages": [],
-  "notifyLedger": {}
+  "notifyLedger": {},
+  "digestSentDate": "2026-09-01",
+  "sendCaps": {
+    "date": "2026-09-01",
+    "perPhone": {},
+    "global": 0
+  }
 }
