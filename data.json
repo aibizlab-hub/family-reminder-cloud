@@ -1224,5 +1224,10 @@
   "_lastArchived": [
     "r1784684407605t1u"
   ],
-  "notifyLedger": {}
+  "notifyLedger": {},
+  "sendCaps": {
+    "date": "2026-09-02",
+    "perPhone": {},
+    "global": 0
+  }
 }
