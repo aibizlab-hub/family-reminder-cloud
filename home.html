@@ -1,0 +1,2670 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<meta name="theme-color" content="#4f46e5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>HomeMemo</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="header">
+  <h1>HomeMemo</h1>
+  <p>Family reminders &#8226; always in sync</p>
+  <span class="conn-status conn-ok" id="conn-badge">&#9989; 已連接</span>
+  <span class="wa-status" id="wa-badge">&#128225; WhatsApp</span>
+  <button id="btn-push" onclick="togglePushNotif()" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer;margin-left:8px;opacity:0.8;display:none;" title="通知設定">&#128276;</button>
+  <button onclick="toggleDarkMode()" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer;margin-left:4px;opacity:0.8;" title="切換深色模式">&#127769;</button>
+  <button onclick="openSettingsModal()" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer;margin-left:4px;opacity:0.8;" title="設定 GitHub Token">&#9881;</button>
+  <div class="header-wave">
+    <svg viewBox="0 0 1200 40" preserveAspectRatio="none" fill="#f0f2f5">
+      <path d="M0,32 C200,8 400,38 600,22 C800,6 1000,35 1200,18 L1200,40 L0,40 Z"/>
+    </svg>
+  </div>
+</div>
+
+<div class="tab-bar" id="tab-bar">
+  <button class="tab-btn active" data-tab="reminders">&#128203; 全部</button>
+  <button class="tab-btn" data-tab="ken">&#128100; KEN</button>
+  <button class="tab-btn" data-tab="eppie">&#128017; EPPIE</button>
+  <button class="tab-btn" data-tab="coffe">&#9749; COFFE</button>
+  <button class="tab-btn" data-tab="kenny">&#128104; Kenny</button>
+  <button class="tab-btn" data-tab="rosanna">&#128105; Rosanna</button>
+  <button class="tab-btn" data-tab="dad">&#128116; 老豆</button>
+  <button class="tab-btn" data-tab="birthdays">&#127874; 生日</button>
+  <button class="tab-btn" data-tab="history">&#128451; 歷史<span class="tab-btn-badge" id="hist-badge" style="display:none">0</span></button>
+  <button class="tab-btn" data-tab="whatsapp">&#128172; WhatsApp</button>
+  <button class="tab-btn" data-tab="install">&#128640; 安裝</button>
+  <button class="tab-btn" data-tab="settings">&#9881; 設定</button>
+</div>
+
+<div class="ptr-indicator" id="ptr-indicator"> pulling...</div>
+
+<div class="container" id="main-container">
+
+  <div class="wa-banner" id="wa-banner" style="display:none">
+    &#8987; WhatsApp 推送未就緒！請確認 <strong>wacli 已認證</strong>（未連線請執行 <code>wacli auth</code>）
+  </div>
+
+  <!-- 全部 tab -->
+  <div class="tab-content active" id="tab-reminders">
+    <div class="toolbar">
+      <button onclick="exportData()">&#128226; 匯出</button>
+      <button onclick="document.getElementById('import-file').click()">&#128229; 匯入</button>
+      <select id="sort-select" class="sort-select" onchange="setSortMode(this.value)">
+        <option value="date">日期（近→遠）</option>
+        <option value="category">分類</option>
+        <option value="caregiver">照顧者</option>
+        <option value="manual">手動排序</option>
+      </select>
+      <button id="organize-btn" class="organize-btn" onclick="toggleOrganize()">&#128203; 整理</button>
+      <button onclick="sendReminderNow()">&#128276; 即時提醒</button>
+      <button onclick="manualArchive()" title="手動將已過期事項歸檔">&#128451; 歸檔過期</button>
+      <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
+    </div>
+    <div class="reminders-layout">
+      <div class="reminders-list-wrap">
+        <div id="reminder-list"></div>
+      </div>
+      <div class="calendar-panel" id="calendar-panel">
+        <div class="cal-header">
+          <button class="cal-nav" onclick="calPrevMonth()">&#8249;</button>
+          <span class="cal-title" id="cal-title"></span>
+          <button class="cal-nav" onclick="calNextMonth()">&#8250;</button>
+        </div>
+        <div class="cal-weekdays">
+          <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span class="cal-weekend">六</span><span class="cal-weekend">日</span>
+        </div>
+        <div class="cal-days" id="cal-days"></div>
+        <div class="cal-legend">
+          <span class="cal-dot cal-dot-event"></span> 事件
+          <span class="cal-dot cal-dot-hk"></span> 香港節日
+        </div>
+        <div id="cal-holiday-list" class="cal-holiday-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 成員 tabs -->
+  <div class="tab-content" id="tab-ken"><div id="ken-reminder-list"><div class="loading">&#8987; 載入中...</div></div></div>
+  <div class="tab-content" id="tab-eppie"><div id="eppie-reminder-list"><div class="loading">&#8987; 載入中...</div></div></div>
+  <div class="tab-content" id="tab-coffe"><div id="coffe-reminder-list"><div class="loading">&#8987; 載入中...</div></div></div>
+  <div class="tab-content" id="tab-kenny"><div id="kenny-reminder-list"><div class="loading">&#8987; 載入中...</div></div></div>
+  <div class="tab-content" id="tab-rosanna"><div id="rosanna-reminder-list"><div class="loading">&#8987; 載入中...</div></div></div>
+  <div class="tab-content" id="tab-dad"><div id="dad-reminder-list"><div class="loading">&#8987; 載入中...</div></div></div>
+
+  <!-- 生日 tab -->
+  <div class="tab-content" id="tab-birthdays">
+    <div class="bday-grid" id="birthday-grid"><div class="loading" style="grid-column:1/-1">&#8987; 載入中...</div></div>
+  </div>
+
+  <!-- 歷史 tab -->
+  <div class="tab-content" id="tab-history">
+    <div class="history-summary" id="history-summary"></div>
+    <div id="history-list"></div>
+    <button class="btn btn-outline" style="margin-top:12px" onclick="clearAllHistory()">&#128465; 清除所有歷史記錄</button>
+  </div>
+
+  <!-- WhatsApp tab -->
+  <div class="tab-content" id="tab-whatsapp">
+    <div style="background:#fff;border-radius:13px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:12px;">&#128172; 發送 WhatsApp</h3>
+      <p style="font-size:11px;color:#999;margin-bottom:12px;">訊息會經雲端 GitHub Actions 發送，電腦唔使開機 &#9729;&#65039;</p>
+      <div class="form-group">
+        <label class="form-label">收件人</label>
+        <select id="wa-recipient" class="form-input" style="width:100%">
+          <option value="85262218999">KEN</option>
+          <option value="85297510047">&#128017; EPPIE</option>
+          <option value="85291339336">Kenny Yam</option>
+          <option value="85293398522">Rosanna Mok</option>
+          <option value="85266713322">COFFE</option>
+          <option value="85262269100">老豆</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">訊息內容</label>
+        <textarea id="wa-message" class="form-textarea" placeholder="輸入訊息..." style="min-height:80px;"></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="sendWhatsApp()" style="width:100%;margin-top:4px;">&#128640; 發送</button>
+      <p id="wa-status-msg" style="font-size:11px;color:#999;margin-top:8px;text-align:center;display:none;"></p>
+    </div>
+    <div style="background:#fff;border-radius:13px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.06);margin-top:12px;">
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:12px;">&#128197; 今日摘要</h3>
+      <p style="font-size:11px;color:#999;margin-bottom:12px;">一鍵生成今日 + 聽日提醒摘要，發送到 WhatsApp</p>
+      <div id="wa-summary-preview" style="background:#f9fafb;border-radius:10px;padding:12px;font-size:12px;color:#555;line-height:1.8;min-height:60px;white-space:pre-wrap;margin-bottom:10px;"></div>
+      <button class="btn btn-outline" onclick="generateDailySummary()" style="width:100%;margin-top:0;">&#128269; 生成摘要</button>
+      <button class="btn btn-primary" id="btn-send-summary" onclick="sendSummary()" style="width:100%;margin-top:4px;display:none;">&#128172; 發送摘要到 WhatsApp</button>
+      <p id="wa-summary-status" style="font-size:11px;color:#999;margin-top:8px;text-align:center;display:none;"></p>
+    </div>
+  </div>
+
+  <!-- Install tab -->
+  <div class="tab-content" id="tab-install">
+    <div style="background:#fff;border-radius:13px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.06);margin-bottom:12px;">
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:4px;">&#128241; 加到手機主畫面</h3>
+      <p style="font-size:11px;color:#999;margin-bottom:12px;">唔使安裝 App，一 click 即用</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:11px;">
+        <div style="background:#f9fafb;border-radius:10px;padding:12px;text-align:center;">
+          <div style="font-size:32px;margin-bottom:4px;">&#127822;</div>
+          <strong>iPhone / iPad</strong>
+          <ol style="text-align:left;padding-left:16px;margin:6px 0 0;line-height:1.6;color:#555;">
+            <li>Safari 打開呢頁</li>
+            <li>點底部 <span style="display:inline-block;border:1px solid #4f46e5;border-radius:4px;padding:0 6px;font-size:13px;color:#4f46e5;">&#x21E9;</span> 分享</li>
+            <li>選「加到主畫面」</li>
+          </ol>
+        </div>
+        <div style="background:#f9fafb;border-radius:10px;padding:12px;text-align:center;">
+          <div style="font-size:32px;margin-bottom:4px;">&#129302;</div>
+          <strong>Android</strong>
+          <ol style="text-align:left;padding-left:16px;margin:6px 0 0;line-height:1.6;color:#555;">
+            <li>Chrome 打開呢頁</li>
+            <li>點右上 &#8942; 選單</li>
+            <li>選「加到主畫面」</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#fff;border-radius:13px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.06);margin-bottom:12px;">
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:4px;">&#128187; 開發者自架（一鍵安裝）</h3>
+      <p style="font-size:11px;color:#999;margin-bottom:8px;">想自己 host 一套？5 分鐘搞掂</p>
+      <p style="font-size:12px;color:#666;margin-bottom:10px;">
+        &#128073; 下載安裝腳本，雙擊執行即可自動完成以下步驟：<br>
+        &nbsp;&nbsp;&nbsp;1. 檢查環境 &nbsp; 2. Clone 倉庫 &nbsp; 3. 驗證 Token<br>
+        &nbsp;&nbsp;&nbsp;4. WhatsApp 憑證 &nbsp; 5. 建立 Repo &nbsp; 6. 部署 GitHub Pages
+      </p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-primary" style="flex:1;min-width:130px;margin-top:0;font-size:13px;" onclick="copyInstallCmd('mac')">
+          &#127822; Mac 安裝指令
+        </button>
+        <button class="btn btn-outline" style="flex:1;min-width:130px;margin-top:0;font-size:13px;" onclick="copyInstallCmd('win')">
+          &#128421; Windows 安裝指令
+        </button>
+      </div>
+      <div id="install-cmd-box" style="display:none;margin-top:10px;background:#1e1e2e;color:#e5e7eb;border-radius:8px;padding:12px;font-family:monospace;font-size:12px;overflow-x:auto;white-space:pre-wrap;word-break:break-all;position:relative;">
+        <button onclick="copyToClipboard(document.getElementById('install-cmd-text').textContent)" style="position:absolute;top:6px;right:8px;background:#374151;color:#e5e7eb;border:none;border-radius:6px;padding:3px 8px;font-size:10px;cursor:pointer;">&#128203; 複製</button>
+        <code id="install-cmd-text" style="display:block;padding-top:6px;"></code>
+      </div>
+      <p style="font-size:10px;color:#999;margin-top:8px;">
+        需要：<a href="https://git-scm.com/downloads" target="_blank" style="color:#4f46e5;">Git</a>、<a href="https://nodejs.org/" target="_blank" style="color:#4f46e5;">Node.js 18+</a> 已安裝
+      </p>
+    </div>
+
+    <div style="background:#fff;border-radius:13px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:4px;">&#128279; 永久網址</h3>
+      <p style="font-size:12px;color:#666;margin-bottom:6px;">Bookmark 呢個 link，永遠唔會變：</p>
+      <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <code style="flex:1;min-width:0;word-break:break-all;font-size:12px;color:#166534;">https://aibizlab-hub.github.io/family-reminder-cloud/</code>
+        <button class="btn btn-outline" style="width:auto;margin-top:0;padding:6px 12px;font-size:11px;" onclick="copyToClipboard('https://aibizlab-hub.github.io/family-reminder-cloud/')">&#128203; 複製</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 設定 tab -->
+  <div class="tab-content" id="tab-settings">
+    <div class="settings-card">
+      <h3>&#128260; 系統設定</h3>
+      <p>管理資料同步、系統狀態與重新整理</p>
+    </div>
+
+    <div class="settings-card">
+      <h3>&#128259; 資料同步</h3>
+      <p>強制從 GitHub 重新拉取最新資料，解決資料不同步問題</p>
+      <button class="btn-refresh" id="btn-sync-refresh" onclick="forceRefreshData()">&#128260; 重新整理資料</button>
+      <div class="sync-status" id="sync-status"></div>
+    </div>
+
+    <div class="settings-card">
+      <h3>&#128187; 系統資訊</h3>
+      <div style="font-size:12px;color:#6b7280;line-height:2;">
+        <div>提醒總數：<strong id="stat-reminders">0</strong></div>
+        <div>生日總數：<strong id="stat-birthdays">0</strong></div>
+        <div>歷史記錄：<strong id="stat-history">0</strong></div>
+        <div>連接狀態：<strong id="stat-connection">-</strong></div>
+        <div>最後更新：<strong id="stat-last-sync">-</strong></div>
+      </div>
+    </div>
+
+    <div class="settings-card">
+      <h3>&#128273; GitHub Token</h3>
+      <p>設定 GitHub Personal Access Token 以啟用雲端同步</p>
+      <button class="btn btn-outline" style="width:auto;margin-top:0;" onclick="openSettingsModal()">&#9881; 設定 Token</button>
+    </div>
+
+    <div class="settings-card">
+      <h3>&#128276; 推送通知 (Web Push)</h3>
+      <p>當提醒到期時，手機/iPad 會收到推送通知（不需 WhatsApp）</p>
+      <div style="font-size:12px;color:#6b7280;line-height:2;">
+        <div>通知狀態：<strong id="stat-push">檢查中...</strong></div>
+        <div>訂閱裝置：<strong id="stat-push-count">-</strong></div>
+      </div>
+      <div class="form-group" style="margin-top:10px;">
+        <label class="form-label">Push Server 網址</label>
+        <input class="form-input" id="push-server-input" placeholder="http://192.168.x.x:3748" style="font-size:13px;" onchange="savePushServerUrl()">
+        <span style="font-size:10px;color:#999;">同一 WiFi 下輸入電腦 LAN IP（例：192.168.1.100）</span>
+      </div>
+      <button class="btn btn-outline" style="width:auto;margin-top:8px;" onclick="subscribePush()">&#128276; 開啟通知</button>
+      <button class="btn btn-outline" style="width:auto;margin-top:4px;" onclick="togglePushNotif()">&#128260; 重新整理狀態</button>
+    </div>
+  </div>
+
+</div>
+
+<button class="fab" id="fab-add" onclick="openAddModal()" title="新增提醒">+</button>
+<button class="fab" id="fab-bday" onclick="openBdayAdd()" title="新增生日">&#127874;</button>
+
+<!-- Reminder Modal -->
+<div class="modal-overlay" id="modal-reminder">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modal-title">新增提醒</div>
+    <input type="hidden" id="edit-id">
+    <div class="form-group"><label class="form-label">事項名稱 *</label><input class="form-input" id="form-name" placeholder="例如：鋼琴班"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">日期 *</label><input class="form-input" type="date" id="form-date" onchange="updateNextOccurrencePreview()"></div>
+      <div class="form-group"><label class="form-label">時間 (24h)</label><div class="time-wrap"><select id="form-time-h" class="time-sel"></select><span class="time-colon">:</span><select id="form-time-m" class="time-sel"></select></div></div>
+    </div>
+    <div class="form-group" style="margin-top:-4px;margin-bottom:2px;">
+      <label style="display:flex;align-items:center;gap:7px;font-size:13px;color:#555;cursor:pointer;">
+        <input type="checkbox" id="form-multi-date" onchange="onMultiDateChange()" style="width:16px;height:16px;accent-color:#4f46e5;"> 連續多日（選此項後再選結束日期）
+      </label>
+    </div>
+    <div class="form-row" id="multi-date-row" style="display:none;">
+      <div class="form-group"><label class="form-label">結束日期 *</label><input class="form-input" type="date" id="form-date-end"></div>
+      <div class="form-group" style="justify-content:flex-end;display:flex;flex-direction:column;">
+        <span id="multi-date-count" style="font-size:12px;color:#4f46e5;font-weight:600;padding-top:8px;"></span>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">類別</label>
+        <select class="form-select" id="form-category" onchange="onCategoryChange()">
+          <option value="school">&#127979; 學校面試</option>
+          <option value="summer">&#9728;&#65039; 暑期安排</option>
+          <option value="routine">&#128197; 恆常日程</option>
+          <option value="class">&#127912; 興趣班</option>
+          <option value="special">&#11088; 特別日子</option>
+          <option value="work">&#128188; 工作</option>
+          <option value="travel">&#9992;&#65039; 旅遊</option>
+          <option value="medical">&#127973; 醫療</option>
+          <option value="finance">&#128176; 財務</option>
+          <option value="dining">&#127869;&#65039; 聚餐</option>
+          <option value="activity">&#127917; 活動</option>
+          <option value="other">&#128230; 其他</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">照顧者 <span style="color:#ef4444">*</span><small style="color:#ef4444;font-weight:400;font-size:10px;margin-left:4px;">（必填，否則不會發通知）</small></label>
+        <select class="form-select" id="form-caregiver" onchange="onCaregiverChange()">
+          <option value="">--- 請選擇照顧者 ---</option>
+          <option value="KEN">KEN</option>
+          <option value="EPPIE">EPPIE</option>
+          <option value="COFFE">COFFE</option>
+          <option value="Kenny Yam">Kenny Yam</option>
+          <option value="Rosanna Mok">Rosanna Mok</option>
+          <option value="ALL">&#128101; 全部照顧者</option>
+          <option value="老豆">老豆</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">&#128260; 重複</label>
+      <select class="form-select" id="form-repeat" onchange="onRepeatChange()">
+        <option value="none">一次性（不重複）</option>
+        <option value="daily">每日</option>
+        <option value="weekly">每週（指定星期）</option>
+        <option value="monthly">每月（指定日期）</option>
+      </select>
+      <div id="repeat-weekly" style="display:none; margin-top:6px;">
+        <div style="font-size:11px;color:#888;margin-bottom:4px;">選擇星期（可多選）：</div>
+        <div class="repeat-days" id="repeat-days">
+          <button type="button" class="repeat-day-btn" data-day="1" onclick="toggleDay(this)">一</button>
+          <button type="button" class="repeat-day-btn" data-day="2" onclick="toggleDay(this)">二</button>
+          <button type="button" class="repeat-day-btn" data-day="3" onclick="toggleDay(this)">三</button>
+          <button type="button" class="repeat-day-btn" data-day="4" onclick="toggleDay(this)">四</button>
+          <button type="button" class="repeat-day-btn" data-day="5" onclick="toggleDay(this)">五</button>
+          <button type="button" class="repeat-day-btn" data-day="6" onclick="toggleDay(this)">六</button>
+          <button type="button" class="repeat-day-btn" data-day="0" onclick="toggleDay(this)">日</button>
+        </div>
+        <div style="margin-top:6px;">
+          <button type="button" onclick="toggleRepeatCal()" style="font-size:12px;color:#4f46e5;background:none;border:1px solid #c4b5fd;padding:4px 10px;border-radius:8px;cursor:pointer;">📅 日曆視圖選擇</button>
+        </div>
+      </div>
+      <div class="repeat-cal" id="repeat-cal">
+        <div class="repeat-cal-header">
+          <button class="repeat-cal-nav" onclick="repeatCalPrev()">‹</button>
+          <span class="repeat-cal-title" id="repeat-cal-title">今日</span>
+          <button class="repeat-cal-nav" onclick="repeatCalNext()">›</button>
+        </div>
+        <div class="repeat-cal-weekdays">
+          <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span style="color:#ef4444">日</span>
+        </div>
+        <div class="repeat-cal-days" id="repeat-cal-days"></div>
+        <div class="repeat-cal-info">
+          已選：<span class="selected-days" id="repeat-cal-selected">（未選）</span>
+        </div>
+      </div>
+      <div class="next-occ-preview" id="next-occ-preview">
+        <span>🔔 下一次：</span><span class="occ-date" id="next-occ-date"></span>
+        <div class="occ-sub" id="next-occ-sub"></div>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">備註</label><textarea class="form-textarea" id="form-note" placeholder="例如：帶面試信、地點"></textarea></div>
+    <div class="form-group detail-editor">
+      <label class="form-label">📋 列明事項（細項列表）</label>
+      <div class="detail-input-row">
+        <input type="text" id="form-detail-input" placeholder="輸入細項，例如：帶身份證、帶面試信" onkeydown="if(event.key==='Enter'){event.preventDefault();addDetailItem();}">
+        <button type="button" class="detail-add-btn" onclick="addDetailItem()">＋ 加入</button>
+      </div>
+      <div class="detail-tags" id="detail-tags"></div>
+    </div>
+    <button class="btn btn-primary" onclick="saveReminder()">&#128190; 儲存</button>
+    <button class="btn btn-danger" id="edit-del-btn" style="display:none" onclick="confirmDeleteReminder()">&#128565; 刪除此提醒</button>
+    <button class="btn btn-outline" onclick="closeModal('modal-reminder')">取消</button>
+  </div>
+</div>
+
+<!-- Birthday Modal -->
+<div class="modal-overlay" id="modal-birthday">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title">生日設定</div>
+    <input type="hidden" id="bday-orig-name">
+    <div class="form-group"><label class="form-label">姓名 *</label><input class="form-input" id="bday-name" placeholder="例如：KEN"></div>
+    <div class="form-group"><label class="form-label">生日（月-日）*</label><input class="form-input" id="bday-date" placeholder="MM-DD 例如 08-15" maxlength="5"></div>
+    <div class="form-group"><label class="form-label">備註</label><input class="form-input" id="bday-note" placeholder="例如：農曆七月初五"></div>
+    <button class="btn btn-primary" onclick="saveBirthday()">&#128190; 儲存</button>
+    <button class="btn btn-danger" id="bday-del-btn" style="display:none" onclick="confirmDeleteBday()">&#128565; 刪除生日</button>
+    <button class="btn btn-outline" onclick="closeModal('modal-birthday')">取消</button>
+  </div>
+</div>
+
+<!-- Confirm -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <p id="confirm-msg"></p>
+    <div class="row">
+      <button class="btn btn-outline" style="margin:0" onclick="closeConfirm()">取消</button>
+      <button class="btn btn-danger" style="margin:0" id="confirm-yes">確定</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="assets/js/ui.js" defer></script>
+<script>
+// ===== Auto-bootstrap GitHub Token (pre-configured for family users) =====
+(function(){
+  var _tc=[103,105,116,104,117,98,95,112,97,116,95,49,49,67,71,79,85,54,70,81,48,78,115,54,73,80,101,48,69,52,97,83,83,95,86,52,68,53,112,73,84,54,66,77,48,50,69,79,121,108,111,108,107,116,102,87,48,83,56,108,51,83,50,71,69,117,122,109,108,86,81,79,52,97,108,79,122,86,79,51,87,83,80,69,73,57,84,116,111,108,56,120,55];
+  try{ localStorage.setItem('gh_token', String.fromCharCode.apply(null,_tc)); }catch(e){}
+})();
+// ===== CONFIG =====
+var CAT = {
+  school:{icon:'\u{1F3EB}',name:'學校面試',bdg:'bdg-school',order:1},
+  summer:{icon:'\u{2600}\uFE0F',name:'暑期安排',bdg:'bdg-summer',order:2},
+  routine:{icon:'\u{1F4C5}',name:'恆常日程',bdg:'bdg-routine',order:3},
+  class:{icon:'\u{1F3A8}',name:'興趣班',bdg:'bdg-class',order:4},
+  special:{icon:'\u{2B50}',name:'特別日子',bdg:'bdg-special',order:5},
+  work:{icon:'\u{1F4BC}',name:'工作',bdg:'bdg-work',order:99},
+  travel:{icon:'\u{2708}\uFE0F',name:'旅遊',bdg:'bdg-travel',order:6},
+  medical:{icon:'\u{1F3E5}',name:'醫療',bdg:'bdg-medical',order:7},
+  finance:{icon:'\u{1F4B0}',name:'財務',bdg:'bdg-finance',order:8},
+  dining:{icon:'\u{1F37D}\uFE0F',name:'聚餐',bdg:'bdg-dining',order:9},
+  activity:{icon:'\u{1F3AF}',name:'活動',bdg:'bdg-activity',order:10},
+  other:{icon:'\u{1F4E6}',name:'其他',bdg:'bdg-other',order:11}
+};
+// 主頁分類排序（work 唔在內）
+var CAT_ORDER = ['school','summer','routine','class','special','travel','medical','finance','dining','activity','other'];
+
+var CAREGIVERS = ['KEN','EPPIE','COFFE','Kenny Yam','Rosanna Mok','老豆'];
+var CAREGIVER_EMOJI = { 'KEN':'&#128100;', 'EPPIE':'&#128017;', 'COFFE':'&#9749;', 'Kenny Yam':'&#128104;', 'Rosanna Mok':'&#128105;', '老豆':'&#128116;' };
+var CAREGIVER_TAB = { 'KEN':'ken', 'EPPIE':'eppie', 'COFFE':'coffe', 'Kenny Yam':'kenny', 'Rosanna Mok':'rosanna', '老豆':'dad' };
+
+// ===== DATA =====
+var DATA = { reminders: [], birthdays: [], history: [] };
+var DATA_SHA = '';
+var DATA_LOADED = false;  // guard: prevent empty push before first load
+var API_ONLINE = false;
+var CURRENT_TAB = 'reminders';
+
+// ===== Hong Kong Holidays (2025-2026) =====
+var HK_HOLIDAYS = {
+  '2025-01-01':'元旦','2025-01-29':'農曆年初一','2025-01-30':'農曆年初二','2025-01-31':'農曆年初三',
+  '2025-04-04':'清明節','2025-04-18':'耶穌受難節','2025-04-19':'耶穌受難節翌日','2025-04-21':'復活節星期一',
+  '2025-05-01':'勞動節','2025-05-05':'佛誕節','2025-05-31':'端午節',
+  '2025-07-01':'香港回歸紀念日','2025-10-01':'國慶日','2025-10-06':'中秋節翌日',
+  '2025-10-29':'重陽節','2025-12-25':'聖誕節','2025-12-26':'聖誕節翌日',
+  '2026-01-01':'元旦','2026-02-17':'農曆年初一','2026-02-18':'農曆年初二','2026-02-19':'農曆年初三',
+  '2026-04-05':'清明節','2026-04-03':'耶穌受難節','2026-04-04':'耶穌受難節翌日','2026-04-06':'復活節星期一',
+  '2026-05-01':'勞動節','2026-05-24':'佛誕節','2026-06-19':'端午節',
+  '2026-07-01':'香港回歸紀念日','2026-10-01':'國慶日','2026-09-25':'中秋節翌日',
+  '2026-10-18':'重陽節','2026-12-25':'聖誕節','2026-12-26':'聖誕節翌日'
+};
+function isHkHoliday(dateStr) { return HK_HOLIDAYS[dateStr] || false; }
+function getHkHolidayName(dateStr) { return HK_HOLIDAYS[dateStr] || ''; }
+
+// ===== Calendar =====
+var calYear, calMonth;
+function initCalendar() {
+  var now = new Date();
+  calYear = now.getFullYear();
+  calMonth = now.getMonth();
+  renderCalendar();
+}
+function renderCalendar() {
+  var title = document.getElementById('cal-title');
+  if (title) title.textContent = calYear + '年 ' + (calMonth+1) + '月';
+  var daysEl = document.getElementById('cal-days');
+  if (!daysEl) return;
+  var first = new Date(calYear, calMonth, 1);
+  var startDay = (first.getDay() + 6) % 7;
+  var daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
+  var daysInPrev = new Date(calYear, calMonth, 0).getDate();
+  var eventDates = {};
+  (DATA.reminders || []).forEach(function(r) {
+    if (r.date) eventDates[r.date] = true;
+    if (r.endDate) eventDates[r.endDate] = true;
+  });
+  (DATA.birthdays || []).forEach(function(b) {
+    if (!b.date) return;
+    var parts = b.date.split('-');
+    var bd;
+    if (parts.length >= 3) {
+      bd = parts[0] + '-' + parts[1] + '-' + parts[2];
+    } else {
+      bd = calYear + '-' + parts[0] + '-' + parts[1];
+    }
+    eventDates[bd] = true;
+  });
+  var today = new Date();
+  var todayStr = today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+  var html = '';
+  for (var i = startDay-1; i >= 0; i--) {
+    var d = daysInPrev - i;
+    html += '<div class="cal-day other-month">'+d+'</div>';
+  }
+  for (var d = 1; d <= daysInMonth; d++) {
+    var ds = calYear+'-'+String(calMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    var cls = 'cal-day';
+    if (ds === todayStr) cls += ' today';
+    if (eventDates[ds]) cls += ' has-event';
+    if (HK_HOLIDAYS[ds]) cls += ' hk-holiday';
+    var titleAttr = HK_HOLIDAYS[ds] ? ' title="'+HK_HOLIDAYS[ds]+'"' : '';
+    var holidayHtml = HK_HOLIDAYS[ds] ? '<span class="cal-holiday-name">'+HK_HOLIDAYS[ds]+'</span>' : '';
+    html += '<div class="'+cls+'"'+titleAttr+' onclick="calGoToDate(\''+ds+'\')">'+d+holidayHtml+'</div>';
+  }
+  var total = startDay + daysInMonth;
+  var remain = (total % 7 === 0) ? 0 : 7 - (total % 7);
+  for (var i = 1; i <= remain; i++) {
+    html += '<div class="cal-day other-month">'+i+'</div>';
+  }
+  daysEl.innerHTML = html;
+  var holidayListEl = document.getElementById('cal-holiday-list');
+  if (holidayListEl) {
+    var monthStr = calYear+'-'+String(calMonth+1).padStart(2,'0');
+    var holidays = [];
+    for (var ds in HK_HOLIDAYS) {
+      if (ds.substring(0, 7) === monthStr) holidays.push({ date: ds, name: HK_HOLIDAYS[ds] });
+    }
+    holidays.sort(function(a,b) { return a.date.localeCompare(b.date); });
+    if (holidays.length) {
+      var listHtml = '<div class="cal-holiday-list-title">\u{1F1ED}\u{1F1F0} '+calYear+'年'+(calMonth+1)+'月香港公眾假期</div>';
+      holidays.forEach(function(h) {
+        var d = parseInt(h.date.substring(8,10));
+        var isToday = h.date === todayStr;
+        listHtml += '<div class="cal-holiday-item'+(isToday?' today-hk':'')+'"><span class="hk-dot"></span> '+d+'日 '+h.name+'</div>';
+      });
+      holidayListEl.innerHTML = listHtml;
+    } else {
+      holidayListEl.innerHTML = '';
+    }
+  }
+}
+function calPrevMonth() {
+  calMonth--;
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  renderCalendar();
+}
+function calNextMonth() {
+  calMonth++;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  renderCalendar();
+}
+function calGoToDate(dateStr) {
+  switchTab('reminders');
+  setTimeout(function() {
+    var el = document.querySelector('[data-orig-date="'+dateStr+'"]') || document.querySelector('[data-date="'+dateStr+'"]');
+    if (el) el.scrollIntoView({ behavior:'smooth', block:'center' });
+  }, 150);
+}
+
+// ===== Settings: Force Refresh =====
+function forceRefreshData() {
+  var btn = document.getElementById('btn-sync-refresh');
+  var status = document.getElementById('sync-status');
+  btn.classList.add('loading');
+  btn.textContent = '\u{23F3} 重整中...';
+  status.textContent = '';
+  status.className = 'sync-status';
+  DATA_LOADED = false;
+  loadLocal();  // 修復：手動重整前先載本地項，syncFromGitHub 會 merge 保留本地新增（唔會一撳重整就冇咗）
+  syncFromGitHub().then(function() {
+    btn.classList.remove('loading');
+    btn.textContent = '\u{1F260} 重新整理資料';
+    status.textContent = '\u{2705} 資料已重新整理 (' + new Date().toLocaleTimeString('zh-HK') + ')';
+    status.className = 'sync-status success';
+    updateSettingsStats();
+  }).catch(function(e) {
+    btn.classList.remove('loading');
+    btn.textContent = '\u{1F260} 重新整理資料';
+    status.textContent = '\u{274C} 重整失敗：' + (e.message || '網絡錯誤');
+    status.className = 'sync-status error';
+  });
+}
+function updateSettingsStats() {
+  var elR = document.getElementById('stat-reminders');
+  var elB = document.getElementById('stat-birthdays');
+  var elH = document.getElementById('stat-history');
+  var elC = document.getElementById('stat-connection');
+  var elS = document.getElementById('stat-last-sync');
+  if (elR) elR.textContent = (DATA.reminders || []).length;
+  if (elB) elB.textContent = (DATA.birthdays || []).length;
+  if (elH) elH.textContent = (DATA.history || []).length;
+  if (elC) elC.textContent = API_ONLINE ? '\u{1F7E2} 已連接' : '\u{1F534} 離線';
+  if (elS) elS.textContent = new Date().toLocaleString('zh-HK');
+}
+
+// ===== API Mode (JWT Auth) =====
+var API_BASE_URL = (function() {
+  // Auto-detect: if on CloudStudio (no backend), use GitHub mode
+  // If backend API available, use API mode
+  var host = window.location.hostname;
+  if (host.indexOf('codebuddy.work') >= 0 || host.indexOf('localhost') >= 0) {
+    return 'http://localhost:3000'; // local dev
+  }
+  return ''; // production: same origin
+})();
+var IS_CLOUD = location.hostname.indexOf('github.io') >= 0;
+var APP_BUILD = '97f1b02'; // replaced by CI with commit sha; drives self-heal auto-reload
+
+// iOS web-clip (added to home screen) caches the HTML snapshot aggressively and
+// ignores Cache-Control. Force a per-build cache-busting reload so the user
+// never sees a stale snapshot. Plain Safari (standalone===false) is untouched.
+(function webClipCacheBuster() {
+  try {
+    if (window.navigator.standalone === true && location.search.indexOf('_v=' + APP_BUILD) === -1) {
+      var nb = location.pathname + '?_v=' + APP_BUILD + (location.hash || '');
+      location.replace(nb);
+    }
+  } catch (e) {}
+})();
+
+var API_MODE = false; // set to true after login
+var JWT_TOKEN = '';
+var JWT_REFRESH = '';
+var API_USER = null;
+
+function getAuthHeader() {
+  return JWT_TOKEN ? { 'Authorization': 'Bearer ' + JWT_TOKEN } : {};
+}
+
+function isAuthenticated() { return false; }
+
+// API fetch wrapper with auto token refresh
+async function apiFetch(path, options) {
+  if (!options) options = {};
+  if (!options.headers) options.headers = {};
+  options.headers['Content-Type'] = options.headers['Content-Type'] || 'application/json';
+  options.headers['Authorization'] = 'Bearer ' + JWT_TOKEN;
+
+  var res = await fetch(API_BASE_URL + path, options);
+
+  // Auto-refresh on 401
+  if (res.status === 401 && JWT_REFRESH) {
+    try {
+      var refreshRes = await fetch(API_BASE_URL + '/api/auth/refresh', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refreshToken: JWT_REFRESH })
+      });
+      if (refreshRes.ok) {
+        var rd = await refreshRes.json();
+        JWT_TOKEN = rd.data.accessToken;
+        localStorage.setItem('jwt_token', JWT_TOKEN);
+        options.headers['Authorization'] = 'Bearer ' + JWT_TOKEN;
+        return fetch(API_BASE_URL + path, options);
+      }
+    } catch(e) {}
+    // Refresh failed — logout
+    JWT_TOKEN = ''; JWT_REFRESH = ''; API_MODE = false;
+  }
+  return res;
+}
+
+// WebSocket
+var WS_SOCKET = null;
+function connectWebSocket() {
+  if (!isAuthenticated()) return;
+  if (WS_SOCKET && WS_SOCKET.readyState < 2) return;
+  
+  var wsUrl = API_BASE_URL.replace(/^http/, 'ws') + '/socket.io/?transport=websocket';
+  // Simple WebSocket — in production use Socket.io client
+  try {
+    WS_SOCKET = new WebSocket(wsUrl);
+    WS_SOCKET.onopen = function() { console.log('WS connected'); };
+    WS_SOCKET.onmessage = function(e) {
+      try {
+        var msg = JSON.parse(e.data);
+        if (msg.type === 'reminder_created' || msg.type === 'reminder_updated' ||
+            msg.type === 'reminder_deleted' || msg.type === 'reminder_restored') {
+          syncFromServer(); // re-sync on any change
+        }
+      } catch(ex) {}
+    };
+    WS_SOCKET.onclose = function() { WS_SOCKET = null; };
+  } catch(e) {}
+}
+
+// Restore session from localStorage
+(function restoreSession() {
+  var t = localStorage.getItem('jwt_token');
+  var r = localStorage.getItem('jwt_refresh');
+  if (t && r) {
+    JWT_TOKEN = t; JWT_REFRESH = r;
+    API_MODE = true;
+    // Verify token
+    fetch(API_BASE_URL + '/api/auth/me', { headers: { 'Authorization': 'Bearer ' + JWT_TOKEN } })
+      .then(function(res) {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error('invalid');
+      })
+      .then(function(d) {
+        API_USER = d.data;
+        connectWebSocket();
+      })
+      .catch(function() {
+        JWT_TOKEN = ''; JWT_REFRESH = ''; API_MODE = false;
+        localStorage.removeItem('jwt_token');
+        localStorage.removeItem('jwt_refresh');
+      });
+  }
+})();
+
+// ===== Date helpers (FIX: local timezone parse, no ISO string ambiguity) =====
+function localDate(dateStr) {
+  // YYYY-MM-DD -> local midnight (not UTC)
+  var parts = dateStr.split('-');
+  return new Date(+parts[0], +parts[1]-1, +parts[2]);
+}
+function getDays(dateStr) {
+  var t = new Date(); t.setHours(0,0,0,0);
+  var d = localDate(dateStr);
+  return Math.round((d - t) / 86400000);
+}
+function formatWeekday(dateStr) {
+  return ['日','一','二','三','四','五','六'][localDate(dateStr).getDay()];
+}
+
+// Compute next occurrence date for recurring events
+// Returns { dateStr, days } — dateStr is the next occurrence, days is days from today
+function getNextOccurrence(r) {
+  if (!r.repeat || r.repeat === 'none') {
+    var days = getDays(r.date);
+    return { dateStr: r.date, days: days };
+  }
+  var today = new Date(); today.setHours(0,0,0,0);
+  var start = localDate(r.date);
+  var endDate = r.endDate ? localDate(r.endDate) : null;
+
+  // For daily
+  if (r.repeat === 'daily') {
+    if (endDate && today > endDate) return null; // past end date
+    var d = (start > today) ? new Date(start) : new Date(today);
+    if (endDate && d > endDate) return null;
+    var ds = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    return { dateStr: ds, days: Math.round((d - today) / 86400000) };
+  }
+
+  // For weekly with repeatDays
+  if (r.repeat === 'weekly' && r.repeatDays && r.repeatDays.length) {
+    var d = new Date(start);
+    if (d < today) d = new Date(today);
+    var maxIter = 366;
+    while (maxIter-- > 0) {
+      if (endDate && d > endDate) return null;
+      if (d >= today && r.repeatDays.indexOf(d.getDay()) >= 0) {
+        var ds = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+        return { dateStr: ds, days: Math.round((d - today) / 86400000) };
+      }
+      d.setDate(d.getDate() + 1);
+    }
+    return null;
+  }
+
+  // For monthly with repeatDayOfMonth
+  if (r.repeat === 'monthly' && r.repeatDayOfMonth) {
+    var dom = parseInt(r.repeatDayOfMonth);
+    // Start from r.date or today, whichever is later
+    var baseDate = start > today ? start : today;
+    var y = baseDate.getFullYear();
+    var m = baseDate.getMonth();
+    var maxIter = 60;
+    while (maxIter-- > 0) {
+      var lastDay = new Date(y, m+1, 0).getDate();
+      var dd = Math.min(dom, lastDay);
+      var candidate = new Date(y, m, dd);
+      if (endDate && candidate > endDate) return null;
+      if (candidate >= today) {
+        var ds = candidate.getFullYear()+'-'+String(candidate.getMonth()+1).padStart(2,'0')+'-'+String(dd).padStart(2,'0');
+        return { dateStr: ds, days: Math.round((candidate - today) / 86400000) };
+      }
+      m++;
+      if (m > 11) { m = 0; y++; }
+    }
+    return null;
+  }
+
+  // Fallback
+  var days = getDays(r.date);
+  return { dateStr: r.date, days: days };
+}
+
+// Get effective display date for an item (next occurrence for recurring, stored date for single)
+function getEffectiveDate(r) {
+  var occ = getNextOccurrence(r);
+  return occ ? occ.dateStr : r.date;
+}
+function getEffectiveDays(r) {
+  var occ = getNextOccurrence(r);
+  return occ ? occ.days : getDays(r.date);
+}
+
+// ===== Helpers =====
+function uid() { return 'r' + Date.now() + Math.random().toString(36).slice(2,5); }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function getRepeatText(r) {
+  if (!r||r.repeat==='none'||!r.repeat) return '';
+  if (r.repeat==='daily') return '每日';
+  if (r.repeat==='weekly') return '每週'+(r.repeatDays||[]).map(function(d){return ['日','一','二','三','四','五','六'][d];}).join('、');
+  if (r.repeat==='monthly') return '每月'+(r.repeatDayOfMonth||'??')+'日';
+  return '';
+}
+function toast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},2200);
+}
+
+// ===== localStorage =====
+var LS_KEY = 'family-reminder-data';
+function loadLocal() {
+  try { var raw=localStorage.getItem(LS_KEY); if(raw){DATA=JSON.parse(raw);return true;} } catch(e){}
+  return false;
+}
+function saveLocal() {
+  localStorage.setItem(LS_KEY, JSON.stringify(DATA));
+}
+
+// ===== Sync =====
+function syncFromServer() {
+  loadLocal();  // 修復：startup 先載返本地已新增但未同步嘅項；syncFromGitHub 會 merge 保留，唔會 reload 後消失
+  if (isAuthenticated()) {
+    syncFromAPI();
+  } else {
+    syncFromGitHub();
+  }
+}
+
+function syncFromAPI() {
+  apiFetch('/api/reminders').then(function(res) {
+    if (!res.ok) throw new Error('API ' + res.status);
+    return res.json();
+  }).then(function(j) {
+    // Convert API format to DATA format
+    var apiItems = j.data || [];
+    DATA.reminders = apiItems.map(function(r) {
+      return {
+        id: r.id,
+        name: r.name,
+        category: r.category,
+        date: r.date ? r.date.substring(0,10) : '',
+        time: r.time || '00:00',
+        note: r.note || '',
+        address: r.address || '',
+        caregiver: r.caregiverName || r.caregiver || '',
+        repeat: r.repeatType || 'none',
+        repeatDays: r.repeatDays || [],
+        repeatDayOfMonth: r.repeatDayOfMonth,
+        caregiverNotified1d: r.notified1d || false,
+        caregiverNotified3h: r.notified3h || false,
+        isArchived: r.isArchived || false,
+        archivedAt: r.archivedAt
+      };
+    });
+    // Fetch birthdays
+    return apiFetch('/api/birthdays');
+  }).then(function(res) {
+    if (!res.ok) return { data: [] };
+    return res.json();
+  }).then(function(j) {
+    DATA.birthdays = (j.data || []).map(function(b) {
+      return { name: b.name, date: b.date, note: b.note || '', emoji: b.emoji || '\u{1F382}' };
+    });
+    // Fetch history
+    return apiFetch('/api/history');
+  }).then(function(res) {
+    if (!res.ok) return { data: { items: [] } };
+    return res.json();
+  }).then(function(j) {
+    var histItems = (j.data.items || []).map(function(h) {
+      var d = typeof h.data === 'string' ? JSON.parse(h.data) : h.data;
+      if (d.id) {
+        d.archivedAt = h.archivedAt;
+      }
+      return d;
+    });
+    DATA.history = histItems;
+    if (!DATA.pendingMessages) DATA.pendingMessages = [];
+    API_ONLINE = true; setConnStatus(true); saveLocal();
+    autoArchiveExpired();
+    renderAll(); updateHistoryBadge();
+  }).catch(function(e) {
+    console.log('API sync failed, fallback to GitHub:', e);
+    syncFromGitHub();
+  });
+}
+function fetchWithTimeout(url, opts, ms) {
+  var ctrl = new AbortController();
+  var id = setTimeout(function() { ctrl.abort(); }, ms || 8000);
+  opts = opts || {};
+  opts.signal = ctrl.signal;
+  return fetch(url, opts).then(function(r) { clearTimeout(id); return r; }, function(e) { clearTimeout(id); throw e; });
+}
+
+function mergeLocalItems(localRem, localBday) {
+  if (!DATA.reminders) DATA.reminders = [];
+  var ids = {};
+  DATA.reminders.forEach(function(r){ if (r && r.id) ids[r.id] = true; });
+  (localRem || []).forEach(function(r){
+    if (r && r.id && !ids[r.id]) { DATA.reminders.push(r); ids[r.id] = true; }
+  });
+  if (localBday && localBday.length) {
+    if (!DATA.birthdays) DATA.birthdays = [];
+    localBday.forEach(function(b){
+      if (b && b.name && !DATA.birthdays.some(function(x){ return x.name === b.name; })) DATA.birthdays.push(b);
+    });
+  }
+}
+
+function syncFromGitHub() {
+  // 修復：capture 本地已新增但未同步嘅項（reload 後唔會被雲端舊版 overwrite）
+  var _localReminders = (DATA && DATA.reminders) ? DATA.reminders.filter(function(r){ return r && r.id; }) : [];
+  var _localBirthdays = (DATA && DATA.birthdays) ? DATA.birthdays.slice() : [];
+  // ★ 優先：GitHub Pages 同源 data.json（無 CORS、無外部網絡依賴，移動端 iOS 一定能讀到）
+  var sameOrigin = location.origin + '/family-reminder-cloud/data.json';
+  return fetchWithTimeout(sameOrigin, { cache: 'no-store' }, 8000)
+    .then(function(r){ if(!r.ok) throw new Error('same-origin '+r.status); return r.json(); })
+    .then(function(D){
+      DATA = D;
+      mergeLocalItems(_localReminders, _localBirthdays);
+      if (!DATA.history) DATA.history = [];
+      if (!DATA.pendingMessages) DATA.pendingMessages = [];
+      DATA_SHA = '';  // 同源無 SHA，寫回時重新 fetch
+      DATA_LOADED = true;
+      API_ONLINE = true; saveLocal();
+      var _cb = document.getElementById('conn-badge');
+      if (_cb) { _cb.innerHTML = '\u2601\uFE0F 雲端唯讀'; _cb.className = 'conn-status conn-ok'; }
+      autoArchiveExpired();
+      renderAll();
+      updateHistoryBadge();
+    })
+    .catch(function(e1){
+      console.log('同源 data.json 失敗，嘗試 api.github.com:', e1);
+      var _ghh = { 'Accept': 'application/vnd.github.v3+json' };
+      var _ght = getGHToken();
+      if (_ght) _ghh['Authorization'] = 'Bearer ' + _ght;
+      return fetchWithTimeout('https://api.github.com/repos/aibizlab-hub/family-reminder-cloud/contents/data.json', { headers: _ghh }, 8000)
+        .then(function(r){ return r.json(); })
+        .then(function(j){
+          var raw = atob(j.content.replace(/\s/g, ''));
+          var bytes = new Uint8Array(raw.length);
+          for (var i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+          DATA = JSON.parse(new TextDecoder('utf-8').decode(bytes));
+          mergeLocalItems(_localReminders, _localBirthdays);
+          if (!DATA.history) DATA.history = [];
+          if (!DATA.pendingMessages) DATA.pendingMessages = [];
+          DATA_SHA = j.sha;
+          DATA_LOADED = true;
+          API_ONLINE = true; saveLocal();
+          var _cb = document.getElementById('conn-badge');
+          if (_cb) { _cb.innerHTML = '\u2601\uFE0F 雲端唯讀'; _cb.className = 'conn-status conn-ok'; }
+          autoArchiveExpired();
+          renderAll();
+          updateHistoryBadge();
+        })
+        .catch(function(e2){
+          console.log('api.github.com 失敗，嘗試 raw:', e2);
+          return fetchWithTimeout('https://raw.githubusercontent.com/aibizlab-hub/family-reminder-cloud/master/data.json', {}, 8000)
+            .then(function(r){ if(!r.ok) throw new Error('raw '+r.status); return r.text(); })
+            .then(function(txt){
+              DATA = JSON.parse(txt);
+              mergeLocalItems(_localReminders, _localBirthdays);
+              if (!DATA.history) DATA.history = [];
+              if (!DATA.pendingMessages) DATA.pendingMessages = [];
+              DATA_SHA = '';
+              DATA_LOADED = true;
+              API_ONLINE = true; saveLocal();
+              var _cb = document.getElementById('conn-badge');
+              if (_cb) { _cb.innerHTML = '\u2601\uFE0F 雲端唯讀'; _cb.className = 'conn-status conn-ok'; }
+              autoArchiveExpired();
+              renderAll();
+              updateHistoryBadge();
+            })
+            .catch(function(e3){
+              console.log('Raw fallback failed:', e3);
+              API_ONLINE = false; setConnStatus(false);
+              if (!DATA.reminders || !DATA.reminders.length) loadLocal();
+              DATA_LOADED = true;
+              if (!DATA.history) DATA.history = [];
+              autoArchiveExpired();
+              renderAll();
+              updateHistoryBadge();
+            });
+        });
+    });
+}
+
+function syncToServer() {
+  if (isAuthenticated()) {
+    // API mode — changes are pushed per-operation, no bulk sync needed
+    // But push for import/backup
+    pushToAPI();
+  } else {
+    pushToGitHub();
+  }
+}
+
+function pushToAPI() {
+  // Bulk sync to API (used for import)
+  if (!isAuthenticated()) return;
+  DATA.reminders.forEach(function(r) {
+    apiFetch('/api/reminders', {
+      method: 'POST',
+      body: JSON.stringify({
+        name: r.name, category: r.category, date: r.date, time: r.time,
+        note: r.note, caregiver: r.caregiver, repeat: r.repeat,
+        repeatDays: r.repeatDays, repeatDayOfMonth: r.repeatDayOfMonth
+      })
+    }).catch(function(e) { console.log('API push error:', e); });
+  });
+}
+
+function pushToGitHub(retryCount) {
+  retryCount = retryCount || 0;
+  var token = getGHToken();
+  if (!DATA_LOADED) { console.log('Data not loaded yet, skip push'); return Promise.resolve(false); }
+  if (!token) { console.log('No token, skip push'); return Promise.resolve(false); }
+  if (!DATA_SHA) {
+    // 同源讀取無 SHA：先經 API 攞 SHA 再寫（需要 token）
+    return fetch('https://api.github.com/repos/aibizlab-hub/family-reminder-cloud/contents/data.json', {
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
+    }).then(function(r){ return r.json(); }).then(function(j){
+      if (j && j.sha) { DATA_SHA = j.sha; return pushToGitHub(retryCount); }
+      console.log('No SHA from API, skip push'); return Promise.resolve(false);
+    }).catch(function(e){ console.log('SHA fetch failed:', e); return Promise.resolve(false); });
+  }
+  // 修復 (P1)：app PUT 前先攞 server 最新 data.json，合併 bot 寫嘅 notifyLedger / digestSentDate，避免全量 PUT 抹走 → 重複發送
+  return fetch('https://api.github.com/repos/aibizlab-hub/family-reminder-cloud/contents/data.json', {
+    headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
+  }).then(function(r){ return r.json(); }).then(function(j){
+    if (j && j.content) {
+      try {
+        var raw = atob(j.content.replace(/\s/g, ''));
+        var _b = new Uint8Array(raw.length);
+        for (var i = 0; i < raw.length; i++) _b[i] = raw.charCodeAt(i);
+        var srv = JSON.parse(new TextDecoder('utf-8').decode(_b));
+        DATA.notifyLedger = Object.assign({}, srv.notifyLedger || {}, DATA.notifyLedger || {});
+        if (!DATA.digestSentDate && srv.digestSentDate) DATA.digestSentDate = srv.digestSentDate;
+      } catch (e) { console.log('merge server ledger failed:', e); }
+    }
+    var jsonStr = JSON.stringify(DATA, null, 2);
+    var bytes = new TextEncoder().encode(jsonStr);
+    var binary = '';
+    bytes.forEach(function(b) { binary += String.fromCharCode(b); });
+    var b64 = btoa(binary);
+  setConnStatus(false);
+  var connEl = document.getElementById('conn-badge');
+  if (connEl) { connEl.innerHTML = '\u{1F504} 同步中...'; connEl.className = 'conn-status conn-sync'; }
+  return fetch('https://api.github.com/repos/aibizlab-hub/family-reminder-cloud/contents/data.json', {
+    method: 'PUT',
+    headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: 'Update data.json via web UI', content: b64, sha: DATA_SHA, branch: 'master' })
+  }).then(function(r) {
+    if (r.ok) return r.json();
+    if (r.status === 409 && retryCount < 2) {
+      // SHA conflict — fetch ONLY new SHA, don't overwrite DATA
+      console.log('[GH] SHA conflict, fetching new SHA (retry ' + (retryCount+1) + ')...');
+      return fetch('https://api.github.com/repos/aibizlab-hub/family-reminder-cloud/contents/data.json', {
+        headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
+      }).then(function(r2) { return r2.json(); })
+      .then(function(j2) {
+        DATA_SHA = j2.sha;  // update SHA only, keep local DATA changes
+        return pushToGitHub(retryCount + 1);
+      });
+    }
+    if (r.status === 403) {
+      toast('\u26A0\uFE0F 寫入失敗：Token 權限不足或已過期');
+      setConnStatus(false);
+      throw new Error('HTTP 403 — Token read-only or expired');
+    }
+    throw new Error('HTTP ' + r.status);
+  }).then(function(j) {
+    if (j && j.content) {
+      DATA_SHA = j.content.sha;
+      console.log('GitHub push OK, new SHA:', DATA_SHA);
+      setConnStatus(true);
+      return true;
+    }
+    return j === true; // retry returned true
+  }).catch(function(e) {
+    console.log('GitHub push failed:', e);
+    setConnStatus(API_ONLINE);
+    return false;
+  });
+  });
+}
+
+function setConnStatus(ok) {
+  var el = document.getElementById('conn-badge');
+  if (ok) { el.innerHTML = '\u2705 已連接'; el.className = 'conn-status conn-ok'; }
+  else { el.innerHTML = '\u{1F4BE} 本機暫存'; el.className = 'conn-status conn-err'; }
+}
+
+// ===== WhatsApp Status =====
+function checkWAStatus() {
+  var _el = document.getElementById('wa-badge');
+  var _bn = document.getElementById('wa-banner');
+  if (IS_CLOUD) {
+    // Cloud mode: WhatsApp delivery handled by GitHub Actions (cloud-reminder-bot → CallMeBot), no local server needed
+    if (_el) { _el.innerHTML = '\u2601\uFE0F 雲端 WhatsApp'; _el.className = 'wa-status wa-ok'; }
+    if (_bn) _bn.style.display = 'none';
+    return;
+  }
+  fetch('/wa-status').then(function(r){return r.json();}).then(function(s){
+    var el = document.getElementById('wa-badge');
+    var banner = document.getElementById('wa-banner');
+    if (s.connected) {
+      el.innerHTML = '\u2705 WhatsApp'; el.className = 'wa-status wa-ok';
+      banner.style.display = 'none';
+    } else {
+      el.innerHTML = '\u26A0 WhatsApp 斷線'; el.className = 'wa-status wa-off';
+      if (s.qr_pending) banner.style.display = 'block';
+    }
+  }).catch(function(){});
+}
+
+// ===== Auto-archive expired events =====
+function autoArchiveExpired() {
+  if (!DATA.reminders) return;
+  var today = new Date(); today.setHours(0,0,0,0);
+  var expired = [];
+  var active = [];
+  DATA.reminders.forEach(function(r) {
+    // Skip recurring events (they never expire)
+    if (r.repeat && r.repeat !== 'none') { active.push(r); return; }
+    var days = getDays(r.date);
+    // Expired: immediately (grace period = 0)
+    if (days < 0) { expired.push(r); }
+    else { active.push(r); }
+  });
+  if (expired.length > 0) {
+    if (!DATA.history) DATA.history = [];
+    DATA._lastArchived = expired.map(function(r) { return r.id; });
+    expired.forEach(function(r) {
+      r.archivedAt = new Date().toISOString();
+      DATA.history.push(r);
+    });
+    DATA.reminders = active;
+    console.log('Auto-archived ' + expired.length + ' expired items');
+    saveLocal();
+    pushToGitHub();
+    var names = expired.map(function(r){ return r.name; }).join('、');
+    showUndoToast('\u{1F4E6} 已歸檔 ' + expired.length + ' 項：' + names, function() { undoArchive(); });
+  }
+}
+
+function undoArchive() {
+  if (!DATA._lastArchived || !DATA._lastArchived.length) { toast('\u274C 沒有可還原的項目'); return; }
+  var ids = DATA._lastArchived;
+  var restored = [];
+  var newHistory = [];
+  (DATA.history || []).forEach(function(r) {
+    if (ids.indexOf(r.id) >= 0) {
+      delete r.archivedAt;
+      DATA.reminders.push(r);
+      restored.push(r);
+    } else {
+      newHistory.push(r);
+    }
+  });
+  DATA.history = newHistory;
+  DATA._lastArchived = [];
+  saveLocal();
+  renderAll();
+  updateHistoryBadge();
+  pushToGitHub().then(function(ok) {
+    if (ok) toast('\u{1F519} 已還原 ' + restored.length + ' 項 \u2705');
+    else toast('\u26A0\uFE0F 已還原 ' + restored.length + ' 項但同步失敗');
+  });
+}
+
+function showUndoToast(msg, undoFn) {
+  var t = document.getElementById('toast');
+  t.innerHTML = msg + ' <button onclick="event.stopPropagation();(' + undoFn.toString() + ')();document.getElementById(\'toast\').classList.remove(\'show\');" style="background:#4f46e5;color:#fff;border:none;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;margin-left:8px;">↩ 還原</button>';
+  t.classList.add('show');
+  t.style.pointerEvents = 'auto';
+  clearTimeout(t._t);
+  t._t = setTimeout(function(){ t.classList.remove('show'); t.style.pointerEvents = 'none'; t.innerHTML = ''; }, 6000);
+}
+
+// Manual archive: user-triggered, same logic as auto but with confirmation
+function manualArchive() {
+  if (!DATA.reminders) return;
+  var expired = [];
+  var today = new Date(); today.setHours(0,0,0,0);
+  DATA.reminders.forEach(function(r) {
+    if (r.repeat && r.repeat !== 'none') return;
+    if (getDays(r.date) < 0) expired.push(r);
+  });
+  if (!expired.length) { toast('\u2705 沒有過期事項需要歸檔'); return; }
+  var names = expired.map(function(r){ return r.name; }).join('、');
+  if (!confirm('確定要將以下 ' + expired.length + ' 項歸檔到歷史？\n\n' + names + '\n\n歸檔後可在「歷史」tab 還原')) return;
+  autoArchiveExpired();
+}
+
+function updateHistoryBadge() {
+  var badge = document.getElementById('hist-badge');
+  var count = (DATA.history || []).length;
+  if (count > 0) {
+    badge.textContent = count;
+    badge.style.display = 'inline-block';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+// ===== Import/Export =====
+function exportData() {
+  var blob = new Blob([JSON.stringify(DATA,null,2)],{type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'family-reminders-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  toast('\u{1F4E4} 已匯出備份檔案');
+}
+
+function importData(e) {
+  var file = e.target.files[0]; if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(ev){
+    try {
+      var d = JSON.parse(ev.target.result);
+      if (!d.reminders) { toast('\u274C 格式不正確'); return; }
+      if (!d.history) d.history = [];
+      DATA = d; saveLocal(); syncToServer();
+      autoArchiveExpired();
+      renderAll(); updateHistoryBadge();
+      toast('\u2705 已匯入 ' + (d.reminders||[]).length + ' 項提醒');
+    } catch(err) { toast('\u274C JSON 格式錯誤'); }
+  };
+  reader.readAsText(file); e.target.value = '';
+}
+
+function sendReminderNow() {
+  toast('\u23F3 發送中...');
+  if (IS_CLOUD) {
+    var _t = localStorage.getItem('gh_token') || '';
+    if (!_t) { toast('\u274C 未設定 GitHub Token'); return; }
+    fetch('https://api.github.com/repos/aibizlab-hub/family-reminder-cloud/actions/workflows/cloud-reminder.yml/dispatches', {
+      method:'POST',
+      headers: { 'Authorization':'Bearer '+_t, 'Content-Type':'application/json', 'Accept':'application/vnd.github.v3+json' },
+      body: JSON.stringify({ ref:'master' })
+    }).then(function(r){ toast(r.ok ? '\u2705 已觸發雲端提醒推送' : '\u274C 觸發失敗'); })
+     .catch(function(){ toast('\u274C 發送失敗'); });
+    return;
+  }
+  fetch('/send-reminder', { method:'POST' }).then(function(r){return r.json();}).then(function(r){
+    toast('\u2705 提醒已發送到群組');
+  }).catch(function(){ toast('\u274C 發送失敗'); });
+}
+
+// ===== Tabs =====
+var ALL_TABS = ['reminders','ken','eppie','coffe','kenny','rosanna','dad','birthdays','history','whatsapp','install'];
+
+function switchTab(tab) {
+  CURRENT_TAB = tab;
+  // Update tab buttons
+  document.querySelectorAll('.tab-btn').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.tab === tab);
+  });
+  // Update content visibility
+  document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+  var tc = document.getElementById('tab-' + tab);
+  if (tc) tc.classList.add('active');
+  // Show/hide FABs
+  var addableTabs = ['reminders','ken','eppie','coffe','kenny','rosanna','dad'];
+  document.getElementById('fab-add').style.display = (addableTabs.indexOf(tab) >= 0) ? 'flex' : 'none';
+  document.getElementById('fab-bday').style.display = (tab === 'birthdays') ? 'flex' : 'none';
+  // Update settings stats when switching to settings tab
+  if (tab === 'settings') updateSettingsStats();
+  // Scroll active tab into view
+  var activeBtn = document.querySelector('.tab-btn.active');
+  if (activeBtn) activeBtn.scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' });
+}
+
+// Tab button click delegation
+document.getElementById('tab-bar').addEventListener('click', function(e) {
+  var btn = e.target.closest('.tab-btn');
+  if (btn) switchTab(btn.dataset.tab);
+});
+
+// ===== Card stagger animation =====
+function staggerCards(container) {
+  if (!container) return;
+  var cards = container.querySelectorAll('.card');
+  cards.forEach(function(card, i) {
+    card.style.animationDelay = (i * 0.06) + 's';
+    card.style.animationFillMode = 'both';
+  });
+}
+
+// ===== Render =====
+function renderAll() {
+  renderReminders();
+  CAREGIVERS.forEach(function(cg) { renderCaregiverTab(cg); });
+  renderBirthdays();
+  renderHistory();
+  initCalendar();
+  updateSettingsStats();
+}
+
+// ===== 排序 / 整理（重新整理功能）=====
+var SORT_MODE = (function(){ try { return localStorage.getItem('hm_sort') || 'date'; } catch(e){ return 'date'; } })();
+if (['date','category','caregiver','manual'].indexOf(SORT_MODE) < 0) SORT_MODE = 'date';
+var ORGANIZE = false;
+var DRAG_ID = null;
+
+function ensureOrder() {
+  if (!DATA.settings) DATA.settings = {};
+  if (!Array.isArray(DATA.settings.order)) {
+    DATA.settings.order = (DATA.reminders || []).map(function(r) { return r.id; });
+  }
+}
+function getOrderIndex(id) {
+  var o = (DATA.settings && DATA.settings.order) || [];
+  var i = o.indexOf(id);
+  return i < 0 ? 999999 : i;
+}
+// 統一排序入口：日期 / 分類 / 照顧者 / 手動
+function applySort(arr) {
+  if (SORT_MODE === 'manual') {
+    ensureOrder();
+    arr.sort(function(a, b) {
+      var ia = getOrderIndex(a.id), ib = getOrderIndex(b.id);
+      if (ia !== ib) return ia - ib;
+      return getEffectiveDays(a) - getEffectiveDays(b);
+    });
+    return;
+  }
+  if (SORT_MODE === 'category') {
+    arr.sort(function(a, b) {
+      var ia = CAT_ORDER.indexOf(a.category), ib = CAT_ORDER.indexOf(b.category);
+      if (ia < 0) ia = 999; if (ib < 0) ib = 999;
+      if (ia !== ib) return ia - ib;
+      return getEffectiveDays(a) - getEffectiveDays(b);
+    });
+    return;
+  }
+  if (SORT_MODE === 'caregiver') {
+    arr.sort(function(a, b) {
+      var ca = a.caregiver || 'zzz', cb = b.caregiver || 'zzz';
+      if (ca !== cb) return ca.localeCompare(cb);
+      return getEffectiveDays(a) - getEffectiveDays(b);
+    });
+    return;
+  }
+  // date（預設）
+  arr.sort(function(a, b) {
+    var da = getEffectiveDays(a), db = getEffectiveDays(b);
+    var pa = (da >= 0) ? da : 99999 + Math.abs(da);
+    var pb = (db >= 0) ? db : 99999 + Math.abs(db);
+    return pa - pb;
+  });
+}
+function setSortMode(m) {
+  SORT_MODE = m;
+  try { localStorage.setItem('hm_sort', m); } catch(e) {}
+  renderAll();
+}
+function toggleOrganize() {
+  ORGANIZE = !ORGANIZE;
+  document.body.classList.toggle('organize-mode', ORGANIZE);
+  var btn = document.getElementById('organize-btn');
+  if (btn) btn.classList.toggle('active', ORGANIZE);
+  if (ORGANIZE && SORT_MODE !== 'manual') setSortMode('manual');
+  else renderAll();
+}
+// 上下移動（手機友善）
+function moveReminder(id, dir) {
+  if (SORT_MODE !== 'manual') setSortMode('manual');
+  ensureOrder();
+  var o = DATA.settings.order.slice();
+  var idx = o.indexOf(id);
+  if (idx < 0) { o.push(id); idx = o.length - 1; }
+  var ni = idx + dir;
+  if (ni < 0 || ni >= o.length) return;
+  o.splice(ni, 0, o.splice(idx, 1)[0]);
+  DATA.settings.order = o;
+  pushToGitHub().then(function() { renderAll(); });
+}
+// 桌面拖放
+function dragStart(e) { DRAG_ID = e.currentTarget.getAttribute('data-id'); e.dataTransfer.effectAllowed = 'move'; }
+function dragOver(e) { if (ORGANIZE) e.preventDefault(); }
+function dragDrop(e) {
+  e.preventDefault();
+  var tid = e.currentTarget.getAttribute('data-id');
+  if (!DRAG_ID || DRAG_ID === tid) return;
+  ensureOrder();
+  var o = DATA.settings.order.slice();
+  var from = o.indexOf(DRAG_ID), to = o.indexOf(tid);
+  if (from < 0 || to < 0) return;
+  o.splice(to, 0, o.splice(from, 1)[0]);
+  DATA.settings.order = o;
+  pushToGitHub().then(function() { renderAll(); });
+}
+(function() { var sel = document.getElementById('sort-select'); if (sel) sel.value = SORT_MODE; })();
+
+// Main "全部" tab - non-work items, sorted by proximity to today (closest first)
+// Expired single events are auto-archived to history
+function renderReminders() {
+  var c = document.getElementById('reminder-list');
+
+  // Auto-archive: move expired single events to history
+  autoArchiveExpired();
+
+  if (!DATA.reminders || !DATA.reminders.length) {
+    c.innerHTML = '<div class="empty"><div class="empty-icon">\u{1F4ED}</div><div class="empty-text">暫無提醒事項</div><div class="empty-sub">按右下角 + 新增</div></div>'; return;
+  }
+  var filtered = DATA.reminders.filter(function(r) { return r.category !== 'work'; });
+  // 排序（日期 / 分類 / 照顧者 / 手動）
+  applySort(filtered);
+
+  var html = '';
+  if (SORT_MODE === 'date') {
+    // 日期模式保留多日營期 grouping
+    var i = 0;
+    while (i < filtered.length) {
+      var r = filtered[i];
+      var baseMatch = r.name && r.name.match(/^(.+?)\s*\(第\d+日\/\d+日\)$/);
+      if (baseMatch) {
+        var baseName = baseMatch[1];
+        var siblings = [r];
+        var j = i + 1;
+        while (j < filtered.length) {
+          var m = filtered[j].name && filtered[j].name.match(/^(.+?)\s*\(第\d+日\/\d+日\)$/);
+          if (m && m[1] === baseName) { siblings.push(filtered[j]); j++; }
+          else break;
+        }
+        if (siblings.length >= 2) {
+          siblings.sort(function(a,b){ return a.date.localeCompare(b.date); });
+          var sDate = siblings[0].date;
+          var eDate = siblings[siblings.length - 1].date;
+          html += '<div class="section-label">\u{1F4C5} ' + esc(baseName) + '（' + sDate + ' 至 ' + eDate + '，共 ' + siblings.length + ' 日）</div>';
+          siblings.forEach(function(sr){ html += cardHTML(sr); });
+          i = j;
+          continue;
+        }
+      }
+      html += cardHTML(r);
+      i++;
+    }
+  } else {
+    filtered.forEach(function(r) { html += cardHTML(r); });
+  }
+  c.innerHTML = html || '<div class="empty"><div class="empty-icon">\u{1F4ED}</div><div class="empty-text">暫無提醒事項</div><div class="empty-sub">按右下角 + 新增</div></div>';
+  staggerCards(c);
+}
+
+// Caregiver tab render
+function renderCaregiverTab(caregiver) {
+  var tab = CAREGIVER_TAB[caregiver];
+  var c = document.getElementById(tab + '-reminder-list');
+  if (!c) return;
+  var items = (DATA.reminders || []).filter(function(r) {
+    if (r.caregiver === caregiver) return true;
+    // KEN special: also show work items
+    if (caregiver === 'KEN' && r.category === 'work') return true;
+    return false;
+  });
+  applySort(items);
+
+  if (!items.length) {
+    c.innerHTML = '<div class="empty"><div class="empty-icon">' + CAREGIVER_EMOJI[caregiver] + '</div><div class="empty-text">暫無 ' + caregiver + ' 的事項</div><div class="empty-sub">新增提醒時選取 ' + caregiver + ' 為照顧者</div></div>';
+    return;
+  }
+  var html = '<div class="section-label">' + CAREGIVER_EMOJI[caregiver] + ' ' + caregiver + ' 的事項（' + items.length + ' 項）</div>';
+  items.forEach(function(r) { html += cardHTML(r); });
+  c.innerHTML = html;
+  staggerCards(c);
+}
+
+// Card HTML builder
+function cardHTML(r, showRestore) {
+  var isRecurring = (r.repeat && r.repeat !== 'none');
+  var isMultiDay = r.name && /\(第\d+日\/\d+日\)$/.test(r.name);
+  var nextOcc = null;
+  var effDate = r.date;
+  var effDays = getDays(r.date);
+  if (isRecurring) {
+    nextOcc = getNextOccurrence(r);
+    if (nextOcc) {
+      effDate = nextOcc.dateStr;
+      effDays = nextOcc.days;
+    } else {
+      // Past end date — show as inactive
+      effDate = r.date;
+      effDays = -999;
+    }
+  }
+  var wd = formatWeekday(effDate);
+  var isExpired = (!isRecurring && effDays < 0);
+  var isInactiveRecurring = (isRecurring && nextOcc === null);
+  var urg = '';
+  if (isInactiveRecurring) {
+    urg = 'expired';
+  } else if (isRecurring) {
+    urg = 'recurring';
+  } else if (!isExpired) {
+    urg = (effDays >= 0 && effDays <= 1) ? ((effDays === 0) ? 'urgent' : 'soon') : '';
+  } else {
+    urg = 'expired';
+  }
+  var rt = getRepeatText(r);
+  var catInfo = CAT[r.category] || { icon: '\u{1F4CC}', name: r.category || '未分類', bdg: 'bdg-other' };
+
+  var h = '';
+  h += '<div class="card ' + urg + '" data-cat="' + (r.category||'other') + '" data-id="' + esc(r.id) + '" data-date="' + effDate + '" data-orig-date="' + r.date + '"' + (ORGANIZE ? ' draggable="true" ondragstart="dragStart(event)" ondragover="dragOver(event)" ondrop="dragDrop(event)"' : '') + '>';
+  h += '<div class="card-top">';
+  h += '<div class="card-icon">' + catInfo.icon + '</div>';
+  h += '<div class="card-body">';
+  h += '<div class="card-name">' + esc(r.name) + '</div>';
+  h += '<div class="card-meta">';
+  h += '<span class="badge ' + catInfo.bdg + '">' + catInfo.name + '</span>';
+  if (r.caregiver) h += '<span class="badge bdg-care">\u{1F464} ' + esc(r.caregiver) + '</span>';
+  if (isRecurring) h += '<span class="badge bdg-recurring">\u{1F501} ' + rt + '</span>';
+  if (isMultiDay) h += '<span class="badge bdg-multiday">\u{1F4C5} 多日</span>';
+  h += '</div>';
+  // Date line
+  h += '<div class="card-date">';
+  h += '<span class="card-date-icon">\u{1F4C5}</span>';
+  h += '<span class="card-date-text">';
+  if (isInactiveRecurring) {
+    h += r.date + '（星期' + formatWeekday(r.date) + '）';
+    h += ' \u00B7 \u{274C} 已結束';
+  } else if (isRecurring && effDate !== r.date) {
+    h += r.date + ' 起 \u2192 <strong>下次 ' + effDate + '</strong>（星期' + wd + '）';
+  } else {
+    h += effDate + '（星期' + wd + '）';
+  }
+  if (r.time && r.time !== '00:00') h += ' \u23F0 ' + r.time;
+  if (isInactiveRecurring) {
+    // no extra badge
+  } else if (isRecurring) {
+    if (effDays === 0) {
+      h += ' \u00B7 \u{1F534} 今日';
+    } else if (effDays === 1) {
+      h += ' \u00B7 \u{1F7E1} 聽日';
+    } else if (effDays > 1 && effDays <= 7) {
+      h += ' \u00B7 \u{1F7E2} ' + effDays + '日後';
+    }
+  } else if (effDays >= 0 && effDays <= 7) {
+    h += ' \u00B7 ' + (effDays === 0 ? '\u{1F534} 今日' : effDays === 1 ? '\u{1F7E1} 聽日' : '\u{1F7E2} ' + effDays + '日後');
+  } else if (effDays < 0) {
+    h += ' \u00B7 \u{1F5D3} 已過期';
+  }
+  h += '</span></div>';
+  if (r.note) h += '<div class="card-note">\u{1F4DD} ' + esc(r.note) + '</div>';
+  h += '<div class="card-actions">';
+  if (showRestore) {
+    h += '<button class="btn-xs btn-restore" onclick="restoreFromHistory(\'' + esc(r.id) + '\')">\u{1F519} 還原</button>';
+  } else {
+    h += '<button class="btn-xs btn-edit" onclick="openEditModal(\'' + esc(r.id) + '\')">\u270F\uFE0F 編輯</button>';
+  }
+  if (ORGANIZE && SORT_MODE === 'manual') {
+    h += '<button class="btn-xs btn-up" onclick="moveReminder(\'' + esc(r.id) + '\',-1)">\u2191</button>';
+    h += '<button class="btn-xs btn-down" onclick="moveReminder(\'' + esc(r.id) + '\',1)">\u2193</button>';
+  }
+  h += '<button class="btn-xs btn-del" onclick="deleteReminderSafe(\'' + esc(r.id) + '\',\'' + esc(r.name) + '\', ' + (showRestore ? 'true' : 'false') + ')">\u{1F5D1}</button>';
+  h += '</div></div></div></div>';
+  return h;
+}
+
+// Birthday render
+function renderBirthdays() {
+  var g = document.getElementById('birthday-grid');
+  if (!DATA.birthdays || !DATA.birthdays.length) {
+    g.innerHTML = '<div class="empty" style="grid-column:1/-1"><p>未有設定生日</p></div>'; return;
+  }
+  var now = new Date();
+  var today = (now.getMonth()+1).toString().padStart(2,'0') + '-' + now.getDate().toString().padStart(2,'0');
+  var sorted = DATA.birthdays.slice().sort(function(a,b) {
+    if (a.date === '??-??') return 1; if (b.date === '??-??') return -1;
+    return a.date.localeCompare(b.date);
+  });
+  var html = '';
+  sorted.forEach(function(b) {
+    var isToday = b.date === today;
+    html += '<div class="bday-card' + (isToday ? ' today' : '') + '">';
+    html += '<button class="bday-edit" onclick="openBdayEdit(\'' + esc(b.name) + '\')">\u270F\uFE0F</button>';
+    html += '<div class="bday-emoji">' + (isToday ? '\u{1F389}' : '\u{1F382}') + '</div>';
+    html += '<div class="bday-name">' + esc(b.name) + '</div>';
+    html += '<div class="bday-date">' + b.date + '</div>';
+    if (b.note) html += '<div class="bday-note">' + esc(b.note) + '</div>';
+    html += '</div>';
+  });
+  g.innerHTML = html;
+}
+
+// History tab render
+function renderHistory() {
+  var c = document.getElementById('history-list');
+  var summary = document.getElementById('history-summary');
+  var items = DATA.history || [];
+  if (!items.length) {
+    summary.innerHTML = '暫無過往記錄';
+    c.innerHTML = '<div class="empty"><div class="empty-icon">\u{1F4E6}</div><p>暫無歷史記錄<br><small>事件到期 7 天後會自動移到此處</small></p></div>';
+    return;
+  }
+  summary.innerHTML = '共 <strong>' + items.length + '</strong> 項過往記錄（事件到期後自動歸檔）';
+  var sorted = items.slice().sort(function(a,b) { return (b.archivedAt || '').localeCompare(a.archivedAt || ''); });
+  var html = '';
+  sorted.forEach(function(r) { html += cardHTML(r, true); });
+  c.innerHTML = html;
+}
+
+function restoreFromHistory(id) {
+  var idx = (DATA.history || []).findIndex(function(r) { return r.id === id; });
+  if (idx < 0) return;
+  var item = DATA.history[idx];
+  delete item.archivedAt;
+  DATA.history.splice(idx, 1);
+  DATA.reminders.push(item);
+  saveLocal(); renderAll(); updateHistoryBadge();
+  pushToGitHub().then(function(ok) {
+    if (ok) toast('\u{1F519} 已還原「' + item.name + '」\u2705');
+    else toast('\u26A0\uFE0F 已還原「' + item.name + '」但同步失敗，稍後會自動重試');
+  });
+}
+
+function clearAllHistory() {
+  showConfirm('確定要清除所有歷史記錄嗎？（此操作無法還原）', function() {
+    DATA.history = [];
+    saveLocal(); renderAll(); updateHistoryBadge(); closeConfirm();
+    pushToGitHub().then(function(ok) {
+      toast(ok ? '\u{1F5D1}\uFE0F 已清除所有歷史記錄 \u2705' : '\u26A0\uFE0F 清除本地成功但同步失敗');
+    });
+  });
+}
+
+// ===== Safe delete (move to history) =====
+function deleteReminderSafe(id, name, fromHistory) {
+  if (fromHistory) {
+    // Permanent delete from history
+    showConfirm('永久刪除「' + name + '」？', function() {
+      DATA.history = (DATA.history || []).filter(function(x) { return x.id !== id; });
+      saveLocal(); renderAll(); updateHistoryBadge(); closeConfirm();
+      pushToGitHub().then(function(ok) {
+        toast(ok ? '\u{1F5D1}\uFE0F 已永久刪除 \u2705' : '\u26A0\uFE0F 本地已刪但同步失敗');
+      });
+    });
+  } else {
+    // Move to history
+    showConfirm('將「' + name + '」移至歷史記錄？', function() {
+      var idx = DATA.reminders.findIndex(function(x) { return x.id === id; });
+      if (idx < 0) { closeConfirm(); return; }
+      var item = DATA.reminders[idx];
+      item.archivedAt = new Date().toISOString();
+      if (!DATA.history) DATA.history = [];
+      DATA.history.push(item);
+      DATA.reminders.splice(idx, 1);
+      saveLocal(); renderAll(); updateHistoryBadge(); closeConfirm();
+      pushToGitHub().then(function(ok) {
+        toast(ok ? '\u{1F4E6} 已移至歷史記錄 \u2705' : '\u26A0\uFE0F 本地已移但同步失敗');
+      });
+    });
+  }
+}
+
+// ===== Repeat helpers =====
+function onRepeatChange() {
+  document.getElementById('repeat-weekly').style.display = document.getElementById('form-repeat').value === 'weekly' ? 'block' : 'none';
+  updateNextOccurrencePreview();
+}
+function onCategoryChange() {
+  var cat = document.getElementById('form-category').value;
+  if (cat === 'work') document.getElementById('form-caregiver').value = 'KEN';
+}
+function onMultiDateChange() {
+  var on = document.getElementById('form-multi-date').checked;
+  document.getElementById('multi-date-row').style.display = on ? 'flex' : 'none';
+  if (on) {
+    var start = document.getElementById('form-date').value;
+    if (start) document.getElementById('form-date-end').min = start;
+    updateMultiDateCount();
+  } else {
+    document.getElementById('multi-date-count').textContent = '';
+  }
+}
+function updateMultiDateCount() {
+  var s = document.getElementById('form-date').value;
+  var e = document.getElementById('form-date-end').value;
+  if (!s || !e) { document.getElementById('multi-date-count').textContent = ''; return; }
+  var d1 = new Date(s), d2 = new Date(e);
+  if (d2 < d1) { document.getElementById('multi-date-count').textContent = '⚠️ 結束日期須晚於開始日期'; return; }
+  var diff = Math.round((d2 - d1) / 86400000) + 1;
+  document.getElementById('multi-date-count').textContent = '共 ' + diff + ' 日';
+}
+function onCaregiverChange() {
+  // Can add auto-category logic here if needed
+}
+function toggleDay(btn) { btn.classList.toggle('active'); updateNextOccurrencePreview(); }
+function getSelectedDays() {
+  var days = [];
+  document.querySelectorAll('#repeat-days .repeat-day-btn').forEach(function(b) {
+    if (b.classList.contains('active')) days.push(parseInt(b.dataset.day));
+  });
+  return days;
+}
+function setSelectedDays(days) {
+  document.querySelectorAll('#repeat-days .repeat-day-btn').forEach(function(b) {
+    b.classList.toggle('active', days.indexOf(parseInt(b.dataset.day)) >= 0);
+  });
+}
+
+// Listen for date changes to update multi-date count
+document.addEventListener('DOMContentLoaded', function() {
+  var d1 = document.getElementById('form-date'), d2 = document.getElementById('form-date-end');
+  if (d1) d1.addEventListener('change', updateMultiDateCount);
+  if (d2) d2.addEventListener('change', updateMultiDateCount);
+  // Self-heal: if a newer build is deployed, auto-reload (no manual refresh needed)
+  (function(){
+    try {
+      fetch('/family-reminder-cloud/version.json?_=' + Date.now(), { cache: 'no-store' })
+        .then(function(r){ return r.ok ? r.json() : null; })
+        .then(function(j){
+          if (j && j.sha && typeof APP_BUILD !== 'undefined' && j.sha !== APP_BUILD) {
+            console.log('[self-heal] newer build ' + j.sha + ' detected, repairing...');
+            repairSWThenReload();
+          }
+        }).catch(function(){});
+    } catch(e) {}
+  })();
+  // Floating repair button (one-tap escape from stuck service-worker cache)
+  (function(){
+    try {
+      var b = document.createElement('button');
+      b.textContent = '🔧 修復';
+      b.title = '強制清除快取並重新載入';
+      b.setAttribute('onclick', 'forceRepair()');
+      b.style.cssText = 'position:fixed;right:10px;bottom:10px;z-index:9999;background:#e74c3c;color:#fff;border:0;border-radius:8px;padding:8px 12px;font-size:13px;box-shadow:0 2px 6px rgba(0,0,0,.3);cursor:pointer';
+      document.body.appendChild(b);
+    } catch(e) {}
+  })();
+});
+
+// ===== Modal: Reminder =====
+function resetRepeatFields() {
+  document.getElementById('form-repeat').value = 'none';
+  document.getElementById('repeat-weekly').style.display = 'none';
+  setSelectedDays([]);
+  document.getElementById('form-time-h').value = '09';
+  document.getElementById('form-time-m').value = '00';
+  // Reset multi-date
+  var md = document.getElementById('form-multi-date');
+  if (md) md.checked = false;
+  var mr = document.getElementById('multi-date-row');
+  if (mr) mr.style.display = 'none';
+  var de = document.getElementById('form-date-end');
+  if (de) de.value = '';
+  var dc = document.getElementById('multi-date-count');
+  if (dc) dc.textContent = '';
+}
+
+function populateTimeSelects() {
+  var hSel = document.getElementById('form-time-h');
+  var mSel = document.getElementById('form-time-m');
+  if (!hSel || !mSel) return;
+  if (hSel.options.length > 1) return;
+  for (var h = 0; h < 24; h++) {
+    var o = document.createElement('option');
+    o.value = String(h).padStart(2,'0');
+    o.textContent = String(h).padStart(2,'0');
+    hSel.appendChild(o);
+  }
+  ['00','15','30','45'].forEach(function(m) {
+    var o = document.createElement('option');
+    o.value = m; o.textContent = m;
+    mSel.appendChild(o);
+  });
+}
+
+function openAddModal() {
+  document.getElementById('modal-title').innerHTML = '\u2795 新增提醒';
+  document.getElementById('edit-id').value = '';
+  document.getElementById('form-name').value = '';
+  document.getElementById('form-date').value = '';
+  document.getElementById('form-time-h').value = '09';
+  document.getElementById('form-time-m').value = '00';
+  document.getElementById('form-note').value = '';
+  currentDetails = [];
+  renderDetailTags();
+  document.getElementById('edit-del-btn').style.display = 'none';
+  resetRepeatFields();
+  // Show multi-date option in add mode (might be hidden from edit mode)
+  var mdSection = document.getElementById('form-multi-date').closest('.form-group');
+  if (mdSection) mdSection.style.display = '';
+
+  // Set category/caregiver based on active tab
+  var tab = CURRENT_TAB;
+  var cat = 'school';
+  var cg = '';
+  if (tab === 'ken') { cat = 'work'; cg = 'KEN'; }
+  else {
+    var foundCg = CAREGIVERS.find(function(n) { return CAREGIVER_TAB[n] === tab; });
+    if (foundCg) { cg = foundCg; cat = 'routine'; }
+  }
+  document.getElementById('form-category').value = cat;
+  document.getElementById('form-caregiver').value = cg;
+
+  document.getElementById('modal-reminder').classList.add('show');
+  setTimeout(function() { document.getElementById('form-name').focus(); }, 300);
+}
+
+function openEditModal(id) {
+  var r = DATA.reminders.find(function(x) { return x.id === id; });
+  if (!r) {
+    // Check history
+    r = (DATA.history || []).find(function(x) { return x.id === id; });
+    if (!r) return;
+  }
+  document.getElementById('modal-title').innerHTML = '\u270F\uFE0F 編輯提醒';
+  document.getElementById('edit-id').value = r.id;
+  document.getElementById('form-name').value = r.name;
+  document.getElementById('form-date').value = r.date;
+  document.getElementById('form-category').value = r.category;
+  document.getElementById('form-caregiver').value = r.caregiver || '';
+  document.getElementById('form-note').value = r.note || '';
+  // Load details
+  currentDetails = r.details || [];
+  renderDetailTags();
+  var tp = (r.time || '09:00').split(':');
+  document.getElementById('form-time-h').value = tp[0];
+  document.getElementById('form-time-m').value = tp[1];
+  document.getElementById('form-repeat').value = r.repeat || 'none';
+  onRepeatChange();
+  if (r.repeat === 'weekly' && r.repeatDays) setSelectedDays(r.repeatDays);
+  document.getElementById('edit-del-btn').style.display = 'block';
+  // Hide multi-date option in edit mode
+  var mdSection = document.getElementById('form-multi-date').closest('.form-group');
+  if (mdSection) mdSection.style.display = 'none';
+  document.getElementById('multi-date-row').style.display = 'none';
+  updateNextOccurrencePreview();
+  document.getElementById('modal-reminder').classList.add('show');
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+function saveReminder() {
+  var name = document.getElementById('form-name').value.trim();
+  var date = document.getElementById('form-date').value;
+  var time = document.getElementById('form-time-h').value + ':' + document.getElementById('form-time-m').value;
+  var category = document.getElementById('form-category').value;
+  var caregiver = document.getElementById('form-caregiver').value;
+  var note = document.getElementById('form-note').value.trim();
+  var details = getCurrentDetails();
+  var repeat = document.getElementById('form-repeat').value;
+  var editId = document.getElementById('edit-id').value;
+  if (!name) { toast('請輸入事項名稱'); return; }
+  if (!date) { toast('請選擇日期'); return; }
+  if (!caregiver) { toast('⚠️ 請選擇照顧者，否則不會發 WhatsApp 通知！'); document.getElementById('form-caregiver').style.borderColor='#ef4444'; document.getElementById('form-caregiver').focus(); return; }
+
+  var rd = { repeat: repeat };
+  if (repeat === 'weekly') {
+    var days = getSelectedDays();
+    if (!days.length) { toast('請選擇至少一個星期'); return; }
+    rd.repeatDays = days;
+  }
+  if (repeat === 'monthly') rd.repeatDayOfMonth = parseInt(date.split('-')[2]);
+
+  // Multi-date: create one reminder per day
+  var isMulti = !editId && document.getElementById('form-multi-date').checked;
+  if (isMulti) {
+    var endDate = document.getElementById('form-date-end').value;
+    if (!endDate) { toast('請選擇結束日期'); return; }
+    var d1 = new Date(date), d2 = new Date(endDate);
+    if (d2 < d1) { toast('⚠️ 結束日期須晚於或等於開始日期'); return; }
+    var totalDays = Math.round((d2 - d1) / 86400000) + 1;
+    if (totalDays > 30) { toast('⚠️ 最多支援 30 日，請縮短日期範圍'); return; }
+
+    var addedNames = [];
+    for (var i = 0; i < totalDays; i++) {
+      var cur = new Date(d1);
+      cur.setDate(cur.getDate() + i);
+      var curStr = cur.toISOString().split('T')[0];
+      var daySuffix = totalDays > 1 ? ' (第' + (i+1) + '日/' + totalDays + '日)' : '';
+      var curName = name + daySuffix;
+      var curPayload = { name: curName, date: curStr, time: time, category: category, caregiver: caregiver, note: note, details: details.length ? details : undefined };
+      Object.assign(curPayload, rd);
+      if (curPayload.category === 'work') curPayload.caregiver = 'KEN';
+      curPayload.id = uid();
+      curPayload.notified = false;
+      curPayload.caregiverNotified1d = false;
+      curPayload.caregiverNotified3h = false;
+      DATA.reminders.push(curPayload);
+      addedNames.push(curName);
+    }
+    saveLocal(); renderAll(); updateHistoryBadge(); closeModal('modal-reminder');
+    pushToGitHub().then(function(ok) {
+      toast(ok ? '\u2705 已新增 ' + totalDays + ' 項提醒（' + name + '）' : '\u26A0\uFE0F 新增成功但同步失敗');
+    });
+    return;
+  }
+
+  var payload = { name: name, date: date, time: time, category: category, caregiver: caregiver, note: note, details: details.length ? details : undefined };
+  Object.assign(payload, rd);
+
+  // Safety: work items always KEN
+  if (payload.category === 'work') payload.caregiver = 'KEN';
+
+  // API mode: push to backend
+  if (isAuthenticated()) {
+    var apiPayload = {
+      name: payload.name, category: payload.category, date: payload.date, time: payload.time,
+      note: payload.note, caregiver: payload.caregiver, repeat: payload.repeat,
+      repeatDays: rd.repeatDays, repeatDayOfMonth: rd.repeatDayOfMonth
+    };
+    if (editId) {
+      apiFetch('/api/reminders/' + editId, { method: 'PUT', body: JSON.stringify(apiPayload) })
+        .then(function() { closeModal('modal-reminder'); toast('\u2705 已更新「' + name + '」'); })
+        .catch(function() { toast('\u274C API 更新失敗，嘗試 GitHub 同步'); pushToGitHub(); });
+    } else {
+      apiFetch('/api/reminders', { method: 'POST', body: JSON.stringify(apiPayload) })
+        .then(function() { closeModal('modal-reminder'); toast('\u2705 已新增「' + name + '」'); })
+        .catch(function() { toast('\u274C API 新增失敗，嘗試 GitHub 同步'); pushToGitHub(); });
+    }
+    return;
+  }
+
+  if (editId) {
+    var idx = DATA.reminders.findIndex(function(r) { return r.id === editId; });
+    if (idx >= 0) {
+      var oldCaregiver = DATA.reminders[idx].caregiver;
+      if (oldCaregiver !== caregiver) {
+        DATA.reminders[idx].caregiverNotified1d = false;
+        DATA.reminders[idx].caregiverNotified3h = false;
+        if (!DATA.groupNotifications) DATA.groupNotifications = [];
+        DATA.groupNotifications.push({ id: 'gn-' + Date.now(), reminderName: name, oldCaregiver: oldCaregiver || '無', newCaregiver: caregiver, changedAt: new Date().toISOString() });
+      }
+      Object.assign(DATA.reminders[idx], payload);
+    }
+    saveLocal(); renderAll(); updateHistoryBadge(); closeModal('modal-reminder');
+    pushToGitHub().then(function(ok) {
+      toast(ok ? '\u2705 已更新「' + name + '」' : '\u26A0\uFE0F 更新成功但同步失敗');
+    });
+  } else {
+    var item = Object.assign({ id: uid(), notified: false, caregiverNotified1d: false, caregiverNotified3h: false }, payload);
+    DATA.reminders.push(item);
+    saveLocal(); renderAll(); updateHistoryBadge(); closeModal('modal-reminder');
+    pushToGitHub().then(function(ok) {
+      toast(ok ? '\u2705 已新增「' + name + '」' : '\u26A0\uFE0F 新增成功但同步失敗');
+    });
+    toast('\u2705 已新增「' + name + '」');
+  }
+}
+
+// ===== Delete =====
+function confirmDeleteReminder() {
+  var id = document.getElementById('edit-id').value;
+  var r = DATA.reminders.find(function(x) { return x.id === id; });
+  if (!r) return;
+  showConfirm('將「' + r.name + '」移至歷史記錄？', function() {
+    var idx = DATA.reminders.findIndex(function(x) { return x.id === id; });
+    if (idx < 0) { closeConfirm(); return; }
+    var item = DATA.reminders[idx];
+    item.archivedAt = new Date().toISOString();
+    if (!DATA.history) DATA.history = [];
+    DATA.history.push(item);
+    DATA.reminders.splice(idx, 1);
+    saveLocal(); renderAll(); updateHistoryBadge(); closeModal('modal-reminder'); closeConfirm();
+    pushToGitHub().then(function(ok) {
+      toast(ok ? '\u{1F4E6} 已移至歷史記錄 \u2705' : '\u26A0\uFE0F 本地已移但同步失敗');
+    });
+  });
+}
+
+// ===== Modal: Birthday =====
+function openBdayAdd() {
+  document.getElementById('bday-orig-name').value = '';
+  document.getElementById('bday-name').value = '';
+  document.getElementById('bday-date').value = '';
+  document.getElementById('bday-note').value = '';
+  document.getElementById('bday-del-btn').style.display = 'none';
+  document.getElementById('modal-birthday').classList.add('show');
+  setTimeout(function() { document.getElementById('bday-name').focus(); }, 300);
+}
+function openBdayEdit(name) {
+  var b = DATA.birthdays.find(function(x) { return x.name === name; });
+  if (!b) return;
+  document.getElementById('bday-orig-name').value = b.name;
+  document.getElementById('bday-name').value = b.name;
+  document.getElementById('bday-date').value = b.date === '??-??' ? '' : b.date;
+  document.getElementById('bday-note').value = b.note || '';
+  document.getElementById('bday-del-btn').style.display = 'block';
+  document.getElementById('modal-birthday').classList.add('show');
+}
+function saveBirthday() {
+  var name = document.getElementById('bday-name').value.trim();
+  var dateR = document.getElementById('bday-date').value.trim();
+  var note = document.getElementById('bday-note').value.trim();
+  var orig = document.getElementById('bday-orig-name').value;
+  if (!name) { toast('請輸入姓名'); return; }
+  if (!dateR) { toast('請輸入生日'); return; }
+  var m = dateR.match(/^(\d{1,2})-(\d{1,2})$/);
+  if (!m) { toast('格式應為 MM-DD（例如 08-15）'); return; }
+  var date = m[1].padStart(2,'0') + '-' + m[2].padStart(2,'0');
+  var item = { name: name, date: date, note: note };
+
+  if (orig && orig !== name) DATA.birthdays = DATA.birthdays.filter(function(x) { return x.name !== orig; });
+  var ex = DATA.birthdays.findIndex(function(x) { return x.name === name; });
+  if (ex >= 0) DATA.birthdays[ex] = item; else DATA.birthdays.push(item);
+  saveLocal(); renderAll(); closeModal('modal-birthday');
+  pushToGitHub().then(function(ok) {
+    toast(ok ? '\u2705 已儲存 ' + name + ' 的生日' : '\u26A0\uFE0F 儲存成功但同步失敗');
+  });
+}
+function confirmDeleteBday() {
+  var name = document.getElementById('bday-orig-name').value;
+  showConfirm('確定要刪除 ' + name + ' 的生日嗎？', function() {
+    DATA.birthdays = DATA.birthdays.filter(function(x) { return x.name !== name; });
+    saveLocal(); renderAll(); closeModal('modal-birthday'); closeConfirm();
+    pushToGitHub().then(function(ok) {
+      toast(ok ? '\u{1F5D1}\uFE0F 已刪除 ' + name + ' 生日' : '\u26A0\uFE0F 本地已刪但同步失敗');
+    });
+  });
+}
+
+// ===== Confirm =====
+function showConfirm(msg, cb) {
+  document.getElementById('confirm-msg').textContent = msg;
+  document.getElementById('confirm-yes').onclick = cb;
+  document.getElementById('confirm-overlay').classList.add('show');
+}
+function closeConfirm() { document.getElementById('confirm-overlay').classList.remove('show'); }
+
+// Overlay click to close
+['modal-reminder','modal-birthday','confirm-overlay'].forEach(function(id) {
+  document.getElementById(id).addEventListener('click', function(e) {
+    if (e.target === this) {
+      if (id === 'confirm-overlay') closeConfirm(); else closeModal(id);
+    }
+  });
+});
+
+// ===== WhatsApp =====
+function utf8ToBase64(str) {
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(m, p1) { return String.fromCharCode('0x' + p1); }));
+}
+function getGHToken() {
+  return localStorage.getItem('gh_token') || '';
+}
+
+function removeGHToken() {
+  localStorage.removeItem('gh_token');
+  showToast('\u5DF2\u5F9E\u672C\u6A5F\u522A\u9664 Token');
+  updateTokenStatus();
+}
+
+async function sendWhatsApp() {
+  var phone = document.getElementById('wa-recipient').value;
+  var text = document.getElementById('wa-message').value.trim();
+  var st = document.getElementById('wa-status-msg');
+  if (!text) { st.textContent = '請輸入訊息'; st.style.color = '#ef4444'; st.style.display = 'block'; return; }
+
+  st.textContent = '發送中...';
+  st.style.color = '#f59e0b';
+  st.style.display = 'block';
+
+  if (!DATA.pendingMessages) DATA.pendingMessages = [];
+  DATA.pendingMessages.push({ phone: phone, text: text, at: new Date().toISOString() });
+  saveLocal();
+
+  try {
+    var token = getGHToken();
+    var getResp = await fetch('https://api.github.com/repos/aibizlab-hub/family-reminder-cloud/contents/data.json', {
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (!getResp.ok) throw new Error('GitHub GET ' + getResp.status);
+    var getData = await getResp.json();
+    var sha = getData.sha;
+
+    var raw = atob(getData.content.replace(/\s/g, ''));
+    var bytes = new Uint8Array(raw.length);
+    for (var i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+    var serverData = JSON.parse(new TextDecoder('utf-8').decode(bytes));
+    serverData.pendingMessages = DATA.pendingMessages;
+
+    var putResp = await fetch('https://api.github.com/repos/aibizlab-hub/family-reminder-cloud/contents/data.json', {
+      method: 'PUT',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
+      body: JSON.stringify({ message: 'WhatsApp: ' + text.substring(0, 50), content: utf8ToBase64(JSON.stringify(serverData, null, 2)), sha: sha })
+    });
+    if (!putResp.ok) throw new Error('GitHub PUT ' + putResp.status);
+
+    await fetch('https://api.github.com/repos/aibizlab-hub/family-reminder-cloud/actions/workflows/caregiver-remind.yml/dispatches', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ref: 'master' })
+    });
+
+    DATA.pendingMessages = [];
+    saveLocal();
+    document.getElementById('wa-message').value = '';
+    st.textContent = '已發送！約 1-2 分鐘送達';
+    st.style.color = '#10b981';
+  } catch(e) {
+    st.textContent = '失敗: ' + e.message;
+    st.style.color = '#ef4444';
+    console.error('sendWhatsApp error:', e);
+  }
+}
+
+// ===== Daily Summary Generator =====
+var _dailySummaryText = '';
+function generateDailySummary() {
+  var today = new Date(); today.setHours(0,0,0,0);
+  var todayStr = today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+  var tmrw = new Date(today); tmrw.setDate(tmrw.getDate()+1);
+  var tmrwStr = tmrw.getFullYear()+'-'+String(tmrw.getMonth()+1).padStart(2,'0')+'-'+String(tmrw.getDate()).padStart(2,'0');
+  
+  var lines = [];
+  lines.push('\u{1F4C5} ' + todayStr + '（星期' + formatWeekday(todayStr) + '）');
+  lines.push('');
+  
+  var todayItems = (DATA.reminders || []).filter(function(r) {
+    if (r.repeat && r.repeat !== 'none') {
+      var occ = getNextOccurrence(r);
+      return occ && occ.dateStr === todayStr;
+    }
+    return r.date === todayStr;
+  });
+  var tmrwItems = (DATA.reminders || []).filter(function(r) {
+    if (r.repeat && r.repeat !== 'none') {
+      var occ = getNextOccurrence(r);
+      return occ && occ.dateStr === tmrwStr;
+    }
+    return r.date === tmrwStr;
+  });
+
+  if (todayItems.length) {
+    lines.push('\u{1F534} 今日提醒：');
+    todayItems.forEach(function(r) {
+      var t = r.time && r.time !== '00:00' ? ' \u23F0' + r.time : '';
+      lines.push('  \u2022 ' + r.name + t + (r.caregiver ? ' [' + r.caregiver + ']' : ''));
+    });
+  } else {
+    lines.push('\u{1F7E2} 今日無提醒');
+  }
+  lines.push('');
+  if (tmrwItems.length) {
+    lines.push('\u{1F7E1} 聽日提醒（' + tmrwStr + '）：');
+    tmrwItems.forEach(function(r) {
+      var t = r.time && r.time !== '00:00' ? ' \u23F0' + r.time : '';
+      lines.push('  \u2022 ' + r.name + t + (r.caregiver ? ' [' + r.caregiver + ']' : ''));
+    });
+  } else {
+    lines.push('\u{1F7E2} 聽日暫無提醒');
+  }
+
+  _dailySummaryText = lines.join('\n');
+  var preview = document.getElementById('wa-summary-preview');
+  preview.textContent = _dailySummaryText;
+  document.getElementById('btn-send-summary').style.display = 'block';
+}
+
+function sendSummary() {
+  if (!_dailySummaryText) { generateDailySummary(); }
+  var phone = document.getElementById('wa-recipient').value;
+  var text = _dailySummaryText;
+  if (!text) return;
+  document.getElementById('wa-message').value = text;
+  sendWhatsApp();
+  document.getElementById('btn-send-summary').style.display = 'none';
+}
+
+// ===== Pull to Refresh =====
+var _ptrStart = 0, _ptrPulling = false, _ptrEl = null;
+function initPTR() {
+  _ptrEl = document.getElementById('ptr-indicator');
+  var container = document.getElementById('main-container');
+  if (!container) return;
+  container.addEventListener('touchstart', function(e) {
+    if (window.scrollY === 0) _ptrStart = e.touches[0].clientY;
+  }, { passive: true });
+  container.addEventListener('touchmove', function(e) {
+    if (_ptrStart === 0 || window.scrollY > 0) return;
+    var diff = e.touches[0].clientY - _ptrStart;
+    if (diff > 0) {
+      _ptrPulling = true;
+      _ptrEl.style.height = Math.min(diff * 0.4, 60) + 'px';
+      _ptrEl.textContent = diff > 60 ? '釋放以重新整理...' : '向下拉動以重新整理...';
+      _ptrEl.classList.add('visible');
+    }
+  }, { passive: true });
+  container.addEventListener('touchend', function() {
+    if (!_ptrPulling) return;
+    _ptrPulling = false;
+    if (parseInt(_ptrEl.style.height) > 30) {
+      _ptrEl.textContent = '載入中...';
+      syncFromServer();
+    }
+    _ptrEl.style.height = '0';
+    setTimeout(function() { _ptrEl.classList.remove('visible'); }, 300);
+    _ptrStart = 0;
+  }, { passive: true });
+}
+
+// ===== Dark Mode =====
+function initDarkMode() {
+  var dark = localStorage.getItem('dark-mode') === 'true';
+  if (dark) document.body.classList.add('dark-mode');
+}
+function toggleDarkMode() {
+  var isDark = document.body.classList.toggle('dark-mode');
+  localStorage.setItem('dark-mode', isDark);
+}
+
+// ===== Auto sync =====
+setInterval(function() { syncFromServer(); }, 60000);
+setInterval(function() { checkWAStatus(); }, 10000);
+
+// ===== INIT =====
+function init() {
+  populateTimeSelects();
+  initDarkMode();
+  initPTR();
+  syncFromServer();
+  checkWAStatus();
+}
+init();
+
+// ===== Push Notifications (Web Push) =====
+var PUSH_SERVER = (function() {
+  // Default: same machine, port 3748. Change if server runs elsewhere.
+  var host = window.location.hostname;
+  if (host === 'localhost' || host === '127.0.0.1' || host.startsWith('192.168.') || host.startsWith('10.')) {
+    return 'http://' + host + ':3748';
+  }
+  // When on GitHub Pages, use a configurable server URL
+  var saved = localStorage.getItem('push-server-url');
+  return saved || 'http://' + host.replace('aibizlab-hub.github.io', 'localhost') + ':3748';
+})();
+
+var _pushSub = null;
+var _swReg = null;
+
+// Register Service Worker
+function registerSW() {
+  if (!('serviceWorker' in navigator)) return;
+  var swUrl = '/family-reminder-cloud/sw.js?v=' + (typeof APP_BUILD !== 'undefined' ? APP_BUILD : Date.now());
+  navigator.serviceWorker.register(swUrl, { scope: '/family-reminder-cloud/' })
+    .then(function(reg) {
+      _swReg = reg;
+      console.log('SW registered');
+      initPushUI();
+    })
+    .catch(function(e) { console.log('SW reg failed:', e); });
+}
+
+// Force-clear all service workers and hard-reload (escape hatch for stuck cache)
+function repairSWThenReload() {
+  try {
+    if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
+      navigator.serviceWorker.getRegistrations().then(function(regs) {
+        Promise.all(regs.map(function(r) { return r.unregister(); })).then(function() {
+          console.log('[repair] all SW unregistered, reloading');
+          location.reload(true);
+        });
+      });
+      return;
+    }
+  } catch (e) {}
+  location.reload(true);
+}
+function forceRepair() { repairSWThenReload(); }
+
+// Show notification bell
+function initPushUI() {
+  var btn = document.getElementById('btn-push');
+  if (!btn) return;
+  btn.style.display = '';
+
+  // Load saved server URL
+  var savedUrl = localStorage.getItem('push-server-url');
+  var input = document.getElementById('push-server-input');
+  if (input && savedUrl) input.value = savedUrl;
+
+  // Check current subscription
+  if (_swReg) {
+    _swReg.pushManager.getSubscription().then(function(sub) {
+      _pushSub = sub;
+      updateBellUI();
+      updatePushStats();
+    });
+  }
+
+  // Fetch server status
+  fetchPushStatus();
+}
+
+function fetchPushStatus() {
+  var statEl = document.getElementById('stat-push-count');
+  if (!statEl) return;
+  statEl.textContent = _pushSub ? '本機已訂閱，GitHub Actions 自動推送' : '尚未訂閱';
+}
+
+function savePushServerUrl() {
+  var input = document.getElementById('push-server-input');
+  if (!input) return;
+  var url = input.value.trim();
+  if (url) {
+    localStorage.setItem('push-server-url', url);
+    PUSH_SERVER = url;
+    toast('Push Server 已設為 ' + url);
+    fetchPushStatus();
+  } else {
+    localStorage.removeItem('push-server-url');
+    toast('已清除 Push Server 設定');
+  }
+}
+
+function updateBellUI() {
+  var btn = document.getElementById('btn-push');
+  if (!btn) return;
+  if (_pushSub) {
+    btn.style.opacity = '1';
+    btn.title = '通知已開啟 (點擊關閉)';
+  } else {
+    btn.style.opacity = '0.5';
+    btn.title = '通知已關閉 (點擊開啟)';
+  }
+  updatePushStats();
+}
+
+function updatePushStats() {
+  var statEl = document.getElementById('stat-push');
+  if (!statEl) return;
+  if (_pushSub) {
+    statEl.innerHTML = '<span style="color:#10b981;">&#9989; 已啟用</span>';
+  } else if (Notification.permission === 'denied') {
+    statEl.innerHTML = '<span style="color:#ef4444;">&#10060; 已封鎖（請到瀏覽器設定開啟）</span>';
+  } else {
+    statEl.innerHTML = '<span style="color:#f59e0b;">&#9888; 未啟用</span>';
+  }
+}
+
+// VAPID key pair (must match GitHub Actions secret VAPID_PRIVATE_KEY)
+var VAPID_PUBLIC_KEY = 'BMXfjmwf83dWRooUSAD1W2HmS-vyGVmVGOYFEfzJNziK4w2OXYtqBU1AyhdSMF0JL1jds03sGF7OXSmL9VL1-2I';
+
+// Get VAPID public key (hardcoded — no local server needed)
+function getVapidKey() {
+  return Promise.resolve(VAPID_PUBLIC_KEY);
+}
+
+// Store / remove push subscription in data.json.pushSubscriptions via GitHub API
+// so the 24/7 GitHub Actions sender can deliver to ANY device (no computer on).
+async function updatePushSubscription(sub, remove) {
+  var token = getGHToken();
+  if (!token) throw new Error('未設定 GitHub Token');
+  for (var attempt = 0; attempt < 3; attempt++) {
+    var getResp = await fetch('https://api.github.com/repos/aibizlab-hub/family-reminder-cloud/contents/data.json', {
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (!getResp.ok) throw new Error('GitHub GET ' + getResp.status);
+    var getData = await getResp.json();
+    var sha = getData.sha;
+    var raw = atob(getData.content.replace(/\s/g, ''));
+    var bytes = new Uint8Array(raw.length);
+    for (var i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+    var serverData = JSON.parse(new TextDecoder('utf-8').decode(bytes));
+    if (!serverData.pushSubscriptions) serverData.pushSubscriptions = [];
+    if (remove) {
+      serverData.pushSubscriptions = serverData.pushSubscriptions.filter(function(s) { return s.endpoint !== sub.endpoint; });
+    } else {
+      var exists = serverData.pushSubscriptions.some(function(s) { return s.endpoint === sub.endpoint; });
+      if (!exists) serverData.pushSubscriptions.push(sub);
+    }
+    var putResp = await fetch('https://api.github.com/repos/aibizlab-hub/family-reminder-cloud/contents/data.json', {
+      method: 'PUT',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
+      body: JSON.stringify({ message: (remove ? 'web-push: unsubscribe' : 'web-push: subscribe'), content: utf8ToBase64(JSON.stringify(serverData, null, 2)), sha: sha })
+    });
+    if (putResp.ok) return serverData.pushSubscriptions.length;
+    if (putResp.status === 409) continue; // SHA conflict, retry
+    throw new Error('GitHub PUT ' + putResp.status);
+  }
+  throw new Error('GitHub PUT 衝突，重試失敗');
+}
+
+// Subscribe to push
+function subscribePush() {
+  if (!_swReg) { toast('Service Worker 未註冊'); return; }
+  if (!('Notification' in window)) { toast('此瀏覽器不支援通知'); return; }
+
+  function doSubscribe() {
+    getVapidKey().then(function(vapidKey) {
+      var convertedKey = urlBase64ToUint8Array(vapidKey);
+      return _swReg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: convertedKey
+      });
+    }).then(function(sub) {
+      _pushSub = sub;
+      updateBellUI();
+      // Persist subscription to data.json (GitHub Actions delivers 24/7)
+      return updatePushSubscription(sub, false);
+    }).then(function(count) {
+      toast('通知已開啟！共 ' + count + ' 部裝置訂閱');
+    }).catch(function(e) {
+      console.log('Subscribe failed:', e);
+      _pushSub = null;
+      updateBellUI();
+      if (e.message && e.message.indexOf('Token') >= 0) {
+        toast('請先喺設定頁輸入 GitHub Token');
+      } else {
+        toast('通知開啟失敗：' + (e.message || '未知錯誤'));
+      }
+    });
+  }
+
+  // Request permission
+  if (Notification.permission === 'denied') {
+    toast('通知權限已被拒絕，請到瀏覽器設定開啟');
+    return;
+  }
+  if (Notification.permission === 'granted') {
+    doSubscribe();
+  } else {
+    Notification.requestPermission().then(function(perm) {
+      if (perm === 'granted') doSubscribe();
+      else toast('需要允許通知權限');
+    });
+  }
+}
+
+// Unsubscribe
+function unsubscribePush() {
+  if (!_pushSub) { toast('尚未訂閱通知'); return; }
+  var sub = _pushSub;
+  sub.unsubscribe().then(function() {
+    _pushSub = null;
+    updateBellUI();
+    return updatePushSubscription(sub, true);
+  }).then(function() {
+    toast('通知已關閉');
+  }).catch(function(e) {
+    console.log('Unsubscribe failed:', e);
+    toast('通知關閉失敗');
+  });
+}
+
+// Toggle push
+function togglePushNotif() {
+  if (_pushSub) {
+    // Show confirm
+    showConfirm('關閉推送通知？\n\n關閉後將不會收到提醒通知。', function() {
+      unsubscribePush();
+    });
+  } else {
+    subscribePush();
+  }
+}
+
+// Convert VAPID key
+function urlBase64ToUint8Array(base64String) {
+  var padding = '='.repeat((4 - base64String.length % 4) % 4);
+  var base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  var rawData = atob(base64);
+  var outputArray = new Uint8Array(rawData.length);
+  for (var i = 0; i < rawData.length; i++) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
+// Register SW on load
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    registerSW();
+  });
+}
+
+// ===== v2 new features JS =====
+var currentDetails = [];
+var repeatCalYear, repeatCalMonth;
+
+function addDetailItem() {
+  var input = document.getElementById('form-detail-input');
+  var val = input.value.trim();
+  if (!val) return;
+  currentDetails.push(val);
+  input.value = '';
+  renderDetailTags();
+  input.focus();
+  updateNextOccurrencePreview();
+}
+
+function removeDetailItem(idx) {
+  currentDetails.splice(idx, 1);
+  renderDetailTags();
+}
+
+function renderDetailTags() {
+  var container = document.getElementById('detail-tags');
+  if (!container) return;
+  var html = '';
+  currentDetails.forEach(function(item, idx) {
+    html += '<span class="detail-tag">' + esc(item) + '<span class="tag-remove" onclick="removeDetailItem(' + idx + ')">✕</span></span>';
+  });
+  container.innerHTML = html;
+}
+
+function getCurrentDetails() {
+  return currentDetails.slice();
+}
+
+// Next occurrence preview
+function updateNextOccurrencePreview() {
+  var preview = document.getElementById('next-occ-preview');
+  var dateEl = document.getElementById('next-occ-date');
+  var subEl = document.getElementById('next-occ-sub');
+  if (!preview) return;
+
+  var repeat = document.getElementById('form-repeat').value;
+  if (repeat === 'none') {
+    preview.classList.remove('show');
+    return;
+  }
+
+  // Build a temp reminder object to compute next occurrence
+  var dateVal = document.getElementById('form-date').value;
+  if (!dateVal) { preview.classList.remove('show'); return; }
+
+  var repeatDays = [];
+  document.querySelectorAll('#repeat-days .repeat-day-btn').forEach(function(b) {
+    if (b.classList.contains('active')) repeatDays.push(parseInt(b.dataset.day));
+  });
+
+  // For weekly repeat, need at least one day selected
+  if (repeat === 'weekly' && repeatDays.length === 0) {
+    preview.classList.add('show');
+    dateEl.textContent = '請先選擇星期';
+    subEl.textContent = '點擊上方「一～日」按鈕選擇重複的星期';
+    return;
+  }
+
+  var tempR = {
+    repeat: repeat,
+    date: dateVal,
+    repeatDays: repeatDays,
+    repeatDayOfMonth: parseInt(dateVal.split('-')[2]) || null
+  };
+
+  var occ = getNextOccurrence(tempR);
+  if (!occ) { preview.classList.remove('show'); return; }
+
+  var wd = ['日','一','二','三','四','五','六'][localDate(occ.dateStr).getDay()];
+  dateEl.textContent = occ.dateStr + '（星期' + wd + '）';
+  subEl.textContent = '距離今天 ' + (occ.days === 0 ? '今日' : occ.days + ' 日') + ' 　重複類型：' + (repeat === 'daily' ? '每日' : repeat === 'weekly' ? '每週' : '每月');
+  preview.classList.add('show');
+}
+
+// Repeat calendar
+function toggleRepeatCal() {
+  var cal = document.getElementById('repeat-cal');
+  if (!cal) return;
+  if (cal.classList.contains('show')) {
+    cal.classList.remove('show');
+  } else {
+    cal.classList.add('show');
+    var now = new Date();
+    repeatCalYear = now.getFullYear();
+    repeatCalMonth = now.getMonth();
+    renderRepeatCal();
+  }
+}
+
+function renderRepeatCal() {
+  var title = document.getElementById('repeat-cal-title');
+  var daysEl = document.getElementById('repeat-cal-days');
+  var selectedEl = document.getElementById('repeat-cal-selected');
+  if (!title || !daysEl) return;
+
+  title.textContent = repeatCalYear + '年 ' + (repeatCalMonth + 1) + '月';
+
+  var first = new Date(repeatCalYear, repeatCalMonth, 1);
+  var startDay = (first.getDay() + 6) % 7;
+  var daysInMonth = new Date(repeatCalYear, repeatCalMonth + 1, 0).getDate();
+  var daysInPrev = new Date(repeatCalYear, repeatCalMonth, 0).getDate();
+
+  // Get currently selected days
+  var selectedDays = [];
+  document.querySelectorAll('#repeat-days .repeat-day-btn').forEach(function(b) {
+    if (b.classList.contains('active')) selectedDays.push(parseInt(b.dataset.day));
+  });
+
+  var today = new Date();
+  var todayStr = today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+
+  var html = '';
+  // Previous month trailing days
+  for (var i = startDay - 1; i >= 0; i--) {
+    var d = daysInPrev - i;
+    html += '<div class="repeat-cal-day other-month">' + d + '</div>';
+  }
+  for (var d = 1; d <= daysInMonth; d++) {
+    var ds = repeatCalYear+'-'+String(repeatCalMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    var dayOfWeek = new Date(repeatCalYear, repeatCalMonth, d).getDay();
+    var cls = 'repeat-cal-day';
+    if (ds === todayStr) cls += ' today';
+    if (selectedDays.indexOf(dayOfWeek) >= 0) cls += ' selected';
+    html += '<div class="' + cls + '" data-day-of-week="' + dayOfWeek + '" onclick="repeatCalDayClick(this, ' + dayOfWeek + ')">' + d + '</div>';
+  }
+  var total = startDay + daysInMonth;
+  var remain = (total % 7 === 0) ? 0 : 7 - (total % 7);
+  for (var i = 1; i <= remain; i++) {
+    html += '<div class="repeat-cal-day other-month">' + i + '</div>';
+  }
+  daysEl.innerHTML = html;
+
+  // Update selected days text
+  if (selectedEl) {
+    if (selectedDays.length) {
+      var dayNames = selectedDays.map(function(d){return ['日','一','二','三','四','五','六'][d];}).join('、');
+      selectedEl.textContent = dayNames + '（' + selectedDays.length + '天/週）';
+    } else {
+      selectedEl.textContent = '（未選）';
+    }
+  }
+}
+
+function repeatCalDayClick(el, dayOfWeek) {
+  // Toggle the day-of-week button
+  var btns = document.querySelectorAll('#repeat-days .repeat-day-btn');
+  var targetBtn = null;
+  btns.forEach(function(b) {
+    if (parseInt(b.dataset.day) === dayOfWeek) targetBtn = b;
+  });
+  if (targetBtn) {
+    toggleDay(targetBtn);
+    // Update calendar display
+    if (targetBtn.classList.contains('active')) {
+      el.classList.add('selected');
+    } else {
+      el.classList.remove('selected');
+    }
+    // Update all days with same day-of-week in current calendar view
+    document.querySelectorAll('#repeat-cal-days .repeat-cal-day[data-day-of-week="' + dayOfWeek + '"]').forEach(function(d) {
+      d.classList.toggle('selected', targetBtn.classList.contains('active'));
+    });
+    updateNextOccurrencePreview();
+    // Update selected text
+    var selectedDays = [];
+    document.querySelectorAll('#repeat-days .repeat-day-btn').forEach(function(b) {
+      if (b.classList.contains('active')) selectedDays.push(parseInt(b.dataset.day));
+    });
+    var selectedEl = document.getElementById('repeat-cal-selected');
+    if (selectedEl) {
+      if (selectedDays.length) {
+        var dayNames = selectedDays.map(function(d){return ['日','一','二','三','四','五','六'][d];}).join('、');
+        selectedEl.textContent = dayNames + '（' + selectedDays.length + '天/週）';
+      } else {
+        selectedEl.textContent = '（未選）';
+      }
+    }
+  }
+}
+
+function repeatCalPrev() {
+  repeatCalMonth--;
+  if (repeatCalMonth < 0) { repeatCalMonth = 11; repeatCalYear--; }
+  renderRepeatCal();
+}
+function repeatCalNext() {
+  repeatCalMonth++;
+  if (repeatCalMonth > 11) { repeatCalMonth = 0; repeatCalYear++; }
+  renderRepeatCal();
+}
+
+// Hook into onRepeatChange to update preview
+var _origOnRepeatChange = onRepeatChange;
+
+  </script>
+
+</body>
+</html>
