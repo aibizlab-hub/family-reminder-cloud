@@ -212,6 +212,19 @@
       "caregiver": "EPPIE",
       "note": "帶面試信，出世紙正本",
       "repeat": "none"
+    },
+    {
+      "id": "r1788243985784ck9",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "打針",
+      "date": "2026-10-23",
+      "time": "16:30",
+      "category": "special",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -1206,12 +1219,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "notifyLedger": {},
-  "digestSentDate": "2026-09-01",
-  "sendCaps": {
-    "date": "2026-09-01",
-    "perPhone": {},
-    "global": 0
-  }
+  "pendingMessages": []
 }
