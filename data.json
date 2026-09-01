@@ -1193,5 +1193,12 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": []
+  "pendingMessages": [],
+  "notifyLedger": {},
+  "digestSentDate": "2026-09-01",
+  "sendCaps": {
+    "date": "2026-09-01",
+    "perPhone": {},
+    "global": 0
+  }
 }
