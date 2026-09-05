@@ -111,22 +111,6 @@
       ]
     },
     {
-      "id": "r1784684407605t1u",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "UBER",
-      "date": "2026-09-01",
-      "time": "11:00",
-      "category": "work",
-      "caregiver": "KEN",
-      "note": "灣仔軍器警處",
-      "details": [
-        "08012604007218"
-      ],
-      "repeat": "none"
-    },
-    {
       "id": "r1783163681885r6d",
       "notified": false,
       "caregiverNotified1d": false,
@@ -1186,6 +1170,23 @@
       "caregiverNotified3h": false,
       "address": "",
       "archivedAt": "2026-09-01T02:28:59.314Z"
+    },
+    {
+      "id": "r1784684407605t1u",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "UBER",
+      "date": "2026-09-01",
+      "time": "11:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "灣仔軍器警處",
+      "details": [
+        "08012604007218"
+      ],
+      "repeat": "none",
+      "archivedAt": "2026-09-01T16:02:19.361Z"
     }
   ],
   "_deletedIds": [],
@@ -1220,10 +1221,14 @@
     ]
   },
   "pendingMessages": [],
+  "_lastArchived": [
+    "r1784684407605t1u"
+  ],
   "notifyLedger": {},
   "sendCaps": {
-    "date": "2026-09-01",
+    "date": "2026-09-05",
     "perPhone": {},
     "global": 0
-  }
+  },
+  "digestSentDate": "2026-09-05"
 }
