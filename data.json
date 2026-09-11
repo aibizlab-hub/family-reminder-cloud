@@ -1238,11 +1238,9 @@
     "r1788229800454oxo::1d": true
   },
   "sendCaps": {
-    "date": "2026-09-11",
-    "perPhone": {
-      "85297510047": 1
-    },
-    "global": 1
+    "date": "2026-09-12",
+    "perPhone": {},
+    "global": 0
   },
   "digestSentDate": "2026-09-11"
 }
