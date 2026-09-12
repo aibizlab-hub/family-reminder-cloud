@@ -1240,11 +1240,9 @@
     "r1788229800454oxo::ontime": true
   },
   "sendCaps": {
-    "date": "2026-09-12",
-    "perPhone": {
-      "85297510047": 2
-    },
-    "global": 2
+    "date": "2026-09-13",
+    "perPhone": {},
+    "global": 0
   },
   "digestSentDate": "2026-09-12"
 }
