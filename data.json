@@ -1236,14 +1236,15 @@
   "pendingMessages": [],
   "notifyLedger": {
     "r1788229800454oxo::1d": true,
-    "r1788229800454oxo::3h": true
+    "r1788229800454oxo::3h": true,
+    "r1788229800454oxo::ontime": true
   },
   "sendCaps": {
     "date": "2026-09-12",
     "perPhone": {
-      "85297510047": 1
+      "85297510047": 2
     },
-    "global": 1
+    "global": 2
   },
   "digestSentDate": "2026-09-12"
 }
