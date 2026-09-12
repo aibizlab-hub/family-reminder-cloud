@@ -209,6 +209,19 @@
       "caregiver": "EPPIE",
       "note": "",
       "repeat": "none"
+    },
+    {
+      "id": "r1788759256166j71",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "觀塘聖若瑟",
+      "date": "2026-09-21",
+      "time": "14:15",
+      "category": "school",
+      "caregiver": "EPPIE",
+      "note": "帶面試信",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -1221,14 +1234,17 @@
     ]
   },
   "pendingMessages": [],
-  "_lastArchived": [
-    "r1784684407605t1u"
-  ],
-  "notifyLedger": {},
-  "sendCaps": {
-    "date": "2026-09-04",
-    "perPhone": {},
-    "global": 0
+  "notifyLedger": {
+    "r1788229800454oxo::1d": true,
+    "r1788229800454oxo::3h": true,
+    "r1788229800454oxo::ontime": true
   },
-  "digestSentDate": "2026-09-04"
+  "sendCaps": {
+    "date": "2026-09-12",
+    "perPhone": {
+      "85297510047": 2
+    },
+    "global": 2
+  },
+  "digestSentDate": "2026-09-12"
 }
