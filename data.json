@@ -185,19 +185,6 @@
       "repeat": "none"
     },
     {
-      "id": "r1788229800454oxo",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "播道",
-      "date": "2026-09-12",
-      "time": "09:00",
-      "category": "school",
-      "caregiver": "EPPIE",
-      "note": "帶面試信，出世紙正本",
-      "repeat": "none"
-    },
-    {
       "id": "r1788243985784ck9",
       "notified": false,
       "caregiverNotified1d": false,
@@ -1200,6 +1187,20 @@
       ],
       "repeat": "none",
       "archivedAt": "2026-09-01T16:02:19.361Z"
+    },
+    {
+      "id": "r1788229800454oxo",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "播道",
+      "date": "2026-09-12",
+      "time": "09:00",
+      "category": "school",
+      "caregiver": "EPPIE",
+      "note": "帶面試信，出世紙正本",
+      "repeat": "none",
+      "archivedAt": "2026-09-13T06:57:47.615Z"
     }
   ],
   "_deletedIds": [],
@@ -1234,15 +1235,7 @@
     ]
   },
   "pendingMessages": [],
-  "notifyLedger": {
-    "r1788229800454oxo::1d": true,
-    "r1788229800454oxo::3h": true,
-    "r1788229800454oxo::ontime": true
-  },
-  "sendCaps": {
-    "date": "2026-09-13",
-    "perPhone": {},
-    "global": 0
-  },
-  "digestSentDate": "2026-09-13"
+  "_lastArchived": [
+    "r1788229800454oxo"
+  ]
 }
