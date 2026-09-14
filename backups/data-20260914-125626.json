@@ -111,22 +111,6 @@
       ]
     },
     {
-      "id": "r1783163681885r6d",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "VICTOR",
-      "date": "2026-07-10",
-      "time": "17:00",
-      "category": "work",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "weekly",
-      "repeatDays": [
-        5
-      ]
-    },
-    {
       "id": "r1786717144779ntw",
       "notified": false,
       "caregiverNotified1d": false,
@@ -185,19 +169,6 @@
       "repeat": "none"
     },
     {
-      "id": "r1788229800454oxo",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "播道",
-      "date": "2026-09-12",
-      "time": "09:00",
-      "category": "school",
-      "caregiver": "EPPIE",
-      "note": "帶面試信，出世紙正本",
-      "repeat": "none"
-    },
-    {
       "id": "r1788243985784ck9",
       "notified": false,
       "caregiverNotified1d": false,
@@ -207,6 +178,32 @@
       "time": "16:30",
       "category": "special",
       "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1788759256166j71",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "觀塘聖若瑟",
+      "date": "2026-09-21",
+      "time": "14:15",
+      "category": "school",
+      "caregiver": "EPPIE",
+      "note": "帶面試信",
+      "repeat": "none"
+    },
+    {
+      "id": "r1789359649206znz",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "新都城",
+      "date": "2026-09-27",
+      "time": "11:00",
+      "category": "work",
+      "caregiver": "KEN",
       "note": "",
       "repeat": "none"
     }
@@ -1187,6 +1184,37 @@
       ],
       "repeat": "none",
       "archivedAt": "2026-09-01T16:02:19.361Z"
+    },
+    {
+      "id": "r1788229800454oxo",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "播道",
+      "date": "2026-09-12",
+      "time": "09:00",
+      "category": "school",
+      "caregiver": "EPPIE",
+      "note": "帶面試信，出世紙正本",
+      "repeat": "none",
+      "archivedAt": "2026-09-13T06:57:47.615Z"
+    },
+    {
+      "id": "r1783163681885r6d",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "VICTOR",
+      "date": "2026-07-10",
+      "time": "17:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "weekly",
+      "repeatDays": [
+        5
+      ],
+      "archivedAt": "2026-09-14T04:21:08.788Z"
     }
   ],
   "_deletedIds": [],
@@ -1221,14 +1249,10 @@
     ]
   },
   "pendingMessages": [],
-  "_lastArchived": [
-    "r1784684407605t1u"
-  ],
   "notifyLedger": {},
   "sendCaps": {
-    "date": "2026-09-06",
+    "date": "2026-09-14",
     "perPhone": {},
     "global": 0
-  },
-  "digestSentDate": "2026-09-06"
+  }
 }
