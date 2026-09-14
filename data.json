@@ -209,6 +209,19 @@
       "caregiver": "EPPIE",
       "note": "帶面試信",
       "repeat": "none"
+    },
+    {
+      "id": "r1789359649206znz",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "新都城",
+      "date": "2026-09-27",
+      "time": "11:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -1234,24 +1247,5 @@
       "r1783163681885r6d"
     ]
   },
-  "pendingMessages": [],
-  "_lastArchived": [
-    "r1788229800454oxo"
-  ],
-  "notifyLedger": {},
-  "sendCaps": {
-    "date": "2026-09-14",
-    "perPhone": {},
-    "global": 0
-  },
-  "digestSentDate": "2026-09-14",
-  "pushSubscriptions": [
-    {
-      "endpoint": "https://web.push.apple.com/QBO4A2xJ1ultSpWuHfWriQmQG3WkIt9J1nwFv5GlHSQRF0M2eN2YlC37DyQ9_i-QBKZTLvCFXl-QfZAXrNCHfQ8Q4qHV99J9fWSgsEC8d73CjU6PsF7JCJVxglXaqcyWzXzG_VGrpuIrwJ8jWX9yhiZ62-jM5ajxfg0FWQv57dY",
-      "keys": {
-        "p256dh": "BNk888ufgCwxNQ-CHnYbQAf6FnutgQVxg3Ks6XBeMWmi3hEvdbXYCprkXei1wEOaldBGZrofpcgyMt_3u898PM4",
-        "auth": "m8byW15c85eTTyBC_qqXmQ"
-      }
-    }
-  ]
+  "pendingMessages": []
 }
