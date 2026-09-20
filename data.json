@@ -1305,5 +1305,14 @@
   "_lastArchived": [
     "r1787046016382io3"
   ],
-  "notifyLedger": {}
+  "notifyLedger": {
+    "r1788759256166j71::1d": true
+  },
+  "sendCaps": {
+    "date": "2026-09-20",
+    "perPhone": {
+      "85297510047": 1
+    },
+    "global": 1
+  }
 }
