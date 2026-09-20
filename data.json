@@ -209,22 +209,6 @@
       "repeatDays": [
         6
       ]
-    },
-    {
-      "id": "r17847109908209qw",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "中文班",
-      "date": "2026-07-26",
-      "time": "14:30",
-      "category": "class",
-      "caregiver": "Rosanna Mok",
-      "note": "杏花邨 啟蒙",
-      "repeat": "weekly",
-      "repeatDays": [
-        0
-      ]
     }
   ],
   "birthdays": [
@@ -1266,6 +1250,23 @@
       "note": "帶面試信，家長須知信",
       "repeat": "none",
       "archivedAt": "2026-09-20T13:39:23.312Z"
+    },
+    {
+      "id": "r17847109908209qw",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文班",
+      "date": "2026-07-26",
+      "time": "14:30",
+      "category": "class",
+      "caregiver": "Rosanna Mok",
+      "note": "杏花邨 啟蒙",
+      "repeat": "weekly",
+      "repeatDays": [
+        0
+      ],
+      "archivedAt": "2026-09-20T13:39:25.569Z"
     }
   ],
   "_deletedIds": [],
