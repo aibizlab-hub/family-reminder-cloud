@@ -94,19 +94,6 @@
       ]
     },
     {
-      "id": "r1787046016382io3",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "黃錦輝面試",
-      "date": "2026-09-19",
-      "time": "14:45",
-      "category": "school",
-      "caregiver": "KEN",
-      "note": "帶面試信，家長須知信",
-      "repeat": "none"
-    },
-    {
       "id": "r1787137663811ndf",
       "notified": false,
       "caregiverNotified1d": false,
@@ -600,7 +587,7 @@
       "repeatDays": [
         5
       ],
-      "archivedAt": "2026-07-24T16:56:27.502Z"
+      "archivedAt": "2026-09-14T04:21:08.788Z"
     },
     {
       "id": "r17849881239720rp",
@@ -1232,23 +1219,6 @@
       "archivedAt": "2026-09-13T06:57:47.615Z"
     },
     {
-      "id": "r1783163681885r6d",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "VICTOR",
-      "date": "2026-07-10",
-      "time": "17:00",
-      "category": "work",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "weekly",
-      "repeatDays": [
-        5
-      ],
-      "archivedAt": "2026-09-14T04:21:08.788Z"
-    },
-    {
       "id": "r1782533365556by6",
       "notified": false,
       "caregiverNotified1d": false,
@@ -1282,6 +1252,20 @@
       "caregiverNotified3h": false,
       "address": "",
       "archivedAt": "2026-09-14T14:41:12.589Z"
+    },
+    {
+      "id": "r1787046016382io3",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "黃錦輝面試",
+      "date": "2026-09-19",
+      "time": "14:45",
+      "category": "school",
+      "caregiver": "KEN",
+      "note": "帶面試信，家長須知信",
+      "repeat": "none",
+      "archivedAt": "2026-09-20T13:39:09.047Z"
     }
   ],
   "_deletedIds": [],
@@ -1316,15 +1300,7 @@
     ]
   },
   "pendingMessages": [],
-  "notifyLedger": {
-    "r1788759256166j71::1d": true
-  },
-  "sendCaps": {
-    "date": "2026-09-20",
-    "perPhone": {
-      "85297510047": 1
-    },
-    "global": 1
-  },
-  "digestSentDate": "2026-09-20"
+  "_lastArchived": [
+    "r1787046016382io3"
+  ]
 }
