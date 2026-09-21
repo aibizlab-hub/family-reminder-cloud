@@ -1306,12 +1306,15 @@
     "r1787046016382io3"
   ],
   "notifyLedger": {
-    "r1788759256166j71::1d": true
+    "r1788759256166j71::1d": true,
+    "r1788759256166j71::3h": true
   },
   "sendCaps": {
     "date": "2026-09-21",
-    "perPhone": {},
-    "global": 0
+    "perPhone": {
+      "85297510047": 1
+    },
+    "global": 1
   },
   "digestSentDate": "2026-09-21"
 }
