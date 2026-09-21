@@ -136,19 +136,6 @@
       "repeat": "none"
     },
     {
-      "id": "r1788759256166j71",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "觀塘聖若瑟",
-      "date": "2026-09-21",
-      "time": "14:15",
-      "category": "school",
-      "caregiver": "EPPIE",
-      "note": "帶面試信",
-      "repeat": "none"
-    },
-    {
       "id": "r1789359649206znz",
       "notified": false,
       "caregiverNotified1d": false,
@@ -729,16 +716,16 @@
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
       "name": "中文班",
-      "date": "2026-08-09",
+      "date": "2026-07-26",
       "time": "14:30",
       "category": "class",
       "caregiver": "Rosanna Mok",
       "note": "杏花邨 啟蒙",
-      "repeat": "none",
+      "repeat": "weekly",
       "repeatDays": [
         0
       ],
-      "archivedAt": "2026-08-10T00:21:58.519Z"
+      "archivedAt": "2026-09-20T13:39:25.569Z"
     },
     {
       "id": "r1786495365612xby",
@@ -1063,7 +1050,7 @@
       "repeatDays": [
         6
       ],
-      "archivedAt": "2026-08-28T00:29:59.756Z"
+      "archivedAt": "2026-09-20T13:39:37.739Z"
     },
     {
       "id": "r1787137622669x87",
@@ -1236,38 +1223,18 @@
       "archivedAt": "2026-09-20T13:39:23.312Z"
     },
     {
-      "id": "r17847109908209qw",
+      "id": "r1788759256166j71",
       "notified": false,
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
-      "name": "中文班",
-      "date": "2026-07-26",
-      "time": "14:30",
-      "category": "class",
-      "caregiver": "Rosanna Mok",
-      "note": "杏花邨 啟蒙",
-      "repeat": "weekly",
-      "repeatDays": [
-        0
-      ],
-      "archivedAt": "2026-09-20T13:39:25.569Z"
-    },
-    {
-      "id": "r17825362469190h9",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "iPad 數學",
-      "date": "2026-06-27",
-      "time": "10:00",
-      "category": "class",
-      "caregiver": "ALL",
-      "note": "",
-      "repeat": "weekly",
-      "repeatDays": [
-        6
-      ],
-      "archivedAt": "2026-09-20T13:39:37.739Z"
+      "name": "觀塘聖若瑟",
+      "date": "2026-09-21",
+      "time": "14:15",
+      "category": "school",
+      "caregiver": "EPPIE",
+      "note": "帶面試信",
+      "repeat": "none",
+      "archivedAt": "2026-09-21T16:42:42.938Z"
     }
   ],
   "_deletedIds": [],
@@ -1303,17 +1270,6 @@
   },
   "pendingMessages": [],
   "_lastArchived": [
-    "r1787046016382io3"
-  ],
-  "notifyLedger": {
-    "r1788759256166j71::1d": true,
-    "r1788759256166j71::3h": true,
-    "r1788759256166j71::ontime": true
-  },
-  "sendCaps": {
-    "date": "2026-09-22",
-    "perPhone": {},
-    "global": 0
-  },
-  "digestSentDate": "2026-09-21"
+    "r1788759256166j71"
+  ]
 }
