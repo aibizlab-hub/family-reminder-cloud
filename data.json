@@ -1278,11 +1278,9 @@
     "r1783578101824kw7::ontime": true
   },
   "sendCaps": {
-    "date": "2026-09-24",
-    "perPhone": {
-      "85297510047": 2
-    },
-    "global": 2
+    "date": "2026-09-25",
+    "perPhone": {},
+    "global": 0
   },
   "digestSentDate": "2026-09-24"
 }
