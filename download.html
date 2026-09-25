@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#5b54e6">
+  <title>下載 Family Reminder 本地服務</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="download">
+  <main class="dl-card" role="main">
+    <div class="dl-badge" aria-hidden="true">&#128241;</div>
+    <h1 class="dl-title">&#128197; Family Reminder 本地服務</h1>
+    <p class="dl-sub">下載啟動腳本，喺你部機運行 WhatsApp 提醒服務</p>
+
+    <a href="https://raw.githubusercontent.com/aibizlab-hub/family-reminder-cloud/master/start-reminder.bat"
+       download="start-reminder.bat" class="btn btn-primary dl-btn">
+      <span class="dl-btn-ico">&#11015;</span> 下載 start-reminder.bat
+    </a>
+
+    <a href="https://raw.githubusercontent.com/aibizlab-hub/family-reminder-cloud/master/local-reminder-service.js"
+       download="local-reminder-service.js" class="btn btn-secondary dl-btn">
+      <span class="dl-btn-ico">&#11015;</span> 下載 local-reminder-service.js（可選）
+    </a>
+
+    <div class="dl-steps">
+      <div class="dl-steps-title">使用方法</div>
+      <ol>
+        <li>撳上方按鈕下載 <code>start-reminder.bat</code></li>
+        <li>雙擊下載好嘅 <code>.bat</code> 檔</li>
+        <li>保持視窗開啟（可最小化）</li>
+        <li>完成！服務會每分鐘自動檢查提醒</li>
+      </ol>
+    </div>
+
+    <p class="dl-foot">需要 Node.js 18+ 同 Git 已安裝 &middot; 支援 Windows / macOS</p>
+  </main>
+</body>
+</html>
