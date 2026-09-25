@@ -49,19 +49,6 @@
       ]
     },
     {
-      "id": "r1783578101824kw7",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "港同一面",
-      "date": "2026-09-24",
-      "time": "10:30",
-      "category": "school",
-      "caregiver": "EPPIE",
-      "note": "帶學生證",
-      "repeat": "none"
-    },
-    {
       "id": "r1784107782087654",
       "notified": false,
       "caregiverNotified1d": false,
@@ -1235,6 +1222,20 @@
       "note": "帶面試信",
       "repeat": "none",
       "archivedAt": "2026-09-21T16:42:42.938Z"
+    },
+    {
+      "id": "r1783578101824kw7",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "港同一面",
+      "date": "2026-09-24",
+      "time": "10:30",
+      "category": "school",
+      "caregiver": "EPPIE",
+      "note": "帶學生證",
+      "repeat": "none",
+      "archivedAt": "2026-09-25T00:43:11.238Z"
     }
   ],
   "_deletedIds": [],
@@ -1270,17 +1271,6 @@
   },
   "pendingMessages": [],
   "_lastArchived": [
-    "r1788759256166j71"
-  ],
-  "notifyLedger": {
-    "r1783578101824kw7::1d": true,
-    "r1783578101824kw7::3h": true,
-    "r1783578101824kw7::ontime": true
-  },
-  "sendCaps": {
-    "date": "2026-09-25",
-    "perPhone": {},
-    "global": 0
-  },
-  "digestSentDate": "2026-09-25"
+    "r1783578101824kw7"
+  ]
 }
