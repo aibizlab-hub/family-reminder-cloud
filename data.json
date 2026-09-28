@@ -1340,5 +1340,10 @@
     "r1789359649206znz"
   ],
   "notifyLedger": {},
-  "digestSentDate": "2026-09-28"
+  "digestSentDate": "2026-09-28",
+  "sendCaps": {
+    "date": "2026-09-28",
+    "perPhone": {},
+    "global": 0
+  }
 }
