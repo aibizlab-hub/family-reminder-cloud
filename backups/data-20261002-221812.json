@@ -49,19 +49,6 @@
       ]
     },
     {
-      "id": "r1783578101824kw7",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "港同一面",
-      "date": "2026-09-24",
-      "time": "10:30",
-      "category": "school",
-      "caregiver": "EPPIE",
-      "note": "帶學生證",
-      "repeat": "none"
-    },
-    {
       "id": "r1784107782087654",
       "notified": false,
       "caregiverNotified1d": false,
@@ -136,19 +123,6 @@
       "repeat": "none"
     },
     {
-      "id": "r1789359649206znz",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "新都城",
-      "date": "2026-09-27",
-      "time": "11:00",
-      "category": "work",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r1783163681885r6d",
       "notified": false,
       "caregiverNotified1d": false,
@@ -180,6 +154,71 @@
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
       "address": ""
+    },
+    {
+      "id": "r17825362469190h9",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 數學",
+      "date": "2026-06-27",
+      "time": "10:00",
+      "category": "class",
+      "caregiver": "ALL",
+      "note": "",
+      "repeat": "weekly",
+      "repeatDays": [
+        6
+      ]
+    },
+    {
+      "id": "r17847109908209qw",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文班",
+      "date": "2026-07-26",
+      "time": "14:30",
+      "category": "class",
+      "caregiver": "Rosanna Mok",
+      "note": "杏花邨 啟蒙",
+      "repeat": "weekly",
+      "repeatDays": [
+        0
+      ]
+    },
+    {
+      "id": "r1782033588722kko",
+      "notified": false,
+      "name": "Joe Sir",
+      "date": "2026-06-27",
+      "time": "15:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "weekly",
+      "repeatDays": [
+        6
+      ],
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "address": ""
+    },
+    {
+      "id": "r1782533365556by6",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Obi老師 跳舞",
+      "date": "2026-06-27",
+      "time": "13:30",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "",
+      "repeat": "weekly",
+      "repeatDays": [
+        6
+      ]
     }
   ],
   "birthdays": [
@@ -1235,6 +1274,34 @@
       "note": "帶面試信",
       "repeat": "none",
       "archivedAt": "2026-09-21T16:42:42.938Z"
+    },
+    {
+      "id": "r1783578101824kw7",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "港同一面",
+      "date": "2026-09-24",
+      "time": "10:30",
+      "category": "school",
+      "caregiver": "EPPIE",
+      "note": "帶學生證",
+      "repeat": "none",
+      "archivedAt": "2026-09-25T00:43:11.238Z"
+    },
+    {
+      "id": "r1789359649206znz",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "新都城",
+      "date": "2026-09-27",
+      "time": "11:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-09-28T13:55:05.639Z"
     }
   ],
   "_deletedIds": [],
@@ -1270,15 +1337,13 @@
   },
   "pendingMessages": [],
   "_lastArchived": [
-    "r1788759256166j71"
+    "r1789359649206znz"
   ],
-  "notifyLedger": {
-    "r1783578101824kw7::1d": true
-  },
+  "notifyLedger": {},
+  "digestSentDate": "2026-10-02",
   "sendCaps": {
-    "date": "2026-09-24",
+    "date": "2026-10-03",
     "perPhone": {},
     "global": 0
-  },
-  "digestSentDate": "2026-09-23"
+  }
 }
