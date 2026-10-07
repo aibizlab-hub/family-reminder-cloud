@@ -14,7 +14,7 @@
     "qrcode": "^1.5.3",
     "pino": "^9.0.0",
     "node-cache": "^5.1.2",
-    "link-preview-js": "^4.0.4"
+    "link-preview-js": "^5.0.0"
   },
   "overrides": {
     "link-preview-js@^3.0.0": "4.0.4"
