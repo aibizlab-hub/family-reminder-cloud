@@ -115,7 +115,7 @@ async function main() {
           pushCount++;
         } catch (e) {
           const code = e.statusCode;
-          if (code === 404 || code === 410) {
+          if (code === 400 || code === 403 || code === 404 || code === 410) {
             if (state.deadSubs.indexOf(s.endpoint) < 0) state.deadSubs.push(s.endpoint);
             deadCount++;
             console.log('dead sub marked', s.endpoint.slice(0, 45));
