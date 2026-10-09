@@ -1355,5 +1355,13 @@
     "perPhone": {},
     "global": 0
   },
-  "pushSubscriptions": []
+  "pushSubscriptions": [
+    {
+      "endpoint": "https://web.push.apple.com/QKhZFG2NLyIAEstNsktnjA4qsjwAYqHunK0UgtfMw4yJ6zQnjAngogHcI_y7rRItf-LKOc4wl4TPUAn2cJzti9H3YKaPUQknFX4GpmcLXRRlEwCsEvUeqaYrf6D54dS-cAmu_fmdXaUwf5HL33h5my0AmbGCgUu1krlssJ63Znk",
+      "keys": {
+        "p256dh": "BMHuvqb1DGoAu4rwQz8Bpbv_LG1VIiu9StcTpV_HPYK-b3RzYgXN97aY7FUz9yUv9hT_VLrh5zOGFG45tyvgyiQ",
+        "auth": "vRmDUaA8HtvxD1AinZdOhw"
+      }
+    }
+  ]
 }
