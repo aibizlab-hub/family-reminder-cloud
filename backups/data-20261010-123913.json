@@ -1340,10 +1340,19 @@
     "r1789359649206znz"
   ],
   "notifyLedger": {},
-  "digestSentDate": "2026-09-30",
+  "digestSentDate": "2026-10-09",
   "sendCaps": {
-    "date": "2026-09-30",
+    "date": "2026-10-10",
     "perPhone": {},
     "global": 0
-  }
+  },
+  "pushSubscriptions": [
+    {
+      "endpoint": "https://web.push.apple.com/QKz3lhhSqAAujZdo9aTRec-Kyv0OQNFpt9jQN0nOo8wl6Z1z3xyy4xDStl_Plti1uvwpnUfCvWfx-VSjYKPadIz4_kKLjUcDh7B_juHEx8Cb_0OJvP4FFCm0jJFGU6lGU5_a_kH9MnF7F5BFSx2C4EmG5R7stcTO8-BujjLRoL0",
+      "keys": {
+        "p256dh": "BCVy8HWi_1nv8ARuhldOywAa5ZC1r_OlsFjBygPiZIkjijYBE-yr7w7PkAe-5-moa-c8pDXqSlYl5Rim9ohhMtU",
+        "auth": "e4tit2p_6D9lkvbbWhZYEA"
+      }
+    }
+  ]
 }
