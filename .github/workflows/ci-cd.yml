@@ -26,6 +26,13 @@ permissions:
   contents: write
   issues: write
 
+# 2026-10-11 加固：串行化部署，防止多次 push 同時觸發多個 ci-cd run，
+# peaceiris/actions-gh-pages 喺並行時會撞 git remote → "No such remote: 'origin'" 部署失敗。
+# cancel-in-progress: false = 新 run 排隊等舊 run 完成，唔會中途 kill 緊嘅部署（避免 gh-pages 半寫）。
+concurrency:
+  group: ci-cd-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   # ───────────────────────── ① 驗證閘 ─────────────────────────
   validate:
