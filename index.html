@@ -22,6 +22,13 @@
   <button id="btn-push" onclick="togglePushNotif()" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer;margin-left:8px;opacity:0.8;display:none;" title="通知設定">&#128276;</button>
   <button onclick="toggleDarkMode()" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer;margin-left:4px;opacity:0.8;" title="切換深色模式">&#127769;</button>
   <button onclick="openSettingsModal()" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer;margin-left:4px;opacity:0.8;" title="設定 GitHub Token">&#9881;</button>
+  <select id="my-identity" onchange="setMyIdentity(this.value)" title="呢部機係邊個（決定通知發畀邊個）" style="margin-left:6px;font-size:13px;border-radius:6px;border:none;padding:2px 4px;background:rgba(255,255,255,0.18);color:#fff;">
+    <option value="KEN">我係 Ken</option>
+    <option value="EPPIE">我係 太太</option>
+    <option value="COFFE">我係 Coffee</option>
+    <option value="Rosanna Mok">我係 Rosanna</option>
+    <option value="ALL">共享 / 全家</option>
+  </select>
   <div class="header-wave">
     <svg viewBox="0 0 1200 40" preserveAspectRatio="none" fill="#f0f2f5">
       <path d="M0,32 C200,8 400,38 600,22 C800,6 1000,35 1200,18 L1200,40 L0,40 Z"/>
@@ -1075,6 +1082,12 @@ function pushToGitHub(retryCount) {
   }).catch(function(e) {
     console.log('GitHub push failed:', e);
     setConnStatus(API_ONLINE);
+    // 自動重試（最多 4 次，漸進延遲），解決「新增/刪除咗但同步失敗」嘅情況
+    if ((retryCount || 0) < 4) {
+      setTimeout(function() { pushToGitHub((retryCount || 0) + 1); }, 2500 * ((retryCount || 0) + 1));
+    } else {
+      toast('\u26A0\uFE0F 同步失敗，請撳右上角\uD83D\uDD04 重新整理重試');
+    }
     return false;
   });
   });
@@ -1785,9 +1798,11 @@ function openAddModal() {
   var cat = 'school';
   var cg = '';
   if (tab === 'ken') { cat = 'work'; cg = 'KEN'; }
+  else if (tab === 'reminders') { cg = MY_IDENTITY; }   // 全部 tab → 預設做緊呢部機嘅人
   else {
     var foundCg = CAREGIVERS.find(function(n) { return CAREGIVER_TAB[n] === tab; });
     if (foundCg) { cg = foundCg; cat = 'routine'; }
+    else cg = MY_IDENTITY;
   }
   document.getElementById('form-category').value = cat;
   document.getElementById('form-caregiver').value = cg;
@@ -1932,9 +1947,8 @@ function saveReminder() {
     DATA.reminders.push(item);
     saveLocal(); renderAll(); updateHistoryBadge(); closeModal('modal-reminder');
     pushToGitHub().then(function(ok) {
-      toast(ok ? '\u2705 已新增「' + name + '」' : '\u26A0\uFE0F 新增成功但同步失敗');
+      toast(ok ? '\u2705 已新增「' + name + '」' : '\u26A0\uFE0F 新增成功但同步失敗，會自動重試');
     });
-    toast('\u2705 已新增「' + name + '」');
   }
 }
 
@@ -2331,6 +2345,26 @@ function updatePushStats() {
 // VAPID key pair (must match GitHub Actions secret VAPID_PRIVATE_KEY)
 var VAPID_PUBLIC_KEY = 'BPtq5A6f_w_w6Q4z5SNALgMp-aj1t5GJyiTqzUg7tRVZJ9Al6wjbf1NVEthfNqInz7tsrn11zUaSYhuK_eR4Ca8';
 
+// 呢部機係邊個（用嚟分通知對象 + 新提醒預設照顧者）
+// 預設 KEN：因為而家呢部 iPhone 係 Ken 用；其他人喺自己部機撳對應選項即可
+var MY_IDENTITY = localStorage.getItem('my_identity') || 'KEN';
+function setMyIdentity(v) {
+  MY_IDENTITY = v;
+  localStorage.setItem('my_identity', v);
+  toast('已設定呢部機係：' + v);
+  // 如果已經訂閱，即時更新 data.json 入面個 subscription 嘅 caregiver 標籤
+  if (_pushSub) {
+    _pushSub.caregiver = MY_IDENTITY;
+    updatePushSubscription(_pushSub, false).then(function(n) {
+      toast('通知已重新綁定到 ' + v + '（' + n + ' 部機）');
+    }).catch(function(e) { console.log('re-tag sub failed', e); });
+  }
+}
+function initIdentity() {
+  var sel = document.getElementById('my-identity');
+  if (sel) sel.value = MY_IDENTITY;
+}
+
 // Get VAPID public key (hardcoded — no local server needed)
 function getVapidKey() {
   return Promise.resolve(VAPID_PUBLIC_KEY);
@@ -2385,6 +2419,7 @@ function subscribePush() {
       });
     }).then(function(sub) {
       _pushSub = sub;
+      sub.caregiver = MY_IDENTITY;   // 綁定呢部機嘅照顧者，發送嗰陣先分到人（Ken 只去 Ken）
       updateBellUI();
       // Persist subscription to data.json (GitHub Actions delivers 24/7)
       return updatePushSubscription(sub, false);
@@ -2461,6 +2496,7 @@ function urlBase64ToUint8Array(base64String) {
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
     registerSW();
+    initIdentity();
   });
 }
 
