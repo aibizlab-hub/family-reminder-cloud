@@ -1,13 +1,26 @@
 name: Web Push Reminder
 
+# ════════════════════════════════════════════════════════════════
+# Web Push 發送（家庭提醒通知）
+#
+# 驅動方式（2026-10-11 加固）：
+#   - 主要：self-perpetuate loop（下列 re-arm step 每 ~5 分鐘 `gh workflow run`
+#     自己起重啟），呢個係最可靠嘅 24/7 驅動（原生 schedule 過往唔可靠）。
+#   - 備用：workflow_dispatch（手動 Run）/ repository_dispatch（web-push-tick，
+#     前端可觸發即時重發）。
+#   - 移除咗原生 schedule + on: push：兩者會同 self-perpetuate 撞同一個
+#     concurrency group，排隊嘅 run 被 GitHub 取消（cancel-in-progress:false
+#     規則：新 run 入隊 → 舊排隊 run 被 cancel），造成 Actions tab 紅交叉噪音。
+#
+# re-arm 守衛：dispatch 前先查有冇其他 run 已經 in_progress / queued，
+# 有就跳過 → 保證成條 chain 同一時間最多 1 active + 0 多餘 queued，
+# 唔會再產生 cancelled run。
+# ════════════════════════════════════════════════════════════════
+
 on:
-  schedule:
-    - cron: '*/5 * * * *'   # every 5 min, 24/7; timer may be disabled by GitHub — see repository_dispatch fallback
   workflow_dispatch:
   repository_dispatch:
     types: [web-push-tick]
-  push:
-    branches: [master]   # push 重啟 loop（備用，方便修復後即時恢復）
 
 permissions:
   contents: write
@@ -46,18 +59,21 @@ jobs:
         run: |
           echo "📲 Triggering WhatsApp reminder bot (CallMeBot)…"
           gh workflow run cloud-reminder.yml --ref "${{ github.ref_name }}" || echo "::warning::Failed to trigger cloud-reminder (will retry next cycle)"
-      - name: Re-arm timer (self-perpetuate next run, ~5 min cadence)
+      - name: Re-arm timer (self-perpetuate ~5min, collision-safe)
         if: always()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: aibizlab-hub/family-reminder-cloud
         run: |
-          # Keep cadence ~5 min: sleep most of the interval so a runner isn't
-          # churning every few seconds (avoids WhatsApp/npm thrash + API rate limit).
-          # Cost is fixed at ~43.2k min/month either way (a runner is always active);
-          # the sleep just sets the reminder check granularity.
           echo "⏳ Sleeping ~4m15s before re-arming (target 5-min cadence)…"
           sleep 255
+          CUR="${{ github.run_id }}"
+          OTHER_IP=$(gh run list --workflow web-push.yml --status in_progress --json databaseId 2>/dev/null | python3 -c "import sys,json,os; print(sum(1 for r in json.load(sys.stdin) if str(r.get('databaseId'))!=os.environ.get('CUR','')))" || echo 0)
+          Q=$(gh run list --workflow web-push.yml --status queued --json databaseId 2>/dev/null | python3 -c "import sys,json; print(len(json.load(sys.stdin)))" || echo 0)
+          if [ "$OTHER_IP" -gt 0 ] || [ "$Q" -gt 0 ]; then
+            echo "✅ another run already active/queued — skip re-arm (avoids concurrency collision / cancelled runs)"
+            exit 0
+          fi
           for i in 1 2 3 4 5; do
             if gh workflow run web-push.yml --ref "${{ github.ref_name }}"; then
               echo "✅ Re-armed web-push timer (attempt $i)"
@@ -66,5 +82,5 @@ jobs:
             echo "⚠️ Re-arm attempt $i failed, retrying in $((i*10))s..."
             sleep $((i*10))
           done
-          echo "::error::Failed to re-arm web-push timer after 3 retries"
+          echo "::error::Failed to re-arm web-push timer after 5 retries"
           exit 1
