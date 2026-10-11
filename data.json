@@ -219,26 +219,6 @@
       "repeatDays": [
         6
       ]
-    },
-    {
-      "id": "TEST-KEN-SCOPE-20261011025554",
-      "name": "✅測試-KEN範圍",
-      "date": "2026-10-11",
-      "time": "02:57",
-      "repeat": "none",
-      "caregiver": "KEN",
-      "category": "other",
-      "note": "scope test"
-    },
-    {
-      "id": "TEST-EPPIE-SCOPE-20261011025554",
-      "name": "✅測試-EPPIE範圍",
-      "date": "2026-10-11",
-      "time": "02:57",
-      "repeat": "none",
-      "caregiver": "EPPIE",
-      "category": "other",
-      "note": "scope test"
     }
   ],
   "birthdays": [
