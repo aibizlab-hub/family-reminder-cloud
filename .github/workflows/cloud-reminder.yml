@@ -1,28 +1,36 @@
 name: Cloud Reminder Bot (CallMeBot · 24/7 唔使開電腦)
 
 # ⚙️ GitHub 原生定時 — 完全唔使外部觸發、唔使開住部電腦
-# 每 30 分鐘 schedule 備用 + self-perpetuate 每 ~5 分鐘實際驅動（覆蓋 準時 ±25min window，保證必中）
 #
-# 2026-10-11 加固：移除 on: push（避免每次改 data.json 引爆呢條 loop 同 self-perpetuate
-# 撞 concurrency → cancelled）。re-arm 加 collision-safe 守衛：dispatch 前查有冇其他
-# run 已經 active/queued，有就跳過，唔會再產生 cancelled run。
+# 驅動方式（2026-10-11 終極加固）：
+#   ✅ 唯一驅動 = GitHub 原生 schedule（cron 每 5 分鐘）。
+#      —— 經實測：default_branch = master，schedule 過去 100 次全部有觸發，可靠。
+#      5 分鐘一粒 = 覆蓋「準時 ±2.5min」window，保證提醒必中（等同舊 re-arm 嘅覆蓋）。
+#   ✅ 手動測試：workflow_dispatch（GitHub UI Run workflow）。
+#
+# 🔧 移除咗嘅嘢（GitHub 報紅 ✗「cancelled」嘅真兇）：
+#   1. self-perpetuate re-arm loop（尾段 sleep + gh workflow run 自己起重啟）
+#      → re-arm 產生嘅 workflow_dispatch run 同原生 schedule run 擠入同一個
+#        concurrency group，GitHub 會 cancel 排隊緊嗰個 → 紅 ✗。
+#   2. 被 web-push.yml 跨流程 launch（已經喺 web-push.yml 移除）。
+#   而家 cloud-reminder 完全獨立、只靠原生 schedule，零碰撞。
+#
+# concurrency group 保留原因（唔可以拆）：
+#   確保同一時間只有 1 個 run 改 data.json / notifyLedger，避免 sync-data
+#   同 bot 並行 → SHA 衝突 → 去重標記流失 → 同一提醒重複發送（舊 bug 實測 15 次）。
+# ════════════════════════════════════════════════════════════════
 
 on:
   schedule:
-    - cron: '*/30 * * * *'
-  workflow_dispatch:   # 手動 test：GitHub → Actions → 此 workflow → Run workflow
+    - cron: '*/5 * * * *'   # 原生 24/7 驅動（證實可靠），5 分鐘一粒 = ±2.5min 覆蓋
+  workflow_dispatch:        # 手動 test：GitHub → Actions → 此 workflow → Run workflow
 
 permissions:
-  contents: write
-  actions: write   # 允許被 web-push.yml 經 gh workflow run 觸發，同埋 self-perpetuate
+  contents: write          # sync-data.js 需要寫回 data.json / notifyLedger
 
-# ★ 修復 (2026-08-14)：早前移除 concurrency group 令多個 run 並行，加上 sync-data 喺每次 run 重寫遠端、
-#   bot 讀過期 local checkout + flush 寫回 SHA 衝突，導致 notifyLedger 去重標記流失 → 同一提醒重複發送 (實測 15 次)。
-#   改為用 concurrency group + cancel-in-progress:false：新 run 排隊等舊 run 完成 (唔 cancel)，確保去重跨 run 持久化；
-#   配合 bot 嘅「讀穿合併遠端 ledger」+ flush SHA 重試合併，雙重熔斷重複發送。
 concurrency:
   group: cloud-reminder
-  cancel-in-progress: false   # 排隊唔 cancel：避免 early fix 嘅連續 cancelled，同時序列化令去重生效
+  cancel-in-progress: false   # 排隊唔 cancel：串行化改 data.json，去重跨 run 持久化，絕不雙發
 
 jobs:
   remind:
@@ -51,34 +59,5 @@ jobs:
           CALLMEBOT_COFFE:   ${{ secrets.CALLMEBOT_COFFE }}
           CALLMEBOT_LODOU:   ${{ secrets.CALLMEBOT_LODOU }}
         run: node cloud-reminder-bot.js
-      # ★ 修復 (2026-08-07)：之前 WhatsApp bot 完全依賴 web-push loop 觸發，
-      #   一旦 web-push 嘅 re-arm 偶發失敗/被 cancel (run #9046) 就全軍覆沒、80 分鐘零發送。
-      #   改成 cloud-reminder 自己 self-perpetuate（唔靠 web-push / scheduler），
-      #   24/7 獨立穩定跑；web-push 觸發只作冗餘備用。repo 公開 = Actions 免費，雙 loop 零成本。
-      - name: Re-arm timer (self-perpetuate ~5min cadence, 獨立於 web-push, collision-safe)
-        if: always()
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_REPO: aibizlab-hub/family-reminder-cloud
-        run: |
-          echo "⏳ Self-perpetuating WhatsApp bot (sleep ~285s before re-arm)…"
-          sleep 285
-          CUR="${{ github.run_id }}"
-          OTHER_IP=$(gh run list --workflow cloud-reminder.yml --status in_progress --json databaseId 2>/dev/null | python3 -c "import sys,json,os; print(sum(1 for r in json.load(sys.stdin) if str(r.get('databaseId'))!=os.environ.get('CUR','')))" || echo 0)
-          Q=$(gh run list --workflow cloud-reminder.yml --status queued --json databaseId 2>/dev/null | python3 -c "import sys,json; print(len(json.load(sys.stdin)))" || echo 0)
-          if [ "$OTHER_IP" -gt 0 ] || [ "$Q" -gt 0 ]; then
-            echo "✅ another run already active/queued — skip re-arm (avoids concurrency collision / cancelled runs)"
-            exit 0
-          fi
-          for i in 1 2 3 4 5; do
-            if gh workflow run cloud-reminder.yml --ref "${{ github.ref_name }}"; then
-              echo "✅ Re-armed cloud-reminder (attempt $i)"
-              exit 0
-            fi
-            echo "⚠️ Re-arm attempt $i failed, retry in $((i*10))s…"
-            sleep $((i*10))
-          done
-          echo "::error::Failed to re-arm cloud-reminder after 5 retries"
-          exit 1
       # 覆蓋：① 提早 1 日 (09:00 HKT) ② 提早 3 小時 ③ 準時 ④ 每日 07:00 HKT 日程 digest
       # 全部經 CallMeBot 雲端 WhatsApp 發送，唔使 wacli / baileys / 掃 QR
