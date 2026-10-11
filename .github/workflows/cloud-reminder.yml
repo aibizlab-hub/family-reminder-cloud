@@ -2,31 +2,32 @@ name: Cloud Reminder Bot (CallMeBot · 24/7 唔使開電腦)
 
 # ⚙️ GitHub 原生定時 — 完全唔使外部觸發、唔使開住部電腦
 #
-# 驅動方式（2026-10-11 終極加固）：
-#   ✅ 唯一驅動 = GitHub 原生 schedule（cron 每 5 分鐘）。
-#      —— 經實測：default_branch = master，schedule 過去 100 次全部有觸發，可靠。
-#      5 分鐘一粒 = 覆蓋「準時 ±2.5min」window，保證提醒必中（等同舊 re-arm 嘅覆蓋）。
-#   ✅ 手動測試：workflow_dispatch（GitHub UI Run workflow）。
+# 驅動方式（2026-10-11 終極加固 · v3）：
+#   ✅ 唯一 24/7 驅動 = self-perpetuate re-arm loop（尾段 `gh workflow run`
+#     自己起重啟，每 ~5 分鐘一粒）。經實測：原生 schedule 喺呢個 repo 已死
+#     （最後一次 schedule run 係 2026-10-11T01:07，之後零觸發），靠 re-arm 先有 WhatsApp 發送。
+#   ✅ 即時／手動觸發：repository_dispatch type=cloud-reminder-tick（API 即時重發）／
+#     workflow_dispatch（GitHub UI Run workflow）。
+#   ❌ 唔用 on: push（改 data.json 會引爆 + re-arm 撞 concurrency → cancelled）。
+#   ❌ 唔用原生 schedule（已死；復活會同 re-arm 撞 → cancelled）。
+#   ❌ 唔被 web-push 跨流程 launch（已拆開，各自獨立 re-arm，消除雙 driver 互撞 cancelled）。
 #
-# 🔧 移除咗嘅嘢（GitHub 報紅 ✗「cancelled」嘅真兇）：
-#   1. self-perpetuate re-arm loop（尾段 sleep + gh workflow run 自己起重啟）
-#      → re-arm 產生嘅 workflow_dispatch run 同原生 schedule run 擠入同一個
-#        concurrency group，GitHub 會 cancel 排隊緊嗰個 → 紅 ✗。
-#   2. 被 web-push.yml 跨流程 launch（已經喺 web-push.yml 移除）。
-#   而家 cloud-reminder 完全獨立、只靠原生 schedule，零碰撞。
+# 點解唔會再出 cancelled run：單 driver（re-arm），每次 run 完成先 dispatch 下一粒，
+# 永遠唔會有 2 個 run 同時入 concurrency group → 零碰撞 → 零 cancelled。
 #
-# concurrency group 保留原因（唔可以拆）：
-#   確保同一時間只有 1 個 run 改 data.json / notifyLedger，避免 sync-data
-#   同 bot 並行 → SHA 衝突 → 去重標記流失 → 同一提醒重複發送（舊 bug 實測 15 次）。
+# concurrency group 必須留（唔可以拆）：確保同一時間只有 1 個 run 改 data.json /
+# notifyLedger，避免 sync-data 同 bot 並行 → SHA 衝突 → 去重標記流失 → 同一提醒重複發送
+# （舊 bug 實測 15 次）。
 # ════════════════════════════════════════════════════════════════
 
 on:
-  schedule:
-    - cron: '*/5 * * * *'   # 原生 24/7 驅動（證實可靠），5 分鐘一粒 = ±2.5min 覆蓋
   workflow_dispatch:        # 手動 test：GitHub → Actions → 此 workflow → Run workflow
+  repository_dispatch:
+    types: [cloud-reminder-tick]  # API 即時重發
 
 permissions:
   contents: write          # sync-data.js 需要寫回 data.json / notifyLedger
+  actions: write           # re-arm 用：gh workflow run 自己起重啟
 
 concurrency:
   group: cloud-reminder
@@ -59,5 +60,24 @@ jobs:
           CALLMEBOT_COFFE:   ${{ secrets.CALLMEBOT_COFFE }}
           CALLMEBOT_LODOU:   ${{ secrets.CALLMEBOT_LODOU }}
         run: node cloud-reminder-bot.js
+      # ★ self-perpetuate：run 完成先 dispatch 下一粒（單 driver，唔會撞 concurrency）
+      - name: Re-arm timer (self-perpetuate ~5min cadence)
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: aibizlab-hub/family-reminder-cloud
+        run: |
+          echo "⏳ Self-perpetuating WhatsApp bot (sleep ~285s before re-arm)…"
+          sleep 285
+          for i in 1 2 3 4 5; do
+            if gh workflow run cloud-reminder.yml --ref "${{ github.ref_name }}"; then
+              echo "✅ Re-armed cloud-reminder (attempt $i)"
+              exit 0
+            fi
+            echo "⚠️ Re-arm attempt $i failed, retry in $((i*10))s…"
+            sleep $((i*10))
+          done
+          echo "::error::Failed to re-arm cloud-reminder after 5 retries"
+          exit 1
       # 覆蓋：① 提早 1 日 (09:00 HKT) ② 提早 3 小時 ③ 準時 ④ 每日 07:00 HKT 日程 digest
       # 全部經 CallMeBot 雲端 WhatsApp 發送，唔使 wacli / baileys / 掃 QR
