@@ -8,9 +8,10 @@ name: Web Push Reminder
 #     自己起重啟），呢個係最可靠嘅 24/7 驅動（原生 schedule 過往唔可靠）。
 #   - 備用：workflow_dispatch（手動 Run）/ repository_dispatch（web-push-tick，
 #     前端可觸發即時重發）。
-#   - 移除咗原生 schedule + on: push：兩者會同 self-perpetuate 撞同一個
-#     concurrency group，排隊嘅 run 被 GitHub 取消（cancel-in-progress:false
-#     規則：新 run 入隊 → 舊排隊 run 被 cancel），造成 Actions tab 紅交叉噪音。
+#   - 移除咗 on: push（避免每次改 data.json 引爆呢條 loop 同 self-perpetuate
+#     撞 concurrency → cancelled）。保留 schedule 作為備用重啟（一旦 self-perpetuate
+#     chain 死咗，schedule 會喺下一個 5 分鐘點自動起重啟）；re-arm 守衛確保
+#     schedule 同 self-perpetuate 唔會互撞（唔會再產生 cancelled run）。
 #
 # re-arm 守衛：dispatch 前先查有冇其他 run 已經 in_progress / queued，
 # 有就跳過 → 保證成條 chain 同一時間最多 1 active + 0 多餘 queued，
@@ -18,6 +19,8 @@ name: Web Push Reminder
 # ════════════════════════════════════════════════════════════════
 
 on:
+  schedule:
+    - cron: '*/5 * * * *'   # 備用重啟：萬一 self-perpetuate chain 死咗，5 分鐘內自動恢復
   workflow_dispatch:
   repository_dispatch:
     types: [web-push-tick]
