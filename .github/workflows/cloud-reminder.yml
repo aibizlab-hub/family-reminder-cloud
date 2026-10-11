@@ -1,17 +1,20 @@
 name: Cloud Reminder Bot (CallMeBot · 24/7 唔使開電腦)
 
 # ⚙️ GitHub 原生定時 — 完全唔使外部觸發、唔使開住部電腦
-# 每 30 分鐘跑一次 (覆蓋 準時 ±25min window，保證必中)
+# 每 30 分鐘 schedule 備用 + self-perpetuate 每 ~5 分鐘實際驅動（覆蓋 準時 ±25min window，保證必中）
+#
+# 2026-10-11 加固：移除 on: push（避免每次改 data.json 引爆呢條 loop 同 self-perpetuate
+# 撞 concurrency → cancelled）。re-arm 加 collision-safe 守衛：dispatch 前查有冇其他
+# run 已經 active/queued，有就跳過，唔會再產生 cancelled run。
+
 on:
   schedule:
     - cron: '*/30 * * * *'
   workflow_dispatch:   # 手動 test：GitHub → Actions → 此 workflow → Run workflow
-  push:
-    branches: [master]   # 任何 push 都重啟 loop（包括本修復 commit），確保服務即時恢復
 
 permissions:
   contents: write
-  actions: write   # 允許被 web-push.yml 經 gh workflow run 觸發
+  actions: write   # 允許被 web-push.yml 經 gh workflow run 觸發，同埋 self-perpetuate
 
 # ★ 修復 (2026-08-14)：早前移除 concurrency group 令多個 run 並行，加上 sync-data 喺每次 run 重寫遠端、
 #   bot 讀過期 local checkout + flush 寫回 SHA 衝突，導致 notifyLedger 去重標記流失 → 同一提醒重複發送 (實測 15 次)。
@@ -52,7 +55,7 @@ jobs:
       #   一旦 web-push 嘅 re-arm 偶發失敗/被 cancel (run #9046) 就全軍覆沒、80 分鐘零發送。
       #   改成 cloud-reminder 自己 self-perpetuate（唔靠 web-push / scheduler），
       #   24/7 獨立穩定跑；web-push 觸發只作冗餘備用。repo 公開 = Actions 免費，雙 loop 零成本。
-      - name: Re-arm timer (self-perpetuate ~5min cadence, 獨立於 web-push)
+      - name: Re-arm timer (self-perpetuate ~5min cadence, 獨立於 web-push, collision-safe)
         if: always()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -60,6 +63,13 @@ jobs:
         run: |
           echo "⏳ Self-perpetuating WhatsApp bot (sleep ~285s before re-arm)…"
           sleep 285
+          CUR="${{ github.run_id }}"
+          OTHER_IP=$(gh run list --workflow cloud-reminder.yml --status in_progress --json databaseId 2>/dev/null | python3 -c "import sys,json,os; print(sum(1 for r in json.load(sys.stdin) if str(r.get('databaseId'))!=os.environ.get('CUR','')))" || echo 0)
+          Q=$(gh run list --workflow cloud-reminder.yml --status queued --json databaseId 2>/dev/null | python3 -c "import sys,json; print(len(json.load(sys.stdin)))" || echo 0)
+          if [ "$OTHER_IP" -gt 0 ] || [ "$Q" -gt 0 ]; then
+            echo "✅ another run already active/queued — skip re-arm (avoids concurrency collision / cancelled runs)"
+            exit 0
+          fi
           for i in 1 2 3 4 5; do
             if gh workflow run cloud-reminder.yml --ref "${{ github.ref_name }}"; then
               echo "✅ Re-armed cloud-reminder (attempt $i)"
