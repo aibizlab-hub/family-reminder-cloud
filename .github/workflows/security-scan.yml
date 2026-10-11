@@ -1,16 +1,18 @@
 name: Security Scan
 
-# ════════════════════════════════════════════════════
+# ════════════════════════════════════════════════════════════════
 # 安全掃描（加性，唔會動到 ci-cd.yml 嘅正常部署）
 # ① Gitleaks 秘密掃描（防 CALLMEBOT / VAPID / GH_PAT 漏落 code）
 # ② npm audit 依賴漏洞掃描（高風險即開 Issue）
 # 掃到問題 → 自動開 / 追加 GitHub Issue 報警（唔阻擋部署，
 #   想變「阻擋式」可將各 job 嘅 continue-on-error 移除）。
-# ════════════════════════════════════════════════════
+#
+# 2026-10-11 加固：移除 on: push。家庭提醒嘅 data.json / backups 改動唔會引入
+# code 秘密，唔使每次 edit 都掃；改為每週一排程 + PR + 手動觸發，慳 compute 又
+# 減少 Actions tab 噪音。
+# ════════════════════════════════════════════════════════════════
 
 on:
-  push:
-    branches: [master]
   pull_request:
     branches: [master]
   schedule:
