@@ -1354,6 +1354,13 @@
         "auth": "e4tit2p_6D9lkvbbWhZYEA"
       },
       "caregiver": "KEN"
+    },
+    {
+      "endpoint": "https://web.push.apple.com/QCNjA8Lo7pM4tRPGN94-giqvjpW8LtojcGKsKzFaN6sBChGBoIC5LJDy5pu4Ngh8GU-cWsIdnUa6pX9X0rY_h10P3UFrwx1ihDGnQey6v18cTeFi0pP1qZTW0vDbSe2DfqLGMcOHvDtBp234K50YSEe9fhYNGutCw8o8XiQfCFo",
+      "keys": {
+        "p256dh": "BLN_ZFnpbbYW0weGAkCgSreWy-oTexCEnOKXtI2RmDj6DvVpCFNyzI5LWPSIUkvMKFagHtQFtue1n1Z7iBOtZd4",
+        "auth": "cdoSbNKpQxo2XyIYfhSJUg"
+      }
     }
   ],
   "caregivers": [
