@@ -1340,10 +1340,57 @@
     "r1789359649206znz"
   ],
   "notifyLedger": {},
-  "digestSentDate": "2026-10-01",
+  "digestSentDate": "2026-10-12",
   "sendCaps": {
-    "date": "2026-10-02",
+    "date": "2026-10-12",
     "perPhone": {},
     "global": 0
-  }
+  },
+  "pushSubscriptions": [
+    {
+      "endpoint": "https://web.push.apple.com/QKz3lhhSqAAujZdo9aTRec-Kyv0OQNFpt9jQN0nOo8wl6Z1z3xyy4xDStl_Plti1uvwpnUfCvWfx-VSjYKPadIz4_kKLjUcDh7B_juHEx8Cb_0OJvP4FFCm0jJFGU6lGU5_a_kH9MnF7F5BFSx2C4EmG5R7stcTO8-BujjLRoL0",
+      "keys": {
+        "p256dh": "BCVy8HWi_1nv8ARuhldOywAa5ZC1r_OlsFjBygPiZIkjijYBE-yr7w7PkAe-5-moa-c8pDXqSlYl5Rim9ohhMtU",
+        "auth": "e4tit2p_6D9lkvbbWhZYEA"
+      },
+      "caregiver": "KEN"
+    },
+    {
+      "endpoint": "https://web.push.apple.com/QCNjA8Lo7pM4tRPGN94-giqvjpW8LtojcGKsKzFaN6sBChGBoIC5LJDy5pu4Ngh8GU-cWsIdnUa6pX9X0rY_h10P3UFrwx1ihDGnQey6v18cTeFi0pP1qZTW0vDbSe2DfqLGMcOHvDtBp234K50YSEe9fhYNGutCw8o8XiQfCFo",
+      "keys": {
+        "p256dh": "BLN_ZFnpbbYW0weGAkCgSreWy-oTexCEnOKXtI2RmDj6DvVpCFNyzI5LWPSIUkvMKFagHtQFtue1n1Z7iBOtZd4",
+        "auth": "cdoSbNKpQxo2XyIYfhSJUg"
+      }
+    }
+  ],
+  "caregivers": [
+    {
+      "key": "KEN",
+      "name": "Ken（我）"
+    },
+    {
+      "key": "EPPIE",
+      "name": "太太 Eppie"
+    },
+    {
+      "key": "COFFE",
+      "name": "Coffee"
+    },
+    {
+      "key": "Kenny Yam",
+      "name": "Kenny"
+    },
+    {
+      "key": "Rosanna Mok",
+      "name": "Rosanna"
+    },
+    {
+      "key": "老豆",
+      "name": "老豆"
+    },
+    {
+      "key": "ALL",
+      "name": "全家"
+    }
+  ]
 }
