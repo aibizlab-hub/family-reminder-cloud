@@ -202,6 +202,19 @@
       "repeatDays": [
         6
       ]
+    },
+    {
+      "id": "r1791898142588up6",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "No. 489 Hennessy Road, Causeway Bay, Hong Kong",
+      "date": "2026-10-29",
+      "time": "11:00",
+      "category": "activity",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -1343,7 +1356,7 @@
   "notifyLedger": {},
   "digestSentDate": "2026-10-12",
   "sendCaps": {
-    "date": "2026-10-13",
+    "date": "2026-10-12",
     "perPhone": {},
     "global": 0
   },
