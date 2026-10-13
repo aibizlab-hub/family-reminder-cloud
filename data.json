@@ -139,23 +139,6 @@
       ]
     },
     {
-      "id": "r178203363735416b",
-      "notified": false,
-      "name": "軟網球班",
-      "date": "2026-07-22",
-      "time": "13:45",
-      "category": "summer",
-      "caregiver": "EPPIE",
-      "note": "七，八月\n坪石青協",
-      "repeat": "weekly",
-      "repeatDays": [
-        3
-      ],
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "address": ""
-    },
-    {
       "id": "r17825362469190h9",
       "notified": false,
       "caregiverNotified1d": false,
@@ -1302,6 +1285,24 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-09-28T13:55:05.639Z"
+    },
+    {
+      "id": "r178203363735416b",
+      "notified": false,
+      "name": "軟網球班",
+      "date": "2026-07-22",
+      "time": "13:45",
+      "category": "summer",
+      "caregiver": "EPPIE",
+      "note": "七，八月\n坪石青協",
+      "repeat": "weekly",
+      "repeatDays": [
+        3
+      ],
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "address": "",
+      "archivedAt": "2026-10-13T12:32:28.800Z"
     }
   ],
   "_deletedIds": [],
@@ -1340,9 +1341,9 @@
     "r1789359649206znz"
   ],
   "notifyLedger": {},
-  "digestSentDate": "2026-10-13",
+  "digestSentDate": "2026-10-12",
   "sendCaps": {
-    "date": "2026-10-13",
+    "date": "2026-10-12",
     "perPhone": {},
     "global": 0
   },
