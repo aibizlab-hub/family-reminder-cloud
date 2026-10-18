@@ -1,6 +1,45 @@
 {
   "reminders": [
     {
+      "id": "r1787654750596lws",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "親子旅行",
+      "date": "2026-12-02",
+      "time": "09:00",
+      "category": "special",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1788243985784ck9",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "打針",
+      "date": "2026-10-23",
+      "time": "16:30",
+      "category": "special",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r1791898142588up6",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "No. 489 Hennessy Road, Causeway Bay, Hong Kong",
+      "date": "2026-10-29",
+      "time": "11:00",
+      "category": "activity",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none"
+    },
+    {
       "id": "r1782536287397slr",
       "notified": false,
       "caregiverNotified1d": false,
@@ -95,65 +134,6 @@
       "repeatDays": [
         1
       ]
-    },
-    {
-      "id": "r1787654750596lws",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "親子旅行",
-      "date": "2026-12-02",
-      "time": "09:00",
-      "category": "special",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none"
-    },
-    {
-      "id": "r1788243985784ck9",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "打針",
-      "date": "2026-10-23",
-      "time": "16:30",
-      "category": "special",
-      "caregiver": "EPPIE",
-      "note": "",
-      "repeat": "none"
-    },
-    {
-      "id": "r1783163681885r6d",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "VICTOR",
-      "date": "2026-07-10",
-      "time": "17:00",
-      "category": "work",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "weekly",
-      "repeatDays": [
-        5
-      ]
-    },
-    {
-      "id": "r178203363735416b",
-      "notified": false,
-      "name": "軟網球班",
-      "date": "2026-07-22",
-      "time": "13:45",
-      "category": "summer",
-      "caregiver": "EPPIE",
-      "note": "七，八月\n坪石青協",
-      "repeat": "weekly",
-      "repeatDays": [
-        3
-      ],
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "address": ""
     },
     {
       "id": "r17825362469190h9",
@@ -1302,6 +1282,229 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-09-28T13:55:05.639Z"
+    },
+    {
+      "id": "r178203363735416b",
+      "notified": false,
+      "name": "軟網球班",
+      "date": "2026-07-22",
+      "time": "13:45",
+      "category": "summer",
+      "caregiver": "EPPIE",
+      "note": "七，八月\n坪石青協",
+      "repeat": "weekly",
+      "repeatDays": [
+        3
+      ],
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "address": "",
+      "archivedAt": "2026-10-13T12:32:28.800Z"
+    },
+    {
+      "id": "r1782536287397slr",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad數學",
+      "date": "2026-07-01",
+      "time": "19:15",
+      "category": "class",
+      "caregiver": "ALL",
+      "note": "",
+      "repeat": "none",
+      "repeatDays": [
+        3
+      ],
+      "archivedAt": "2026-10-15T13:54:44.268Z"
+    },
+    {
+      "id": "r1783164945626mwk",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文班",
+      "date": "2026-07-15",
+      "time": "10:30",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none",
+      "repeatDays": [
+        3
+      ],
+      "archivedAt": "2026-10-15T13:54:44.268Z"
+    },
+    {
+      "id": "r1783577708123bid",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "郭老師",
+      "date": "2026-07-17",
+      "time": "10:30",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "鑽石山",
+      "repeat": "none",
+      "repeatDays": [
+        5
+      ],
+      "archivedAt": "2026-10-15T13:54:44.268Z"
+    },
+    {
+      "id": "r1784107782087654",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "數學",
+      "date": "2026-07-20",
+      "time": "18:00",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "荷里活地下 中銀隔離 Maths Concept",
+      "repeat": "none",
+      "repeatDays": [
+        1
+      ],
+      "archivedAt": "2026-10-15T13:54:44.268Z"
+    },
+    {
+      "id": "r1786717144779ntw",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 數學",
+      "date": "2026-08-20",
+      "time": "19:15",
+      "category": "class",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "repeatDays": [
+        4
+      ],
+      "archivedAt": "2026-10-15T13:54:44.268Z"
+    },
+    {
+      "id": "r1787137663811ndf",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 普通話",
+      "date": "2026-08-24",
+      "time": "09:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none",
+      "repeatDays": [
+        1
+      ],
+      "archivedAt": "2026-10-15T13:54:44.268Z"
+    },
+    {
+      "id": "r1783163681885r6d",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "VICTOR",
+      "date": "2026-07-10",
+      "time": "17:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "repeatDays": [
+        5
+      ],
+      "archivedAt": "2026-10-15T13:54:44.268Z"
+    },
+    {
+      "id": "r17825362469190h9",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "iPad 數學",
+      "date": "2026-06-27",
+      "time": "10:00",
+      "category": "class",
+      "caregiver": "ALL",
+      "note": "",
+      "repeat": "none",
+      "repeatDays": [
+        6
+      ],
+      "archivedAt": "2026-10-15T13:54:44.268Z"
+    },
+    {
+      "id": "r17847109908209qw",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "中文班",
+      "date": "2026-07-26",
+      "time": "14:30",
+      "category": "class",
+      "caregiver": "Rosanna Mok",
+      "note": "杏花邨 啟蒙",
+      "repeat": "none",
+      "repeatDays": [
+        0
+      ],
+      "archivedAt": "2026-10-15T13:54:44.268Z"
+    },
+    {
+      "id": "r1782033588722kko",
+      "notified": false,
+      "name": "Joe Sir",
+      "date": "2026-06-27",
+      "time": "15:00",
+      "category": "class",
+      "caregiver": "EPPIE",
+      "note": "",
+      "repeat": "none",
+      "repeatDays": [
+        6
+      ],
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "address": "",
+      "archivedAt": "2026-10-15T13:54:44.268Z"
+    },
+    {
+      "id": "r1782533365556by6",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Obi老師 跳舞",
+      "date": "2026-06-27",
+      "time": "13:30",
+      "category": "class",
+      "caregiver": "COFFE",
+      "note": "",
+      "repeat": "none",
+      "repeatDays": [
+        6
+      ],
+      "archivedAt": "2026-10-15T13:54:44.268Z"
+    },
+    {
+      "id": "r1783163681885r6d",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "VICTOR",
+      "date": "2026-07-10",
+      "time": "17:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "weekly",
+      "repeatDays": [
+        5
+      ],
+      "archivedAt": "2026-10-15T17:05:26.203Z"
     }
   ],
   "_deletedIds": [],
@@ -1337,12 +1540,22 @@
   },
   "pendingMessages": [],
   "_lastArchived": [
-    "r1789359649206znz"
+    "r1782536287397slr",
+    "r1783164945626mwk",
+    "r1783577708123bid",
+    "r1784107782087654",
+    "r1786717144779ntw",
+    "r1787137663811ndf",
+    "r1783163681885r6d",
+    "r17825362469190h9",
+    "r17847109908209qw",
+    "r1782033588722kko",
+    "r1782533365556by6"
   ],
   "notifyLedger": {},
-  "digestSentDate": "2026-10-09",
+  "digestSentDate": "2026-10-18",
   "sendCaps": {
-    "date": "2026-10-10",
+    "date": "2026-10-19",
     "perPhone": {},
     "global": 0
   },
@@ -1352,7 +1565,45 @@
       "keys": {
         "p256dh": "BCVy8HWi_1nv8ARuhldOywAa5ZC1r_OlsFjBygPiZIkjijYBE-yr7w7PkAe-5-moa-c8pDXqSlYl5Rim9ohhMtU",
         "auth": "e4tit2p_6D9lkvbbWhZYEA"
+      },
+      "caregiver": "KEN"
+    },
+    {
+      "endpoint": "https://web.push.apple.com/QCNjA8Lo7pM4tRPGN94-giqvjpW8LtojcGKsKzFaN6sBChGBoIC5LJDy5pu4Ngh8GU-cWsIdnUa6pX9X0rY_h10P3UFrwx1ihDGnQey6v18cTeFi0pP1qZTW0vDbSe2DfqLGMcOHvDtBp234K50YSEe9fhYNGutCw8o8XiQfCFo",
+      "keys": {
+        "p256dh": "BLN_ZFnpbbYW0weGAkCgSreWy-oTexCEnOKXtI2RmDj6DvVpCFNyzI5LWPSIUkvMKFagHtQFtue1n1Z7iBOtZd4",
+        "auth": "cdoSbNKpQxo2XyIYfhSJUg"
       }
+    }
+  ],
+  "caregivers": [
+    {
+      "key": "KEN",
+      "name": "Ken（我）"
+    },
+    {
+      "key": "EPPIE",
+      "name": "太太 Eppie"
+    },
+    {
+      "key": "COFFE",
+      "name": "Coffee"
+    },
+    {
+      "key": "Kenny Yam",
+      "name": "Kenny"
+    },
+    {
+      "key": "Rosanna Mok",
+      "name": "Rosanna"
+    },
+    {
+      "key": "老豆",
+      "name": "老豆"
+    },
+    {
+      "key": "ALL",
+      "name": "全家"
     }
   ]
 }
