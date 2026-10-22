@@ -1557,11 +1557,9 @@
   },
   "digestSentDate": "2026-10-22",
   "sendCaps": {
-    "date": "2026-10-22",
-    "perPhone": {
-      "85297510047": 1
-    },
-    "global": 1
+    "date": "2026-10-23",
+    "perPhone": {},
+    "global": 0
   },
   "pushSubscriptions": [
     {
