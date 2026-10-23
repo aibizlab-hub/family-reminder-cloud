@@ -1554,15 +1554,16 @@
   ],
   "notifyLedger": {
     "r1788243985784ck9::1d": true,
-    "r1788243985784ck9::3h": true
+    "r1788243985784ck9::3h": true,
+    "r1788243985784ck9::ontime": true
   },
   "digestSentDate": "2026-10-23",
   "sendCaps": {
     "date": "2026-10-23",
     "perPhone": {
-      "85297510047": 1
+      "85297510047": 2
     },
-    "global": 1
+    "global": 2
   },
   "pushSubscriptions": [
     {
