@@ -1552,10 +1552,14 @@
     "r1782033588722kko",
     "r1782533365556by6"
   ],
-  "notifyLedger": {},
-  "digestSentDate": "2026-10-15",
+  "notifyLedger": {
+    "r1788243985784ck9::1d": true,
+    "r1788243985784ck9::3h": true,
+    "r1788243985784ck9::ontime": true
+  },
+  "digestSentDate": "2026-10-24",
   "sendCaps": {
-    "date": "2026-10-16",
+    "date": "2026-10-24",
     "perPhone": {},
     "global": 0
   },
