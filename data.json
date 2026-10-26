@@ -188,22 +188,6 @@
       ]
     },
     {
-      "id": "r1783163681885r6d",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "VICTOR",
-      "date": "2026-07-10",
-      "time": "17:00",
-      "category": "work",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "weekly",
-      "repeatDays": [
-        5
-      ]
-    },
-    {
       "id": "r178203363735416b",
       "notified": false,
       "name": "軟網球班",
@@ -1539,6 +1523,23 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-10-24T07:54:06.462Z"
+    },
+    {
+      "id": "r1783163681885r6d",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "VICTOR",
+      "date": "2026-07-10",
+      "time": "17:00",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "weekly",
+      "repeatDays": [
+        5
+      ],
+      "archivedAt": "2026-10-26T01:17:55.551Z"
     }
   ],
   "_deletedIds": [],
@@ -1581,9 +1582,9 @@
     "r1788243985784ck9::3h": true,
     "r1788243985784ck9::ontime": true
   },
-  "digestSentDate": "2026-10-26",
+  "digestSentDate": "2026-10-15",
   "sendCaps": {
-    "date": "2026-10-26",
+    "date": "2026-10-15",
     "perPhone": {},
     "global": 0
   },
