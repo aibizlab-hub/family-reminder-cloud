@@ -203,6 +203,19 @@
       "caregiverNotified1d": false,
       "caregiverNotified3h": false,
       "address": ""
+    },
+    {
+      "id": "r1792977565194e0k",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Mpf堂 $150 記得去",
+      "date": "2026-11-26",
+      "time": "14:30",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "Mfc b座13樓 e室",
+      "repeat": "none"
     }
   ],
   "birthdays": [
