@@ -203,6 +203,19 @@
       "caregiver": "KEN",
       "note": "Mfc b座13樓 e室",
       "repeat": "none"
+    },
+    {
+      "id": "r1793560261615jnt",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Online mpf 堂",
+      "date": "2026-11-13",
+      "time": "14:30",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -1454,10 +1467,5 @@
     "r1791898142588up6"
   ],
   "notifyLedger": {},
-  "sendCaps": {
-    "date": "2026-11-02",
-    "perPhone": {},
-    "global": 0
-  },
   "digestSentDate": "2026-11-01"
 }
