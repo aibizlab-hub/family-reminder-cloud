@@ -216,19 +216,6 @@
       "caregiver": "KEN",
       "note": "",
       "repeat": "none"
-    },
-    {
-      "id": "r1793856492783pis",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "醫院",
-      "date": "2026-11-05",
-      "time": "15:30",
-      "category": "other",
-      "caregiver": "KEN",
-      "note": "拎底衫褲 拎校服 拎羊仔 拎AirPod",
-      "repeat": "none"
     }
   ],
   "birthdays": [
@@ -1442,6 +1429,20 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-10-30T10:46:09.173Z"
+    },
+    {
+      "id": "r1793856492783pis",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "醫院",
+      "date": "2026-11-05",
+      "time": "15:30",
+      "category": "other",
+      "caregiver": "KEN",
+      "note": "拎底衫褲 拎校服 拎羊仔 拎AirPod",
+      "repeat": "none",
+      "archivedAt": "2026-11-07T06:03:15.193Z"
     }
   ],
   "_deletedIds": [],
@@ -1477,8 +1478,6 @@
   },
   "pendingMessages": [],
   "_lastArchived": [
-    "r1791898142588up6"
-  ],
-  "notifyLedger": {},
-  "digestSentDate": "2026-11-01"
+    "r1793856492783pis"
+  ]
 }
