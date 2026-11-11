@@ -303,6 +303,7 @@
           <option value="dining">&#127869;&#65039; 聚餐</option>
           <option value="activity">&#127917; 活動</option>
           <option value="other">&#128230; 其他</option>
+          <option value="public">&#127968; 公屋</option>
         </select>
       </div>
       <div class="form-group"><label class="form-label">照顧者 <span style="color:#ef4444">*</span><small style="color:#ef4444;font-weight:400;font-size:10px;margin-left:4px;">（必填，否則不會發通知）</small></label>
@@ -423,10 +424,11 @@ var CAT = {
   finance:{icon:'\u{1F4B0}',name:'財務',bdg:'bdg-finance',order:8},
   dining:{icon:'\u{1F37D}\uFE0F',name:'聚餐',bdg:'bdg-dining',order:9},
   activity:{icon:'\u{1F3AF}',name:'活動',bdg:'bdg-activity',order:10},
-  other:{icon:'\u{1F4E6}',name:'其他',bdg:'bdg-other',order:11}
+  other:{icon:'\u{1F4E6}',name:'其他',bdg:'bdg-other',order:11},
+  public:{icon:'\u{1F3E0}',name:'公屋',bdg:'bdg-public',order:12}
 };
 // 主頁分類排序（work 唔在內）
-var CAT_ORDER = ['school','summer','routine','class','special','travel','medical','finance','dining','activity','other'];
+var CAT_ORDER = ['school','summer','routine','class','special','travel','medical','finance','dining','activity','other','public'];
 
 var CAREGIVERS = ['KEN','EPPIE','COFFE','Kenny Yam','Rosanna Mok','老豆'];
 var CAREGIVER_EMOJI = { 'KEN':'&#128100;', 'EPPIE':'&#128017;', 'COFFE':'&#9749;', 'Kenny Yam':'&#128104;', 'Rosanna Mok':'&#128105;', '老豆':'&#128116;' };
