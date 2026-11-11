@@ -216,8 +216,7 @@
       "caregiver": "KEN",
       "note": "",
       "repeat": "none"
-    }
-  ],
+    },
     {
       "id": "r20261111001pub",
       "notified": false,
@@ -287,7 +286,8 @@
       "repeatDayOfMonth": 20,
       "caregiverNotified1d": false,
       "caregiverNotified3h": false
-    },
+    }
+  ],
   "birthdays": [
     {
       "name": "KEN",
