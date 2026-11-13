@@ -203,6 +203,89 @@
       "caregiver": "KEN",
       "note": "Mfc b座13樓 e室",
       "repeat": "none"
+    },
+    {
+      "id": "r1793560261615jnt",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Online mpf 堂",
+      "date": "2026-11-13",
+      "time": "14:30",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none"
+    },
+    {
+      "id": "r20261111001pub",
+      "notified": false,
+      "name": "公屋租金（房屋署）",
+      "date": "2026-11-01",
+      "time": "09:00",
+      "category": "public",
+      "caregiver": "KEN",
+      "note": "金額待填：公屋租金按家庭入息比例計算，約 $1000-$2500/月。請填寫實際金額，可改每月交租日。",
+      "repeat": "monthly",
+      "repeatDayOfMonth": 1,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false
+    },
+    {
+      "id": "r20261111002pub",
+      "notified": false,
+      "name": "水費（水務署）",
+      "date": "2026-11-05",
+      "time": "09:00",
+      "category": "public",
+      "caregiver": "KEN",
+      "note": "金額待填。水務署每4個月抄表出單（公屋有免費用水額），可改為每4個月提醒或保持每月。",
+      "repeat": "monthly",
+      "repeatDayOfMonth": 5,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false
+    },
+    {
+      "id": "r20261111003pub",
+      "notified": false,
+      "name": "電費（中華電力/港燈）",
+      "date": "2026-11-10",
+      "time": "09:00",
+      "category": "public",
+      "caregiver": "KEN",
+      "note": "金額待填：視用電量，約 $300-$800/月（夏天冷氣多會更高）。",
+      "repeat": "monthly",
+      "repeatDayOfMonth": 10,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false
+    },
+    {
+      "id": "r20261111004pub",
+      "notified": false,
+      "name": "煤氣費（香港中華煤氣）",
+      "date": "2026-11-15",
+      "time": "09:00",
+      "category": "public",
+      "caregiver": "KEN",
+      "note": "金額待填：家用煮食煤氣，約 $100-$400/月。",
+      "repeat": "monthly",
+      "repeatDayOfMonth": 15,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false
+    },
+    {
+      "id": "r20261111005pub",
+      "notified": false,
+      "name": "公屋雜費（寬頻/維修等）",
+      "date": "2026-11-20",
+      "time": "09:00",
+      "category": "public",
+      "caregiver": "KEN",
+      "note": "金額待填：例家居寬頻月費、屋邨維修費、垃圾費等。可加項目。",
+      "repeat": "monthly",
+      "repeatDayOfMonth": 20,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false
     }
   ],
   "birthdays": [
@@ -1416,6 +1499,20 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-10-30T10:46:09.173Z"
+    },
+    {
+      "id": "r1793856492783pis",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "醫院",
+      "date": "2026-11-05",
+      "time": "15:30",
+      "category": "other",
+      "caregiver": "KEN",
+      "note": "拎底衫褲 拎校服 拎羊仔 拎AirPod",
+      "repeat": "none",
+      "archivedAt": "2026-11-07T06:03:15.193Z"
     }
   ],
   "_deletedIds": [],
@@ -1446,17 +1543,16 @@
       "r1784387587534arh",
       "r1784684407605t1u",
       "r17847109908209qw",
-      "r1783163681885r6d"
+      "r1783163681885r6d",
+      "r20261111001pub",
+      "r20261111002pub",
+      "r20261111003pub",
+      "r20261111004pub",
+      "r20261111005pub"
     ]
   },
   "pendingMessages": [],
   "_lastArchived": [
-    "r1791898142588up6"
-  ],
-  "notifyLedger": {},
-  "sendCaps": {
-    "date": "2026-10-31",
-    "perPhone": {},
-    "global": 0
-  }
+    "r1793856492783pis"
+  ]
 }
