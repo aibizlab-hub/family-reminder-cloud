@@ -42,6 +42,14 @@ const CAREGIVER_PHONES = {
   '老豆':        { phone: '85262269100', name: '老豆' }
 };
 
+// 收件人解析：優先 caregivers 陣列（多照顧者）；其次 caregiver === 'ALL'；最後單一 caregiver。
+// 向後兼容：冇 caregivers 欄位嘅舊提醒行為不變。
+function targetsFor(r) {
+  if (Array.isArray(r.caregivers) && r.caregivers.length) return r.caregivers.slice();
+  if (r.caregiver === 'ALL') return Object.keys(CAREGIVER_PHONES);
+  return [r.caregiver];
+}
+
 // ===== CallMeBot API keys (per caregiver) =====
 // 優先讀 GitHub Secrets (env)；若 env 冇值，先用已驗證嘅 fallback default，令 6 位照顧者 24/7 即時生效。
 // ⚠️ 保安：呢啲 fallback 暫時 hardcode 喺 source（repo 若 public 即公開）。建議 set GitHub Secrets CALLMEBOT_KEN/EPPIE/ROSANNA/KENNY/COFFE/LODOU 後，拆走 source 入面嘅 fallback。
@@ -232,7 +240,8 @@ function buildMsg(r, type) {
   msg += `📅 ${formatDate(r.date)}（星期${getWeekDay(r.date)}）${r.time && r.time !== '00:00' ? ' ' + r.time : ''}\n`;
   if (r.address) msg += `📍 ${r.address}\n`;
   if (r.note) msg += `📝 ${r.note}\n`;
-  if (r.caregiver === 'ALL') msg += `\n👥 照顧者：全部人\n`;
+  if (Array.isArray(r.caregivers) && r.caregivers.length) msg += `\n👥 照顧者：${r.caregivers.join(' + ')}\n`;
+  else if (r.caregiver === 'ALL') msg += `\n👥 照顧者：全部人\n`;
   else msg += `\n👤 照顧者：${r.caregiver}\n`;
   msg += `🌐 查看全部：https://aibizlab-hub.github.io/family-reminder-cloud/`;
   return msg;
@@ -368,7 +377,7 @@ async function main() {
 
     // --- ① 提早 1 日 (anytime 08:00–22:00 HKT 嗰日；錯過 9 點都會發，ledger 防重複) ---
     if (daysUntil === 1 && hkHour >= 8 && hkHour <= 22 && !ledger[lk(r.id, '1d')]) {
-      const targets = r.caregiver === 'ALL' ? Object.keys(CAREGIVER_PHONES) : [r.caregiver];
+      const targets = targetsFor(r);
       for (const c of targets) {
         if (!CAREGIVER_PHONES[c]) continue;
         totalTargets++;
@@ -384,7 +393,7 @@ async function main() {
       const nowHkMin = hkHour * 60 + hkMin;
       const diffMin = eventHkMin - nowHkMin;
       if (diffMin >= 150 && diffMin <= 210) {
-        const targets = r.caregiver === 'ALL' ? Object.keys(CAREGIVER_PHONES) : [r.caregiver];
+        const targets = targetsFor(r);
         for (const c of targets) {
           if (!CAREGIVER_PHONES[c]) continue;
           totalTargets++;
@@ -396,7 +405,7 @@ async function main() {
 
     // --- ③ 準時 (window = [dt-25min, dt+20min]，30min cron 必中)；dtMs 用 HKT 絕對 UTC (P0 修正) ---
     if (!ledger[lk(r.id, 'ontime')] && nowMs >= dtMs - 25 * 60000 && nowMs <= dtMs + 20 * 60000) {
-      const targets = r.caregiver === 'ALL' ? Object.keys(CAREGIVER_PHONES) : [r.caregiver];
+      const targets = targetsFor(r);
       for (const c of targets) {
         if (!CAREGIVER_PHONES[c]) continue;
         totalTargets++;

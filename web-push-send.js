@@ -93,6 +93,10 @@ function occKey(r, date) {
 
 // ---------- 按照顧者範圍收件人 ----------
 function recipientsFor(r, subs) {
+  // 多照顧者：優先 caregivers 陣列（只發畀名單內照顧者嘅裝置）
+  if (Array.isArray(r.caregivers) && r.caregivers.length) {
+    return subs.filter(s => r.caregivers.indexOf((s.caregiver || '').trim()) >= 0);
+  }
   const cg = (r.caregiver || '').trim();
   if (cg === 'ALL') return subs.slice();      // 全家 → 所有裝置
   if (cg === '') return [];                    // 空白 = 唔廣播（用家明確要求：唔好騷擾所有人）
@@ -106,7 +110,8 @@ function buildPayload(r, win, next) {
   if (win.key === 'pre_day') { title = '📅 明日提醒'; body = (t ? t + ' ' : '') + r.name + '（提前1日）'; }
   else if (win.key === 'pre_3h') { title = '⏰ 仲有3個鐘'; body = (t ? t + ' ' : '') + r.name + '（提前3小時）'; }
   else { title = '🔔 時間到'; body = (t ? '🕐 ' + t + ' ' : '') + r.name; }
-  if (r.caregiver && r.caregiver !== 'ALL') body += '  👤' + r.caregiver;
+  if (Array.isArray(r.caregivers) && r.caregivers.length) body += '  👥' + r.caregivers.join('+');
+  else if (r.caregiver && r.caregiver !== 'ALL') body += '  👤' + r.caregiver;
   if (r.note) body += '  📝' + r.note;
   return JSON.stringify({ title, body, tag: r.id + '_' + win.key, url: '/' });
 }

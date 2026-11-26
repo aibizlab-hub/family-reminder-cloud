@@ -31,6 +31,12 @@ const CAREGIVER_PHONES = {
   '老豆':        { phone: '85262269100',  name: '老豆' }
 };
 
+// 收件人解析：優先 caregivers 陣列；其次 ALL；最後單一 caregiver（向後兼容）
+function targetsFor(r) {
+  if (Array.isArray(r.caregivers) && r.caregivers.length) return r.caregivers.slice();
+  if (r.caregiver === 'ALL') return Object.keys(CAREGIVER_PHONES);
+  return [r.caregiver];
+}
 // ===== CallMeBot API keys (per caregiver, from GitHub Secrets) =====
 const CALLMEBOT_KEYS = {
   'KEN':         process.env.CALLMEBOT_KEN,
@@ -119,7 +125,8 @@ function buildCaregiverMsg(r, type) {
   msg += `📅 ${formatDate(r.date)}（星期${getWeekDay(r.date)}）${r.time && r.time !== '00:00' ? ' ' + r.time : ''}\n`;
   if (r.address) msg += `📍 ${r.address}\n`;
   if (r.note) msg += `📝 ${r.note}\n`;
-  if (r.caregiver === 'ALL') msg += `\n👥 照顧者：全部人\n`;
+  if (Array.isArray(r.caregivers) && r.caregivers.length) msg += `\n👥 照顧者：${r.caregivers.join(' + ')}\n`;
+  else if (r.caregiver === 'ALL') msg += `\n👥 照顧者：全部人\n`;
   else msg += `\n👤 照顧者：${r.caregiver}\n`;
   msg += `🌐 查看全部：https://aibizlab-hub.github.io/family-reminder-cloud/`;
   return msg;
@@ -240,9 +247,7 @@ async function main() {
   let totalTargets = 0;
   for (const item of toNotify) {
     const reminder = item.reminder;
-    const targets = reminder.caregiver === 'ALL'
-      ? Object.keys(CAREGIVER_PHONES)
-      : [reminder.caregiver];
+    const targets = targetsFor(reminder);
     let itemSent = 0, itemTotal = 0;
     for (const care of targets) {
       if (!CAREGIVER_PHONES[care]) continue;

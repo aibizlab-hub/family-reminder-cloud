@@ -203,7 +203,11 @@
       "repeat": "monthly",
       "repeatDayOfMonth": 1,
       "caregiverNotified1d": false,
-      "caregiverNotified3h": false
+      "caregiverNotified3h": false,
+      "caregivers": [
+        "KEN",
+        "EPPIE"
+      ]
     },
     {
       "id": "r20261111002pub",
@@ -217,7 +221,11 @@
       "repeat": "monthly",
       "repeatDayOfMonth": 5,
       "caregiverNotified1d": false,
-      "caregiverNotified3h": false
+      "caregiverNotified3h": false,
+      "caregivers": [
+        "KEN",
+        "EPPIE"
+      ]
     },
     {
       "id": "r20261111003pub",
@@ -231,7 +239,11 @@
       "repeat": "monthly",
       "repeatDayOfMonth": 10,
       "caregiverNotified1d": false,
-      "caregiverNotified3h": false
+      "caregiverNotified3h": false,
+      "caregivers": [
+        "KEN",
+        "EPPIE"
+      ]
     },
     {
       "id": "r20261111004pub",
@@ -245,7 +257,11 @@
       "repeat": "monthly",
       "repeatDayOfMonth": 15,
       "caregiverNotified1d": false,
-      "caregiverNotified3h": false
+      "caregiverNotified3h": false,
+      "caregivers": [
+        "KEN",
+        "EPPIE"
+      ]
     },
     {
       "id": "r20261111005pub",
@@ -259,7 +275,11 @@
       "repeat": "monthly",
       "repeatDayOfMonth": 20,
       "caregiverNotified1d": false,
-      "caregiverNotified3h": false
+      "caregiverNotified3h": false,
+      "caregivers": [
+        "KEN",
+        "EPPIE"
+      ]
     }
   ],
   "birthdays": [
