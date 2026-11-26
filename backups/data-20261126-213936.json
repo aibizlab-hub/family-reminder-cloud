@@ -14,210 +14,6 @@
       "repeat": "none"
     },
     {
-      "id": "r1782536287397slr",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "iPad數學",
-      "date": "2026-07-01",
-      "time": "19:15",
-      "category": "class",
-      "caregiver": "ALL",
-      "note": "",
-      "repeat": "weekly",
-      "repeatDays": [
-        3
-      ]
-    },
-    {
-      "id": "r1783164945626mwk",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "中文班",
-      "date": "2026-07-15",
-      "time": "10:30",
-      "category": "class",
-      "caregiver": "EPPIE",
-      "note": "",
-      "repeat": "weekly",
-      "repeatDays": [
-        3
-      ]
-    },
-    {
-      "id": "r1783577708123bid",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "郭老師",
-      "date": "2026-07-17",
-      "time": "10:30",
-      "category": "class",
-      "caregiver": "COFFE",
-      "note": "鑽石山",
-      "repeat": "weekly",
-      "repeatDays": [
-        5
-      ]
-    },
-    {
-      "id": "r1784107782087654",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "數學",
-      "date": "2026-07-20",
-      "time": "18:00",
-      "category": "class",
-      "caregiver": "COFFE",
-      "note": "荷里活地下 中銀隔離 Maths Concept",
-      "repeat": "weekly",
-      "repeatDays": [
-        1
-      ]
-    },
-    {
-      "id": "r1786717144779ntw",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "iPad 數學",
-      "date": "2026-08-20",
-      "time": "19:15",
-      "category": "class",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "weekly",
-      "repeatDays": [
-        4
-      ]
-    },
-    {
-      "id": "r1787137663811ndf",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "iPad 普通話",
-      "date": "2026-08-24",
-      "time": "09:00",
-      "category": "class",
-      "caregiver": "EPPIE",
-      "note": "",
-      "repeat": "weekly",
-      "repeatDays": [
-        1
-      ]
-    },
-    {
-      "id": "r17825362469190h9",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "iPad 數學",
-      "date": "2026-06-27",
-      "time": "10:00",
-      "category": "class",
-      "caregiver": "ALL",
-      "note": "",
-      "repeat": "weekly",
-      "repeatDays": [
-        6
-      ]
-    },
-    {
-      "id": "r17847109908209qw",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "中文班",
-      "date": "2026-07-26",
-      "time": "14:30",
-      "category": "class",
-      "caregiver": "Rosanna Mok",
-      "note": "杏花邨 啟蒙",
-      "repeat": "weekly",
-      "repeatDays": [
-        0
-      ]
-    },
-    {
-      "id": "r1782033588722kko",
-      "notified": false,
-      "name": "Joe Sir",
-      "date": "2026-06-27",
-      "time": "15:00",
-      "category": "class",
-      "caregiver": "EPPIE",
-      "note": "",
-      "repeat": "weekly",
-      "repeatDays": [
-        6
-      ],
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "address": ""
-    },
-    {
-      "id": "r1782533365556by6",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "Obi老師 跳舞",
-      "date": "2026-06-27",
-      "time": "13:30",
-      "category": "class",
-      "caregiver": "COFFE",
-      "note": "",
-      "repeat": "weekly",
-      "repeatDays": [
-        6
-      ]
-    },
-    {
-      "id": "r178203363735416b",
-      "notified": false,
-      "name": "軟網球班",
-      "date": "2026-07-22",
-      "time": "13:45",
-      "category": "summer",
-      "caregiver": "EPPIE",
-      "note": "七，八月\n坪石青協",
-      "repeat": "weekly",
-      "repeatDays": [
-        3
-      ],
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "address": ""
-    },
-    {
-      "id": "r1792977565194e0k",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "Mpf堂 $150 記得去",
-      "date": "2026-11-26",
-      "time": "14:30",
-      "category": "work",
-      "caregiver": "KEN",
-      "note": "Mfc b座13樓 e室",
-      "repeat": "none"
-    },
-    {
-      "id": "r1793560261615jnt",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "Online mpf 堂",
-      "date": "2026-11-13",
-      "time": "14:30",
-      "category": "work",
-      "caregiver": "KEN",
-      "note": "",
-      "repeat": "none"
-    },
-    {
       "id": "r20261111001pub",
       "notified": false,
       "name": "公屋租金（房屋署）",
@@ -229,7 +25,11 @@
       "repeat": "monthly",
       "repeatDayOfMonth": 1,
       "caregiverNotified1d": false,
-      "caregiverNotified3h": false
+      "caregiverNotified3h": false,
+      "caregivers": [
+        "KEN",
+        "EPPIE"
+      ]
     },
     {
       "id": "r20261111002pub",
@@ -243,7 +43,11 @@
       "repeat": "monthly",
       "repeatDayOfMonth": 5,
       "caregiverNotified1d": false,
-      "caregiverNotified3h": false
+      "caregiverNotified3h": false,
+      "caregivers": [
+        "KEN",
+        "EPPIE"
+      ]
     },
     {
       "id": "r20261111003pub",
@@ -257,7 +61,11 @@
       "repeat": "monthly",
       "repeatDayOfMonth": 10,
       "caregiverNotified1d": false,
-      "caregiverNotified3h": false
+      "caregiverNotified3h": false,
+      "caregivers": [
+        "KEN",
+        "EPPIE"
+      ]
     },
     {
       "id": "r20261111004pub",
@@ -271,7 +79,11 @@
       "repeat": "monthly",
       "repeatDayOfMonth": 15,
       "caregiverNotified1d": false,
-      "caregiverNotified3h": false
+      "caregiverNotified3h": false,
+      "caregivers": [
+        "KEN",
+        "EPPIE"
+      ]
     },
     {
       "id": "r20261111005pub",
@@ -285,7 +97,11 @@
       "repeat": "monthly",
       "repeatDayOfMonth": 20,
       "caregiverNotified1d": false,
-      "caregiverNotified3h": false
+      "caregiverNotified3h": false,
+      "caregivers": [
+        "KEN",
+        "EPPIE"
+      ]
     }
   ],
   "birthdays": [
@@ -1513,9 +1329,25 @@
       "note": "拎底衫褲 拎校服 拎羊仔 拎AirPod",
       "repeat": "none",
       "archivedAt": "2026-11-07T06:03:15.193Z"
+    },
+    {
+      "id": "r1793560261615jnt",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Online mpf 堂",
+      "date": "2026-11-13",
+      "time": "14:30",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "",
+      "repeat": "none",
+      "archivedAt": "2026-11-14T13:03:36.023Z"
     }
   ],
-  "_deletedIds": [],
+  "_deletedIds": [
+    "r1792977565194e0k"
+  ],
   "settings": {
     "dark_mode": false,
     "pre_day": true,
@@ -1553,6 +1385,12 @@
   },
   "pendingMessages": [],
   "_lastArchived": [
-    "r1793856492783pis"
-  ]
+    "r1793560261615jnt"
+  ],
+  "notifyLedger": {},
+  "sendCaps": {
+    "date": "2026-11-27",
+    "perPhone": {},
+    "global": 0
+  }
 }
