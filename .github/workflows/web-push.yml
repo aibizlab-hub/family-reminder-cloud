@@ -3,32 +3,25 @@ name: Web Push Reminder
 # ════════════════════════════════════════════════════════════════
 # Web Push 發送（家庭提醒通知）
 #
-# 驅動方式（2026-10-11 終極加固 · v3）：
-#   ✅ 唯一 24/7 驅動 = self-perpetuate re-arm loop（尾段 `gh workflow run`
-#     自己起重啟，每 ~5 分鐘一粒）。經實測：GitHub 原生 schedule 喺呢個 repo
-#     已經死咗（最後一次 schedule run 係 2026-10-11T00:54，之後零觸發），
-#     所以必須靠 re-arm loop 先有提醒發送。
+# 驅動方式（2026-11-26 修復 · v4）：
+#   ✅ 唯一 24/7 驅動 = GitHub 原生 schedule（每 5 分鐘一粒）。
+#      背景：舊版 re-arm loop 11-05 被 cancelled 後永久中斷。
+#      backup.yml / health-monitor.yml 嘅 native schedule 一直正常，所以改用原生 schedule。
 #   ✅ 即時／手動觸發：repository_dispatch type=web-push-tick（前端或 API 即時重發）／
 #     workflow_dispatch（GitHub UI Run workflow）。
-#   ❌ 唔用 on: push（每次改 data.json 會引爆呢條 + re-arm 撞 concurrency → cancelled）。
-#   ❌ 唔用原生 schedule（已死；若將來復活會同 re-arm 撞 concurrency → cancelled）。
-#   ❌ 唔 cross-trigger cloud-reminder（舊設計 web-push 入面 launch cloud-reminder，
-#      令 cloud-reminder 有兩個 driver 互撞 → 紅 ✗ cancelled；已拆開各自獨立 re-arm）。
-#
-# 點解而家唔會再出 cancelled run：
-#   成條 chain 同一時間只有 1 個 driver（re-arm），每次 run 完成先 dispatch 下一粒，
-#   永遠唔會有 2 個 run 同時擠入 concurrency group → 零碰撞 → 零 cancelled。
-#   concurrency group 照留：萬一有重疊（極罕見），排隊唔會並行雙發 push。
+#   ❌ 唔用 on: push（每次改 data.json 會引爆 → 撞 concurrency）。
+#   concurrency group 照留：排隊唔 cancel，串行化，防止重複 push。
 # ════════════════════════════════════════════════════════════════
 
 on:
+  schedule:
+    - cron: '*/5 * * * *'   # 每 5 分鐘（原生 schedule，唔再靠 re-arm）
   workflow_dispatch:        # 手動：GitHub → Actions → 此 workflow → Run workflow
   repository_dispatch:
     types: [web-push-tick]  # 前端／API 即時重發
 
 permissions:
   contents: read
-  actions: write   # re-arm 用：gh workflow run 自己起重啟
 
 concurrency:
   group: web-push
@@ -52,22 +45,4 @@ jobs:
           VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
           VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
         run: node web-push-send.js
-      # ★ self-perpetuate：run 完成先 dispatch 下一粒（單 driver，唔會撞 concurrency）
-      - name: Re-arm timer (self-perpetuate ~5min cadence)
-        if: always()
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_REPO: aibizlab-hub/family-reminder-cloud
-        run: |
-          echo "⏳ Sleeping ~4m15s before re-arming (target 5-min cadence)…"
-          sleep 255
-          for i in 1 2 3 4 5; do
-            if gh workflow run web-push.yml --ref "${{ github.ref_name }}"; then
-              echo "✅ Re-armed web-push timer (attempt $i)"
-              exit 0
-            fi
-            echo "⚠️ Re-arm attempt $i failed, retrying in $((i*10))s..."
-            sleep $((i*10))
-          done
-          echo "::error::Failed to re-arm web-push timer after 5 retries"
-          exit 1
+      # 24/7 驅動而家靠上面 on: schedule（每 5 分鐘），唔再靠 re-arm
