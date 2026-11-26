@@ -100,10 +100,22 @@ function sanitize(obj) {
   return obj;
 }
 
-function unionById(repoArr, blobArr) {
+// 兩套黑名單，用途唔同（唔可以混用，否則 history 自己嘅 id 會被誤殺）：
+//  - forReminders：永久刪除 + 已歸檔去 history 嘅 id → 唔可以由 blob 補返入 reminders（避免 delete 後復活）
+//  - forHistory：只係永久刪除 (_deletedIds) 嘅 id → 唔可以由 blob 補返入 history
+function excludedIds(repo, blob) {
+  const deleted = new Set();
+  [...(repo._deletedIds || []), ...(blob._deletedIds || [])].forEach(id => deleted.add(id));
+  const forReminders = new Set(deleted);
+  [...(repo.history || []), ...(blob.history || [])].forEach(r => { if (r && r.id) forReminders.add(r.id); });
+  return { forReminders, forHistory: deleted };
+}
+
+function unionById(repoArr, blobArr, excluded) {
+  const ex = excluded || new Set();
   const map = new Map();
-  (repoArr || []).forEach(r => { if (r && r.id) map.set(r.id, r); });
-  (blobArr || []).forEach(r => { if (r && r.id && !map.has(r.id)) map.set(r.id, r); });
+  (repoArr || []).forEach(r => { if (r && r.id && !ex.has(r.id)) map.set(r.id, r); });
+  (blobArr || []).forEach(r => { if (r && r.id && !ex.has(r.id) && !map.has(r.id)) map.set(r.id, r); });
   return Array.from(map.values());
 }
 
@@ -116,9 +128,18 @@ function unionByName(repoArr, blobArr) {
 
 function merge(repo, blob) {
   const merged = Object.assign({}, repo);
-  merged.reminders = unionById(repo.reminders, blob.reminders);
+  const ex = excludedIds(repo, blob);
+  merged.reminders = unionById(repo.reminders, blob.reminders, ex.forReminders);
   merged.birthdays = unionByName(repo.birthdays, blob.birthdays);
-  merged.history = repo.history || blob.history || [];
+  // history 合併去重（同一 id 只留最新 archivedAt），避免重複項 delete 極都 delete 唔到
+  const histMap = new Map();
+  [...(blob.history || []), ...(repo.history || [])].forEach(r => {
+    if (!r || !r.id) return;
+    if (ex.forHistory.has(r.id)) return; // 已永久刪除，唔好由 blob 補返入 history
+    const prev = histMap.get(r.id);
+    if (!prev || (r.archivedAt || '') > (prev.archivedAt || '')) histMap.set(r.id, r);
+  });
+  merged.history = Array.from(histMap.values());
   merged.settings = repo.settings || blob.settings || {};
   merged._deletedIds = Array.from(new Set([...(repo._deletedIds || []), ...(blob._deletedIds || [])]));
   merged.pendingMessages = repo.pendingMessages || blob.pendingMessages || [];

@@ -898,10 +898,14 @@ function fetchWithTimeout(url, opts, ms) {
 
 function mergeLocalItems(localRem, localBday) {
   if (!DATA.reminders) DATA.reminders = [];
+  // 防止 delete 後復活：已被永久刪除 或 已歸檔去 history 嘅 id，唔好由 localStorage 補返入 reminders
+  var excluded = {};
+  (DATA._deletedIds || []).forEach(function(id){ excluded[id] = true; });
+  (DATA.history || []).forEach(function(r){ if (r && r.id) excluded[r.id] = true; });
   var ids = {};
   DATA.reminders.forEach(function(r){ if (r && r.id) ids[r.id] = true; });
   (localRem || []).forEach(function(r){
-    if (r && r.id && !ids[r.id]) { DATA.reminders.push(r); ids[r.id] = true; }
+    if (r && r.id && !ids[r.id] && !excluded[r.id]) { DATA.reminders.push(r); ids[r.id] = true; }
   });
   if (localBday && localBday.length) {
     if (!DATA.birthdays) DATA.birthdays = [];
@@ -1646,6 +1650,9 @@ function deleteReminderSafe(id, name, fromHistory) {
     // Permanent delete from history
     showConfirm('永久刪除「' + name + '」？', function() {
       DATA.history = (DATA.history || []).filter(function(x) { return x.id !== id; });
+      // 記入黑名單，防止雲端／localStorage 同步時補返（delete 後復活）
+      if (!DATA._deletedIds) DATA._deletedIds = [];
+      if (DATA._deletedIds.indexOf(id) < 0) DATA._deletedIds.push(id);
       saveLocal(); renderAll(); updateHistoryBadge(); closeConfirm();
       pushToGitHub().then(function(ok) {
         toast(ok ? '\u{1F5D1}\uFE0F 已永久刪除 \u2705' : '\u26A0\uFE0F 本地已刪但同步失敗');
