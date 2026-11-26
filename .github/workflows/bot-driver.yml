@@ -1,0 +1,72 @@
+name: Bot Driver (WhatsApp + Web Push · 24/7)
+
+# ════════════════════════════════════════════════════════════════
+# 新 driver（2026-11-26）— 取代被 GitHub 高頻節流嘅舊 workflow ID
+#
+# 背景：
+#   舊 cloud-reminder.yml / web-push.yml 各跑咗 58000+/38000+ 次，
+#   GitHub 對佢哋嘅 native schedule 做咗節流（最後 schedule run 2026-10-11，
+#   之後全部 cancelled），而 self-perpetuate re-arm loop 又喺 11-04 失敗 5 次
+#   永久中斷 → bot 停咗 22 日。
+#   喺舊 workflow ID 加 schedule 實測唔觸發（等咗 2 個 cron 週期零 run）。
+#   backup.yml / health-monitor.yml 嘅 schedule 今日仍 success →
+#   證明係 workflow-ID 級別節流，開新 ID 可解。
+#
+# 設計：
+#   ✅ 全新 workflow 檔 = 全新 ID，冇節流黑記錄。
+#   ✅ Native schedule 每 5 分鐘（獨立 driver，唔靠 re-arm，冇單點故障）。
+#   ✅ Concurrency lock：同一時間只有 1 個 run，串行化改 data.json，絕不雙發。
+#   ✅ 直接 call 兩個 bot Logic（cloud-reminder-bot.js + web-push-send.js），
+#      唔經 repository_dispatch，避免同舊 workflow 有任何交集。
+#   ✅ 保留手動 / API 觸發方便測試。
+# ════════════════════════════════════════════════════════════════
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'   # 每 5 分鐘
+  workflow_dispatch:
+  repository_dispatch:
+    types: [bot-driver-tick]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bot-driver
+  cancel-in-progress: false
+
+jobs:
+  drive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Reconcile cloud data (data.json ↔ jsonblob)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JSONBLOB_ID:  ${{ secrets.JSONBLOB_ID }}
+        run: node sync-data.js
+
+      - name: WhatsApp reminders (CallMeBot)
+        env:
+          GITHUB_TOKEN:      ${{ secrets.GITHUB_TOKEN }}
+          DATA_URL:          https://jsonblob.com/api/jsonBlob/019fbcb0-45fe-7396-8713-75286c4be862
+          CALLMEBOT_KEN:     ${{ secrets.CALLMEBOT_KEN }}
+          CALLMEBOT_EPPIE:   ${{ secrets.CALLMEBOT_EPPIE }}
+          CALLMEBOT_KENNY:   ${{ secrets.CALLMEBOT_KENNY }}
+          CALLMEBOT_ROSANNA: ${{ secrets.CALLMEBOT_ROSANNA }}
+          CALLMEBOT_COFFE:   ${{ secrets.CALLMEBOT_COFFE }}
+          CALLMEBOT_LODOU:   ${{ secrets.CALLMEBOT_LODOU }}
+        run: node cloud-reminder-bot.js
+
+      - name: Web Push reminders
+        env:
+          GITHUB_TOKEN:      ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO:           aibizlab-hub/family-reminder-cloud
+          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+          VAPID_PUBLIC_KEY:  ${{ secrets.VAPID_PUBLIC_KEY }}
+        run: node web-push-send.js

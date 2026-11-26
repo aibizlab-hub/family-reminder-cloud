@@ -13,9 +13,9 @@ name: Web Push Reminder
 #   concurrency group 照留：排隊唔 cancel，串行化，防止重複 push。
 # ════════════════════════════════════════════════════════════════
 
+# ⚠️ 2026-11-26：24/7 自動驅動已搬去 bot-driver.yml（呢個 workflow ID 被 GitHub 高頻節流）。
+# 呢個檔只保留手動／API 觸發做測試用，唔再有 schedule / re-arm。
 on:
-  schedule:
-    - cron: '*/5 * * * *'   # 每 5 分鐘（原生 schedule，唔再靠 re-arm）
   workflow_dispatch:        # 手動：GitHub → Actions → 此 workflow → Run workflow
   repository_dispatch:
     types: [web-push-tick]  # 前端／API 即時重發
