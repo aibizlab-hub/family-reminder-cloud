@@ -192,19 +192,6 @@
       "address": ""
     },
     {
-      "id": "r1792977565194e0k",
-      "notified": false,
-      "caregiverNotified1d": false,
-      "caregiverNotified3h": false,
-      "name": "Mpf堂 $150 記得去",
-      "date": "2026-11-26",
-      "time": "14:30",
-      "category": "work",
-      "caregiver": "KEN",
-      "note": "Mfc b座13樓 e室",
-      "repeat": "none"
-    },
-    {
       "id": "r20261111001pub",
       "notified": false,
       "name": "公屋租金（房屋署）",
@@ -1514,6 +1501,20 @@
       "note": "",
       "repeat": "none",
       "archivedAt": "2026-11-14T13:03:36.023Z"
+    },
+    {
+      "id": "r1792977565194e0k",
+      "notified": false,
+      "caregiverNotified1d": false,
+      "caregiverNotified3h": false,
+      "name": "Mpf堂 $150 記得去",
+      "date": "2026-11-26",
+      "time": "14:30",
+      "category": "work",
+      "caregiver": "KEN",
+      "note": "Mfc b座13樓 e室",
+      "repeat": "none",
+      "archivedAt": "2026-11-26T03:01:57.800Z"
     }
   ],
   "_deletedIds": [],
@@ -1555,5 +1556,6 @@
   "pendingMessages": [],
   "_lastArchived": [
     "r1793560261615jnt"
-  ]
+  ],
+  "notifyLedger": {}
 }
